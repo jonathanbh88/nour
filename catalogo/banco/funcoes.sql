@@ -342,6 +342,29 @@ begin
   return catalogo_painel(p_slug, p_token);
 end $function$;
 
+-- ---------- proteção (padrão do Bio Site) ----------
+CREATE OR REPLACE FUNCTION public.catalogo_seg_registrar(p_slug text, p_onde text, p_tipo text, p_detalhe text) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare h json := nullif(current_setting('request.headers', true), '')::json; v_ip text; v_ua text;
+begin
+  if not (p_onde = any (array['loja','painel'])) or not (p_tipo = any (array['devtools','atalho','copia','imagem'])) then return; end if;
+  if not exists (select 1 from catalogos where slug = p_slug) then return; end if;
+  v_ip := left(btrim(split_part(coalesce(h->>'x-forwarded-for', h->>'x-real-ip', ''), ',', 1)), 64);
+  v_ua := left(coalesce(h->>'user-agent', ''), 200);
+  -- no máximo 10 registros por IP a cada hora e 300 por loja por dia (evita encher a tabela)
+  if (select count(*) from catalogo_seg where ip = v_ip and criado > now() - interval '1 hour') >= 10 then return; end if;
+  if (select count(*) from catalogo_seg where slug = p_slug and criado > now() - interval '1 day') >= 300 then return; end if;
+  insert into catalogo_seg (slug, onde, tipo, detalhe, ip, navegador) values (p_slug, p_onde, p_tipo, left(coalesce(p_detalhe, ''), 120), v_ip, v_ua);
+end $function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_seg_lista(p_slug text, p_token text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+begin
+  if not catalogo_ok(p_slug, p_token) then raise exception 'acesso_negado'; end if;
+  return (select coalesce(jsonb_agg(jsonb_build_object('onde', onde, 'tipo', tipo, 'detalhe', detalhe, 'ip', ip, 'navegador', navegador, 'criado', criado) order by criado desc), '[]'::jsonb)
+          from (select * from catalogo_seg where slug = p_slug and criado > now() - interval '30 days' order by criado desc limit 100) s);
+end $function$;
+revoke all on function public.catalogo_seg_registrar(text, text, text, text), public.catalogo_seg_lista(text, text) from public;
+grant execute on function public.catalogo_seg_registrar(text, text, text, text), public.catalogo_seg_lista(text, text) to anon, authenticated;
+
 -- ---------- permissões ----------
 revoke all on function public.catalogo_url_ok(text), public.catalogo_ok(text, text), public.catalogo_mover(text, bigint, text, text, int, text, bigint),
   public.catalogo_apagar(text, text, bigint), public.catalogo_apagar_variacoes(bigint, text[]), public.catalogo_limpar_estoque(text, bigint, text[]),

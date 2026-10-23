@@ -57,6 +57,7 @@
     app.innerHTML = '<div class="loading">Abrindo o painel…</div>';
     return window.nourRpc('catalogo_painel', { p_slug: slug, p_token: token }).then(function (d) {
       S.d = d; guardar(); aplicarCor(); lerPlano(); limparFotos();
+      if (window.nourProtecao) window.nourProtecao({ onde: 'painel', slug: slug, marca: (d.nome || slug) + ' · ' + slug + ' · ' + dataX(Date.now(), 1) });
       if (!d.onboarding || !d.onboarding.feito) return onboarding(1);
       render();
     }).catch(function (e) { esquecer(); login(msgErro(e)); });
@@ -222,7 +223,7 @@
         '<button type="button" class="btn ghost sm hide-s" data-copiar-link>' + ic('link') + 'Copiar link</button><a class="btn sm" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + '<span class="hide-s">Ver loja</span></a></header>' +
       '<main class="main" id="main" data-tela="' + esc(S.tab) + '">' + TELAS[S.tab]() + '</main></div>' +
       '<nav class="bnav" aria-label="Atalhos">' + BAIXO.map(function (id) { var t = aba(id).t; return itemMenu([t[0], t[1].split(' e ')[0], t[2]], av, 'bn'); }).join('') +
-        '<button type="button" class="bn" data-mais' + (BAIXO.indexOf(S.tab) < 0 ? ' aria-current="page"' : '') + '><i>' + ic('grid') + '</i><span>Mais</span></button></nav></div>';
+        '<button type="button" class="bn" data-mais' + (BAIXO.indexOf(S.tab) < 0 ? ' aria-current="page"' : '') + '><i>' + ic('grid') + '</i><span>Mais</span></button></nav></div>';    if (S.tab === 'acesso') carregarSeg();
   }
   // Menu completo no celular, em blocos por grupo.
   function menuMais() {
@@ -1255,7 +1256,19 @@
       '<div class="card"><h2>Link da loja</h2><div class="copy"><input readonly id="lnkLoja" value="' + esc(lojaUrl()) + '" aria-label="Link da loja"><button type="button" class="btn ghost" data-copy="lnkLoja">Copiar</button></div><p class="note">Coloque este link no Bio Site, no Instagram e no WhatsApp.</p></div>' +
       '<div class="card"><h2>Link do painel</h2><div class="copy"><input readonly id="lnkPainel" value="' + esc(painel) + '" aria-label="Link do painel"><button type="button" class="btn ghost" data-copy="lnkPainel">Copiar</button></div><p class="note">O link não abre o painel sozinho: pede o código de acesso.</p></div>' +
       '<div class="card"><h2>Código de acesso</h2><p>Troque o código se alguém que não deveria tiver acesso. Quem estiver com o código antigo perde o acesso na hora.</p><div id="novoCod"></div><button type="button" class="btn danger ghost" data-trocar>Gerar novo código</button></div>' +
+      '<div class="card"><h2>Segurança</h2><p class="note">Como no Bio Site: o painel tem marca d\'água com o nome da loja e a data, e bloqueia cópia do código, das imagens e de textos enormes. Print de tela e impressão continuam liberados. Abaixo, as tentativas registradas nos últimos 30 dias (na loja e neste painel).</p><div id="segLista"><p class="note">Carregando…</p></div></div>' +
       '<div class="card"><h2>Configuração inicial</h2><p>Refaça o passo a passo para trocar o modelo ou as cores.</p><button type="button" class="btn ghost" data-refazer>Refazer configuração</button></div>';
+  }
+
+  var SEGTIPO = { devtools: 'Ferramenta do desenvolvedor aberta', atalho: 'Atalho bloqueado', copia: 'Cópia de texto grande', imagem: 'Tentativa de copiar imagem' };
+  function carregarSeg() {
+    var el = document.getElementById('segLista'); if (!el) return;
+    window.nourRpc('catalogo_seg_lista', { p_slug: S.slug, p_token: S.token }).then(function (l) {
+      el = document.getElementById('segLista'); if (!el) return;
+      el.innerHTML = l && l.length ? '<div class="tbl"><table><thead><tr><th>Quando</th><th>Onde</th><th>O quê</th><th>IP</th></tr></thead><tbody>' + l.map(function (x) {
+        return '<tr><td class="nowrap">' + dataBr(x.criado, 1) + '</td><td>' + (x.onde === 'painel' ? '<span class="pill warn">Painel</span>' : '<span class="pill">Loja</span>') + '</td><td>' + esc(SEGTIPO[x.tipo] || x.tipo) + (x.detalhe ? ' <small class="note">' + esc(x.detalhe) + '</small>' : '') + '</td><td class="mono">' + esc(x.ip || '—') + '</td></tr>'; }).join('') + '</tbody></table></div>' :
+        '<p class="note">Nenhuma tentativa registrada.</p>';
+    }, function () { el.innerHTML = '<p class="note">Não deu para carregar agora.</p>'; });
   }
 
   /* ---------- configuração inicial (igual à Agenda) ---------- */

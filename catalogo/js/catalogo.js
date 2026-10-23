@@ -737,4 +737,6 @@
   var abrir = window.NOUR_ABRIR || (location.hash.indexOf('#p-') === 0 ? decodeURIComponent(location.hash.slice(3)) : '');
   if (abrir && BYID[abrir]) openProd(abrir);
   $('#dProd').addEventListener('close', function () { document.title = TIT; meta(DESC); });
+  // Proteção contra cópia (padrão do Bio Site); só registra tentativas da loja real, não de modelos ou prévias.
+  if (window.nourProtecao && !L.previa) window.nourProtecao({ onde: 'loja', slug: L.api ? L.id : '' });
 })();

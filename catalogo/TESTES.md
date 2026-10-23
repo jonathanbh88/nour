@@ -220,6 +220,13 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Categoria que não existe é criada; passar do limite do plano é avisado antes de gravar.
 - [ ] Salvar produto com foto (link https) funciona — corrigido o validador de links no banco.
 
+## 19. Proteção contra cópia (padrão do Bio Site)
+
+- [ ] Loja: botão direito ou segurar em foto não abre o menu de salvar; arrastar foto não funciona; Ctrl+U, Ctrl+S, F12 e Ctrl+Shift+I não abrem nada; copiar a página inteira não copia (texto curto copia normal).
+- [ ] Painel: marca d'água clarinha com o nome da loja, o endereço e a data em todas as telas; com a ferramenta do desenvolvedor aberta, a tela fica coberta com o aviso.
+- [ ] Print de tela e impressão continuam funcionando (PDF dos relatórios sai normal, sem a marca d'água).
+- [ ] Acesso e links → Segurança: as tentativas aparecem com data, onde (loja/painel), o quê e IP.
+
 ## Fora deste teste (próximas fases)
 
 - Pagamento online (Mercado Pago) e frete calculado (Melhor Envio).

@@ -198,3 +198,19 @@ revoke all on public.catalogo_cupons, public.catalogo_trocas, public.catalogo_ev
 -- Plano da loja (limite de produtos e de arquivos de foto: ver catalogo_limites em funcoes.sql)
 alter table public.catalogos add column if not exists plano text not null default 'basico';
 alter table public.catalogos add constraint catalogos_plano_ck check (plano in ('basico', 'mais'));
+
+-- Proteção no padrão do Bio Site: tentativas de cópia/inspeção registradas (com IP), sem bloqueio automático.
+create table if not exists public.catalogo_seg (
+  id bigint generated always as identity primary key,
+  slug text not null,
+  onde text not null check (onde in ('loja', 'painel')),
+  tipo text not null check (tipo in ('devtools', 'atalho', 'copia', 'imagem')),
+  detalhe text not null default '',
+  ip text not null default '',
+  navegador text not null default '',
+  criado timestamptz not null default now()
+);
+create index if not exists catalogo_seg_slug_criado on public.catalogo_seg (slug, criado desc);
+create index if not exists catalogo_seg_ip_criado on public.catalogo_seg (ip, criado desc);
+alter table public.catalogo_seg enable row level security;
+revoke all on public.catalogo_seg from anon, authenticated;
