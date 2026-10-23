@@ -409,6 +409,14 @@ dialog::backdrop{background:rgba(20,14,32,.55)}
 .cart-empty{text-align:center;padding:40px 20px;color:var(--muted)}
 .cart-empty b{display:block;color:var(--ink);font-size:1.15rem;margin-bottom:6px}
 
+/* cupom */
+.cupom{display:flex;gap:8px;align-items:center}
+.cupom input{flex:1;min-width:0;border:1.5px dashed var(--line);border-radius:14px;background:var(--card);padding:11px 12px;font-size:16px;text-transform:uppercase}
+.cupom input:focus{outline:0;border-color:var(--p1)}
+.cupom.on{justify-content:space-between;border:1.5px solid color-mix(in srgb,var(--ok) 50%,var(--line));background:color-mix(in srgb,var(--ok) 8%,var(--card));border-radius:14px;padding:9px 12px}
+.cupom.on span{display:flex;flex-direction:column}
+.cupom.on small{color:var(--muted);font-size:.8rem}
+
 /* aviso de cookies */
 .cookie{position:fixed;left:var(--gut-l);right:var(--gut-r);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:35;max-width:760px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -16px rgba(0,0,0,.45);padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:.9rem}
 .cookie p{flex:1 1 300px}

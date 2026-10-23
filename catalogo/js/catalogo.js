@@ -130,7 +130,36 @@
   function count() { return cart.reduce(function (s, l) { return s + l.qty; }, 0); }
   function subtotal() { return cart.reduce(function (s, l) { return s + l.qty * BYID[l.id].preco; }, 0); }
   function pixOn() { return L.descontoPix && /pix/i.test(form.pag); }
-  function totalPedido() { return pixOn() ? pixOf(subtotal()) : subtotal(); }
+  // Cupom: as contas seguem as do servidor (cupom sobre os produtos, Pix sobre o que sobra).
+  var cup = store('cupom');
+  function r2(v) { return Math.round(v * 100) / 100; }
+  function cupomDesc() {
+    if (!cup) return 0;
+    var sub = subtotal();
+    if (cup.minimo && sub < cup.minimo) return 0;
+    return cup.tipo === 'pct' ? r2(sub * Math.min(cup.valor, 90) / 100) : cup.tipo === 'valor' ? Math.min(cup.valor, sub) : 0;
+  }
+  function pixValor() { return pixOn() ? r2((subtotal() - cupomDesc()) * Math.min(L.descontoPix, 50) / 100) : 0; }
+  function totalPedido() { return subtotal() - cupomDesc() - pixValor(); }
+  function freteCupom() { return cup && cup.tipo === 'frete' && !(cup.minimo && subtotal() < cup.minimo); }
+  var CUPOM_ERRO = { cupom_invalido: 'Cupom não encontrado', cupom_expirado: 'Esse cupom expirou', cupom_ainda_nao_vale: 'Esse cupom ainda não começou a valer',
+    cupom_esgotado: 'Esse cupom já foi todo usado', cupom_vazio: 'Digite o cupom', loja_indisponivel: 'Loja indisponível' };
+  function aplicarCupom(cod) {
+    cod = String(cod || '').trim().toUpperCase();
+    if (!cod) return toast('Digite o cupom');
+    function ok(c) { cup = c; store('cupom', cup); drawCart(); toast('Cupom ' + c.codigo + ' aplicado'); track('cupom', c.codigo); }
+    function erro(e, minimo) { toast(e === 'cupom_minimo' ? 'Cupom válido para compras a partir de ' + brl(minimo) : CUPOM_ERRO[e] || 'Não deu para aplicar o cupom'); }
+    if (L.api) {
+      window.nourRpc('catalogo_cupom', { p_slug: L.id, p_codigo: cod, p_subtotal: subtotal() }).then(function (r) {
+        if (r && r.ok) ok({ codigo: r.codigo, tipo: r.tipo, valor: +r.valor, minimo: +r.minimo || 0 }); else erro(r && r.erro, r && r.minimo);
+      }).catch(function () { toast('Não deu para conferir o cupom agora'); });
+    } else {
+      var c = (L.cupons || []).filter(function (x) { return String(x.codigo).toUpperCase() === cod; })[0];
+      if (!c) return erro('cupom_invalido');
+      if (c.minimo && subtotal() < c.minimo) return erro('cupom_minimo', c.minimo);
+      ok({ codigo: cod, tipo: c.tipo || 'pct', valor: +c.valor || 0, minimo: +c.minimo || 0 });
+    }
+  }
 
   // Rotas por âncora, para o link de uma categoria poder ser compartilhado: #c-vestidos, #favoritos, #busca-termo
   function route() {
@@ -240,7 +269,7 @@
   function novidades() {
     var n = L.novidades || {}; if (n.ativo === false) return '';
     return '<section class="news"><div class="wrap in"><div class="copy"><b>' + esc(n.titulo || 'Receba as últimas novidades') + '</b><p>' + esc(n.texto || 'Seja a primeira a saber de lançamentos e promoções.') + '</p>' +
-      (n.grupoWhatsapp ? '<a class="grp" href="' + esc(url(n.grupoWhatsapp)) + '" target="_blank" rel="noopener">' + ic('users') + 'Entrar no grupo de promoções</a>' : '') + '</div>' +
+      (n.grupoWhatsapp ? '<a class="grp" data-ev="grupo" href="' + esc(url(n.grupoWhatsapp)) + '" target="_blank" rel="noopener">' + ic('users') + 'Entrar no grupo de promoções</a>' : '') + '</div>' +
       '<form class="nform" id="news" novalidate><label class="field"><span>Nome</span><input id="nNome" autocomplete="name" placeholder="Seu nome" required></label>' +
       '<label class="field"><span>WhatsApp</span><input id="nZap" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 91234-5678"></label>' +
       '<label class="field"><span>E-mail</span><input id="nMail" type="email" autocomplete="email" placeholder="voce@email.com"></label>' +
@@ -387,6 +416,7 @@
     var tam = p.tamanhos.filter(function (t) { return qtd(p, cor, t) > 0; });
     cur = { p: p, cor: cor, tam: p.tamanhos.length === 1 ? tam[0] || null : null, qty: 1, foto: 0 };
     drawProd();
+    track('produto', p.id);
     var d = $('#dProd'); if (!d.open) d.showModal();
     var s = $('.scroll', d); if (s) s.scrollTop = 0;
   }
@@ -422,7 +452,7 @@
       '</div></div>' +
       (p.avaliacoes.length ? '<div class="pd-revs"><h3>Avaliações</h3><div class="revs">' + p.avaliacoes.map(function (x) { return review(x); }).join('') + '</div></div>' : '') +
       '</div><div class="foot">' + (avise ?
-        '<a class="cta zap" href="' + wa('Olá! Quero ser avisada quando chegar: ' + p.nome + (cur.cor ? ' · ' + R.cor + ' ' + cur.cor : '') + '.') + '" target="_blank" rel="noopener">' + ic('chat') + 'Avise-me quando chegar</a>' :
+        '<a class="cta zap" data-ev="avise:' + esc(p.id) + '" href="' + wa('Olá! Quero ser avisada quando chegar: ' + p.nome + (cur.cor ? ' · ' + R.cor + ' ' + cur.cor : '') + '.') + '" target="_blank" rel="noopener">' + ic('chat') + 'Avise-me quando chegar</a>' :
         '<div class="step"><button type="button" data-pq="-1" aria-label="Tirar um">−</button><b>' + cur.qty + '</b><button type="button" data-pq="1" aria-label="Adicionar mais um">+</button></div>' +
         '<button type="button" class="cta" id="padd">Adicionar à sacola<span class="sp num">' + brl(p.preco * cur.qty) + '</span></button>') + '</div></div>';
   }
@@ -434,6 +464,7 @@
     if (want > max) { toast('Só temos ' + max + (max === 1 ? ' unidade' : ' unidades') + ' nesta opção'); want = max; }
     if (same) same.qty = want; else cart.push({ id: p.id, cor: cur.cor, tam: cur.tam, qty: want });
     save(); drawCounts(); $('#dProd').close();
+    track('sacola', p.id);
     toast(p.nome + ' foi para a sacola');
   }
 
@@ -453,8 +484,10 @@
       lines.push('   ' + [varTxt(l.cor, l.tam), 'Cód. ' + skuOf(p, l.cor, l.tam)].filter(Boolean).join(' · '));
     });
     lines.push('', 'Subtotal: ' + brl(subtotal()));
-    if (pixOn()) lines.push('Desconto Pix (' + L.descontoPix + '%): − ' + brl(subtotal() - totalPedido()));
-    lines.push('*Total: ' + brl(totalPedido()) + '*' + (form.entrega === 'retirada' ? '' : ' + frete'), '');
+    if (cupomDesc()) lines.push('Cupom ' + cup.codigo + ': − ' + brl(cupomDesc()));
+    if (pixOn()) lines.push('Desconto Pix (' + L.descontoPix + '%): − ' + brl(pixValor()));
+    lines.push('*Total: ' + brl(totalPedido()) + '*' + (form.entrega === 'retirada' || freteCupom() ? '' : ' + frete'), '');
+    if (freteCupom()) lines.push('Frete grátis (cupom ' + cup.codigo + ')');
     var ent = (L.entrega || []).filter(function (x) { return x[0] === form.entrega; })[0];
     if (ent) lines.push('Receber: ' + ent[1] + (form.entrega === 'correios' ? ' · CEP ' + form.cep : form.entrega === 'motoboy' ? ' · ' + form.end : ''));
     lines.push('Pagamento: ' + form.pag, 'Nome: ' + form.nome);
@@ -485,10 +518,15 @@
       '<label class="field"><span>Seu nome</span><input id="fNome" autocomplete="name" value="' + esc(form.nome) + '" placeholder="Como devemos te chamar">' + (e.nome && form._try ? '<em>' + e.nome + '</em>' : '') + '</label>' +
       (form.entrega === 'correios' ? '<label class="field"><span>CEP</span><input id="fCep" inputmode="numeric" autocomplete="postal-code" value="' + esc(form.cep) + '" placeholder="00000-000">' + (e.cep && form._try ? '<em>' + e.cep + '</em>' : '') + '</label>' : '') +
       (form.entrega === 'motoboy' ? '<label class="field"><span>Endereço de entrega</span><input id="fEnd" autocomplete="street-address" value="' + esc(form.end) + '" placeholder="Rua, número e bairro">' + (e.end && form._try ? '<em>' + e.end + '</em>' : '') + '</label>' : '') +
-      '<h3>Forma de pagamento</h3><div class="seg pay">' + pays + '</div></div>' +
+      '<h3>Forma de pagamento</h3><div class="seg pay">' + pays + '</div>' +
+      (L.api || (L.cupons && L.cupons.length) ? '<h3>Cupom de desconto</h3>' + (cup ? '<div class="cupom on"><span><b>' + esc(cup.codigo) + '</b>' +
+        (cup.minimo && sub < cup.minimo ? '<small>Vale a partir de ' + brl(cup.minimo) + '</small>' : '<small>' + (cup.tipo === 'pct' ? cup.valor + '% de desconto' : cup.tipo === 'valor' ? brl(cup.valor) + ' de desconto' : 'Frete grátis') + '</small>') +
+        '</span><button type="button" class="clear" data-cupom-x>Remover</button></div>' :
+        '<div class="cupom"><input id="fCupom" autocomplete="off" autocapitalize="characters" placeholder="Digite o cupom" aria-label="Cupom de desconto" maxlength="20"><button type="button" class="ghost" data-cupom>Aplicar</button></div>') : '') + '</div>' +
       '<div class="sum"><div><span>Subtotal</span><span class="num">' + brl(sub) + '</span></div>' +
-      (pixOn() ? '<div class="pixd"><span>Desconto Pix (' + L.descontoPix + '%)</span><span class="num">− ' + brl(sub - totalPedido()) + '</span></div>' : '') +
-      '<div><span>Frete</span><span>' + (form.entrega === 'retirada' ? 'Grátis' : falta <= 0 && L.freteGratisAcima ? 'Grátis' : 'Combinado no WhatsApp') + '</span></div>' +
+      (cupomDesc() ? '<div class="pixd"><span>Cupom ' + esc(cup.codigo) + '</span><span class="num">− ' + brl(cupomDesc()) + '</span></div>' : '') +
+      (pixOn() ? '<div class="pixd"><span>Desconto Pix (' + L.descontoPix + '%)</span><span class="num">− ' + brl(pixValor()) + '</span></div>' : '') +
+      '<div><span>Frete</span><span>' + (form.entrega === 'retirada' ? 'Grátis' : freteCupom() ? 'Grátis (cupom)' : falta <= 0 && L.freteGratisAcima ? 'Grátis' : 'Combinado no WhatsApp') + '</span></div>' +
       '<div class="tot"><span>Total</span><span class="num">' + brl(totalPedido()) + '</span></div></div>' +
       '</div><div class="foot"><a class="cta zap" id="send" href="' + (ok ? wa(message()) : '#') + '" target="_blank" rel="noopener"' + (ok ? '' : ' aria-disabled="true"') + '>' + ic('chat') + 'Enviar pedido no WhatsApp</a></div></div>';
     scr = $('.scroll', d); if (scr) scr.scrollTop = top;
@@ -502,18 +540,20 @@
     var w = window.open('', '_blank'); if (w) w.opener = null;
     var codigo = Array.apply(null, Array(6)).map(function () { return 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'.charAt(Math.floor(Math.random() * 32)); }).join('');
     var ent = (L.entrega || []).filter(function (x) { return x[0] === form.entrega; })[0];
-    window.nourRpc('catalogo_pedido', {
+    window.nourRpc('catalogo_fazer_pedido', {
       p_slug: L.id, p_codigo: codigo, p_nome: form.nome.trim(), p_contato: { cep: form.cep, endereco: form.end },
       p_itens: cart.map(function (l) { return { id: +l.id, cor: l.cor, tam: l.tam, qtd: l.qty }; }),
-      p_entrega: ent ? ent[1] : form.entrega, p_pagamento: form.pag
+      p_entrega: ent ? ent[1] : form.entrega, p_pagamento: form.pag, p_cupom: cup ? cup.codigo : '', p_origem: origem
     }).then(function (reg) {
       var link = wa(message(reg));
+      cup = null; store('cupom', null);
       if (w) w.location.href = link; else location.href = link;
       cart = []; save(); drawCounts(); $('#dCart').close();
       toast('Pedido #' + reg.numero + ' enviado. Finalize a conversa no WhatsApp.');
     }).catch(function (err) {
       var m = String(err.message || '');
       if (m.indexOf('sem_estoque') === 0) { if (w) w.close(); toast((m.split(':')[1] || 'Um produto') + ' acabou de esgotar nessa opção. Ajuste a sacola.'); }
+      else if (m.indexOf('cupom_') === 0) { if (w) w.close(); cup = null; store('cupom', null); drawCart(); toast((CUPOM_ERRO[m] || 'O cupom não vale para este pedido') + '. Cupom removido.'); }
       else if (m === 'muitos_pedidos') { if (w) w.close(); toast('Muitos pedidos agora. Tente de novo em 1 minuto.'); }
       else { var link = wa(message()); if (w) w.location.href = link; else location.href = link; }  // sem conexão com o banco: o pedido segue só pelo WhatsApp
     }).then(function () { sending = false; btn.removeAttribute('aria-busy'); });
@@ -553,6 +593,9 @@
         else toast('Abrindo o WhatsApp com seu pedido');
         return;
       }
+      if (t.closest('[data-cupom]')) { aplicarCupom(($('#fCupom') || {}).value); return; }
+      if (t.closest('[data-cupom-x]')) { cup = null; store('cupom', null); drawCart(); return; }
+      if ((b = t.closest('[data-ev]'))) { var e2 = b.getAttribute('data-ev').split(':'); track(e2[0], e2[1] || ''); }
       if ((b = t.closest('[data-rail]'))) { var rl = $('.rail', b.parentNode); rl.scrollBy({ left: +b.getAttribute('data-rail') * rl.clientWidth * .9, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
       if ((b = t.closest('[data-slide]'))) { showSlide(+b.getAttribute('data-slide')); autoplay(); slideI = +b.getAttribute('data-slide'); return; }
       if ((b = t.closest('[data-tam]'))) { pref.tam = b.getAttribute('data-tam'); save(); return drawMain(); }
@@ -563,6 +606,7 @@
       if (t.closest('#tema')) { tema = isDark() ? 'light' : 'dark'; store('tema', tema); applyTheme(); var tb = $('#tema'); tb.innerHTML = ic(isDark() ? 'sun' : 'moon'); tb.setAttribute('aria-label', isDark() ? 'Usar tema claro' : 'Usar tema escuro'); return; }
     });
     document.addEventListener('submit', function (ev) { if (ev.target.id === 'news') sendNews(ev); });
+    document.addEventListener('keydown', function (e) { if (e.target.id === 'fCupom' && e.key === 'Enter') { e.preventDefault(); aplicarCupom(e.target.value); } });
     document.addEventListener('change', function (ev) {
       if (ev.target.id === 'ordem') { pref.ordem = ev.target.value; save(); drawMain(); }
     });
@@ -578,20 +622,40 @@
       if (id === 'q') {
         clearTimeout(qT);
         var v = ev.target.value.trim();
-        qT = setTimeout(function () { var h = v ? '#busca-' + encodeURIComponent(v) : '#'; if (location.hash !== h) history.replaceState(null, '', h === '#' ? location.pathname + location.search : h); drawMain(); }, 250);
+        qT = setTimeout(function () { if (v.length >= 3) track('busca', v); var h = v ? '#busca-' + encodeURIComponent(v) : '#'; if (location.hash !== h) history.replaceState(null, '', h === '#' ? location.pathname + location.search : h); drawMain(); }, 250);
       }
     });
     window.addEventListener('resize', arrows);
     window.addEventListener('hashchange', function () { drawMain(); window.scrollTo(0, 0); });
   }
 
-  // Conta uma visita por dia e por aparelho, só para quem aceitou os cookies.
+  /* ---------- analytics (só para quem aceitou os cookies) ---------- */
+  // De onde a pessoa veio: ?utm_source=… ou o site anterior. Fica guardado na sessão.
+  var origem = (function () {
+    try { var o = sessionStorage.getItem('nourorigem'); if (o) return o; } catch (e) {}
+    var u = (location.search.match(/[?&]utm_source=([^&]+)/i) || [])[1], r = document.referrer, h = '';
+    try { h = r ? new URL(r).hostname : ''; } catch (e) {}
+    var t = (decodeURIComponent(u || '') + ' ' + h).toLowerCase();
+    var o2 = /instagram/.test(t) ? 'instagram' : /whatsapp|wa\.me/.test(t) ? 'whatsapp' : /google/.test(t) ? 'google' : /facebook|fb\./.test(t) ? 'facebook' : /tiktok/.test(t) ? 'tiktok' :
+      !t.trim() || h === location.hostname ? 'direto' : 'outro';
+    try { sessionStorage.setItem('nourorigem', o2); } catch (e) {}
+    return o2;
+  })();
+  var vistos = {};
+  function track(tipo, alvo) {
+    if (!L.api || window.NOUR_CONSENTIMENTO !== 'todos') return;
+    var k = tipo + ':' + alvo;
+    if ((tipo === 'produto' || tipo === 'busca') && vistos[k]) return;  // uma vez por sessão
+    vistos[k] = 1;
+    window.nourRpc('catalogo_evento', { p_slug: L.id, p_tipo: tipo, p_alvo: String(alvo || ''), p_origem: origem }).catch(function () {});
+  }
+  // Uma visita por dia e por aparelho.
   function visita() {
     if (!L.api || window.NOUR_CONSENTIMENTO !== 'todos') return;
     var hoje = new Date().toISOString().slice(0, 10);
     if (store('visita') === hoje) return;
     store('visita', hoje);
-    window.nourRpc('catalogo_visita', { p_slug: L.id }).catch(function () {});
+    track('visita', matchMedia('(max-width: 820px)').matches ? 'celular' : 'computador');
   }
 
   render();

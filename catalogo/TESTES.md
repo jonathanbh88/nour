@@ -52,6 +52,9 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Enviar sem nome/CEP mostra o erro no campo.
 - [ ] **Enviar pedido:** abre o WhatsApp com "Pedido #número", itens, cor, tamanho, código, total e "Código do pedido". A sacola esvazia. O pedido aparece no painel como **Novo**.
 - [ ] Se outra pessoa comprou a última peça antes: aparece "acabou de esgotar" e o WhatsApp não abre.
+- [ ] **Cupom na sacola:** código inválido mostra aviso; `BEMVINDA10` com sacola acima de R$ 100 dá 10% e aparece no resumo e na mensagem; abaixo do mínimo avisa quanto falta; o "x" tira o cupom.
+- [ ] Cupom + Pix: o Pix é calculado depois do cupom (ex.: R$ 89,90 − 8,99 − 4,05 = R$ 76,86).
+- [ ] Cupom de frete grátis marca a entrega como grátis.
 
 ## 5. Loja: cadastro, cookies e privacidade
 
@@ -110,12 +113,47 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Clientes: busca, excluir, link do WhatsApp do cliente.
 - [ ] Avaliações: nova, editar, ocultar/mostrar na loja, excluir; avaliação ligada a produto aparece na página do produto.
 
+## 10b. Painel: cupons
+
+- [ ] Aba Cupons: criar cupom em % ou R$ ou frete grátis, com mínimo, validade e limite de usos.
+- [ ] Código repetido é recusado; código com espaço ou símbolo é recusado.
+- [ ] Interruptor liga e desliga o cupom; desligado, a loja recusa o código.
+- [ ] "Copiar texto" gera a frase de divulgação para WhatsApp/Instagram.
+- [ ] Contador de usos sobe quando um pedido com cupom é confirmado.
+
+## 10c. Painel: analytics
+
+- [ ] Visitas, funil (visita → produto → sacola → pedido → venda) e taxa de conversão.
+- [ ] Origem das visitas: abrir a loja com `&utm_source=instagram` conta como Instagram.
+- [ ] Celular x computador.
+- [ ] Tabela de produtos: vistos, colocados na sacola e vendidos.
+- [ ] Buscas mais feitas (3 letras ou mais) e cliques em "Avise-me" e no grupo.
+- [ ] Nada é contado antes de aceitar os cookies.
+
+## 10d. Painel: relatórios
+
+- [ ] Subabas Vendas, Financeiro, Trocas, Estoque e Clientes; período 7 / 30 / 90 dias.
+- [ ] Vendas: por produto, categoria, tamanho, cor, origem e comparação com o período anterior.
+- [ ] Financeiro: bruto, descontos (cupom e Pix), cancelados, líquido, ticket médio, por pagamento.
+- [ ] Trocas: por motivo, por produto e dica de modelagem quando o tamanho trocado se repete.
+- [ ] Estoque: valor parado, cobertura em dias, produtos sem venda.
+- [ ] Clientes: quem mais compra, recorrência.
+- [ ] "Baixar CSV" em cada relatório abre no Excel com acentos corretos.
+
+## 10e. Painel: trocas e devoluções
+
+- [ ] Em pedido confirmado/enviado/entregue, "Troca ou devolução" abre o formulário.
+- [ ] Troca de tamanho/cor: o item devolvido volta ao estoque e o novo sai (ver Movimentos).
+- [ ] Devolução com reembolso aparece no relatório financeiro.
+- [ ] Quantidade maior que a do pedido é recusada.
+
 ## 11. Painel: aparência e loja
 
 - [ ] Todas as seções salvam: identidade, cores, tema, contato, horários, faixa (3 frases), banners em imagem (até 3) e banner montado, vitrines (título das categorias, ofertas com título livre, novidades com link do grupo), vendas (Pix, parcelas, frete grátis, nomes das variações, entregas, pagamentos), privacidade (cookies, termos, política), white label.
 - [ ] Sair da página com alterações não salvas avisa.
 - [ ] WhatsApp sem DDD é recusado; links sem https são recusados.
 - [ ] White label: com nome/logo do parceiro, a loja mostra "Feito por [parceiro]" e o painel mostra "Painel por [parceiro]"; sem nada, mostra Nour.
+- [ ] White label do painel: a tela de entrada mostra logo e nome do parceiro e usa as cores da loja; o título da aba mostra "· [parceiro]"; o rodapé do painel tem "Falar com o suporte" com o link cadastrado.
 
 ## 12. Segurança (já testado no banco; repetir se quiser)
 

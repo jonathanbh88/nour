@@ -330,3 +330,150 @@ grant execute on function public.catalogo_publico(text), public.catalogo_pedido(
 -- O código de acesso é gerado fora do banco e só o sha256 é salvo:
 -- insert into catalogos (slug, nome, painel_token) values ('minha-loja', 'Minha Loja', encode(sha256(convert_to('<código>', 'UTF8')), 'hex'));
 -- Depois, o lojista entra no painel com ?loja=minha-loja e faz a configuração inicial.
+
+-- =====================================================================
+-- 23/10/2026 (2ª parte): cupons, trocas, analytics e white label.
+-- Substituem as versões acima de catalogo_apagar, catalogo_pedido_status,
+-- catalogo_painel e catalogo_painel_salvar. A loja passa a usar
+-- catalogo_fazer_pedido (com cupom e origem); catalogo_pedido fica sem acesso público.
+-- =====================================================================
+CREATE OR REPLACE FUNCTION public.catalogo_cupom_calc(p_slug text, p_codigo text, p_sub numeric) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare k catalogo_cupons; v_hoje date := (now() at time zone 'America/Sao_Paulo')::date; v_desc numeric := 0;
+begin
+  if coalesce(btrim(p_codigo), '') = '' then return jsonb_build_object('ok', false, 'erro', 'cupom_vazio'); end if;
+  select * into k from catalogo_cupons where slug = p_slug and codigo = upper(btrim(p_codigo)) and ativo;
+  if not found then return jsonb_build_object('ok', false, 'erro', 'cupom_invalido'); end if;
+  if k.inicio is not null and v_hoje < k.inicio then return jsonb_build_object('ok', false, 'erro', 'cupom_ainda_nao_vale'); end if;
+  if k.fim is not null and v_hoje > k.fim then return jsonb_build_object('ok', false, 'erro', 'cupom_expirado'); end if;
+  if k.limite is not null and k.usos >= k.limite then return jsonb_build_object('ok', false, 'erro', 'cupom_esgotado'); end if;
+  if p_sub < k.minimo then return jsonb_build_object('ok', false, 'erro', 'cupom_minimo', 'minimo', k.minimo); end if;
+  if k.tipo = 'pct' then v_desc := round(p_sub * least(k.valor, 90) / 100, 2);
+  elsif k.tipo = 'valor' then v_desc := least(k.valor, p_sub);
+  end if;
+  return jsonb_build_object('ok', true, 'codigo', k.codigo, 'tipo', k.tipo, 'valor', k.valor, 'minimo', k.minimo, 'desconto', v_desc, 'frete_gratis', k.tipo = 'frete', 'descricao', k.descricao);
+end $function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_cupom(p_slug text, p_codigo text, p_subtotal numeric) RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+  select case when exists (select 1 from catalogos where slug = p_slug and ativo)
+    then catalogo_cupom_calc(p_slug, p_codigo, least(greatest(coalesce(p_subtotal, 0), 0), 10000000))
+    else jsonb_build_object('ok', false, 'erro', 'loja_indisponivel') end;
+$function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_fazer_pedido(p_slug text, p_codigo text, p_nome text, p_contato jsonb, p_itens jsonb, p_entrega text, p_pagamento text, p_cupom text, p_origem text)
+ RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare
+  c catalogos; it jsonb; p catalogo_produtos; v_qtd int; v_cor text; v_tam text; v_est int; v_cup jsonb; v_cdesc numeric := 0; v_fg boolean := false; v_cod text := '';
+  v_itens jsonb := '[]'::jsonb; v_sub numeric := 0; v_desc numeric := 0; v_pct numeric; v_num int; v_ped catalogo_pedidos;
+begin
+  select * into c from catalogos where slug = p_slug and ativo;
+  if not found then raise exception 'loja_indisponivel'; end if;
+  select * into v_ped from catalogo_pedidos where slug = p_slug and codigo = p_codigo;
+  if found then return jsonb_build_object('numero', v_ped.numero, 'codigo', v_ped.codigo, 'total', v_ped.total); end if;
+  if (select count(*) from catalogo_pedidos where slug = p_slug and criado > now() - interval '1 minute') >= 10 then raise exception 'muitos_pedidos'; end if;
+  if p_codigo !~ '^[A-Z0-9]{4,12}$' then raise exception 'codigo_invalido'; end if;
+  p_nome := btrim(coalesce(p_nome, ''));
+  if char_length(p_nome) not between 1 and 80 then raise exception 'nome_invalido'; end if;
+  if jsonb_typeof(p_itens) != 'array' or jsonb_array_length(p_itens) not between 1 and 50 then raise exception 'itens_invalidos'; end if;
+  for it in select * from jsonb_array_elements(p_itens) loop
+    v_qtd := (it->>'qtd')::int; v_cor := coalesce(it->>'cor', ''); v_tam := coalesce(it->>'tam', '');
+    if v_qtd is null or v_qtd not between 1 and 99 then raise exception 'quantidade_invalida'; end if;
+    select * into p from catalogo_produtos where id = (it->>'id')::bigint and slug = p_slug and ativo;
+    if not found then raise exception 'produto_indisponivel'; end if;
+    select qtd into v_est from catalogo_estoque where produto_id = p.id and cor = v_cor and tamanho = v_tam;
+    if coalesce(v_est, 0) < v_qtd then raise exception 'sem_estoque:%', p.nome; end if;
+    v_sub := v_sub + p.preco * v_qtd;
+    v_itens := v_itens || jsonb_build_object('id', p.id, 'nome', p.nome, 'sku', p.sku, 'cat', p.categoria, 'cor', v_cor, 'tam', v_tam, 'qtd', v_qtd, 'preco', p.preco);
+  end loop;
+  if coalesce(btrim(p_cupom), '') != '' then
+    v_cup := catalogo_cupom_calc(p_slug, p_cupom, v_sub);
+    if not (v_cup->>'ok')::boolean then raise exception '%', v_cup->>'erro'; end if;
+    v_cdesc := (v_cup->>'desconto')::numeric; v_fg := (v_cup->>'frete_gratis')::boolean; v_cod := v_cup->>'codigo';
+  end if;
+  if coalesce(p_pagamento, '') ilike '%pix%' then
+    v_pct := least(greatest(coalesce(nullif(c.loja->>'descontoPix', '')::numeric, 0), 0), 50);
+    v_desc := round((v_sub - v_cdesc) * v_pct / 100, 2);
+  end if;
+  perform pg_advisory_xact_lock(hashtext('catalogo_pedido:' || p_slug));
+  select coalesce(max(numero), 1000) + 1 into v_num from catalogo_pedidos where slug = p_slug;
+  insert into catalogo_pedidos (slug, numero, codigo, nome, contato, itens, subtotal, desconto, total, entrega, pagamento, cupom, cupom_desconto, frete_gratis, origem)
+  values (p_slug, v_num, p_codigo, p_nome,
+          jsonb_build_object('cep', left(coalesce(p_contato->>'cep', ''), 10), 'endereco', left(coalesce(p_contato->>'endereco', ''), 200)),
+          v_itens, v_sub, v_desc, v_sub - v_cdesc - v_desc, left(coalesce(p_entrega, ''), 60), left(coalesce(p_pagamento, ''), 60), v_cod, v_cdesc, v_fg,
+          case when p_origem = any (array['instagram','whatsapp','google','facebook','tiktok','direto','outro']) then p_origem else '' end)
+  returning * into v_ped;
+  if v_cod != '' then update catalogo_cupons set usos = usos + 1 where slug = p_slug and codigo = v_cod; end if;
+  return jsonb_build_object('numero', v_ped.numero, 'codigo', v_ped.codigo, 'total', v_ped.total, 'cupom_desconto', v_cdesc, 'desconto', v_desc, 'frete_gratis', v_fg);
+end $function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_evento(p_slug text, p_tipo text, p_alvo text, p_origem text) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare v_o text := case when p_origem = any (array['instagram','whatsapp','google','facebook','tiktok','direto','outro']) then p_origem else 'outro' end;
+begin
+  if not (p_tipo = any (array['visita','produto','sacola','pedido','busca','cupom','avise','grupo'])) then return; end if;
+  if not exists (select 1 from catalogos where slug = p_slug and ativo) then return; end if;
+  insert into catalogo_ev_dia (slug, tipo, alvo, origem, n) values (p_slug, p_tipo, left(lower(btrim(coalesce(p_alvo, ''))), 40), v_o, 1)
+  on conflict (slug, dia, tipo, alvo, origem) do update set n = catalogo_ev_dia.n + 1;
+  if p_tipo = 'visita' then
+    insert into catalogo_visitas (slug, n) values (p_slug, 1) on conflict (slug, dia) do update set n = catalogo_visitas.n + 1;
+  end if;
+end $function$;
+
+-- White label: marca do parceiro na tela de entrada do painel (sem login).
+CREATE OR REPLACE FUNCTION public.catalogo_marca(p_slug text) RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+  select jsonb_build_object('nome', c.nome, 'parceiro', coalesce(c.loja->'parceiro', '{}'::jsonb), 'cores', coalesce(c.loja->'cores', '{}'::jsonb))
+  from catalogos c where c.slug = p_slug;
+$function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_salvar_cupom(p_slug text, d jsonb) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare v_id bigint := nullif(d->>'id', '')::bigint; v_cod text := upper(regexp_replace(coalesce(d->>'codigo', ''), '[^A-Za-z0-9_-]', '', 'g'));
+begin
+  if char_length(v_cod) not between 3 and 20 then raise exception 'cupom_codigo_invalido'; end if;
+  if not (coalesce(d->>'tipo', 'pct') = any (array['pct','valor','frete'])) then raise exception 'dados_invalidos'; end if;
+  if v_id is null then
+    insert into catalogo_cupons (slug, codigo, tipo, valor, minimo, inicio, fim, limite, ativo, descricao)
+    values (p_slug, v_cod, coalesce(d->>'tipo', 'pct'), least(greatest(coalesce(nullif(d->>'valor', '')::numeric, 0), 0), 100000), greatest(coalesce(nullif(d->>'minimo', '')::numeric, 0), 0),
+            nullif(d->>'inicio', '')::date, nullif(d->>'fim', '')::date, nullif(nullif(d->>'limite', '')::int, 0), coalesce((d->>'ativo')::boolean, true), left(coalesce(d->>'descricao', ''), 120));
+  else
+    update catalogo_cupons set codigo = v_cod, tipo = coalesce(d->>'tipo', 'pct'), valor = least(greatest(coalesce(nullif(d->>'valor', '')::numeric, 0), 0), 100000),
+      minimo = greatest(coalesce(nullif(d->>'minimo', '')::numeric, 0), 0), inicio = nullif(d->>'inicio', '')::date, fim = nullif(d->>'fim', '')::date,
+      limite = nullif(nullif(d->>'limite', '')::int, 0), ativo = coalesce((d->>'ativo')::boolean, true), descricao = left(coalesce(d->>'descricao', ''), 120)
+    where id = v_id and slug = p_slug;
+  end if;
+exception when unique_violation then raise exception 'cupom_repetido';
+end $function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_registrar_troca(p_slug text, d jsonb) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare p catalogo_produtos; v_q int := coalesce(nullif(d->>'qtd', '')::int, 1); v_tipo text := coalesce(d->>'tipo', 'troca'); v_est int; v_num int;
+  v_dc text := coalesce(d->>'de_cor', ''); v_dt text := coalesce(d->>'de_tam', ''); v_pc text := coalesce(d->>'para_cor', ''); v_pt text := coalesce(d->>'para_tam', '');
+begin
+  select * into p from catalogo_produtos where id = (d->>'produto_id')::bigint and slug = p_slug;
+  if not found then raise exception 'produto_inexistente'; end if;
+  if v_q not between 1 and 99 then raise exception 'quantidade_invalida'; end if;
+  if nullif(d->>'pedido_id', '') is not null then
+    select numero into v_num from catalogo_pedidos where id = (d->>'pedido_id')::bigint and slug = p_slug;
+    if not found then raise exception 'pedido_inexistente'; end if;
+  end if;
+  if v_tipo = 'troca' then
+    select qtd into v_est from catalogo_estoque where produto_id = p.id and cor = v_pc and tamanho = v_pt;
+    if coalesce(v_est, 0) + (case when v_pc = v_dc and v_pt = v_dt then v_q else 0 end) < v_q then raise exception 'sem_estoque:%', p.nome; end if;
+  end if;
+  insert into catalogo_trocas (slug, pedido_id, pedido_numero, produto_id, produto_nome, de_cor, de_tam, para_cor, para_tam, qtd, tipo, motivo, valor, obs)
+  values (p_slug, nullif(d->>'pedido_id', '')::bigint, v_num, p.id, p.nome, v_dc, v_dt, case when v_tipo = 'troca' then v_pc else '' end, case when v_tipo = 'troca' then v_pt else '' end,
+          v_q, v_tipo, coalesce(d->>'motivo', 'outro'), greatest(coalesce(nullif(d->>'valor', '')::numeric, 0), 0), left(coalesce(d->>'obs', ''), 200));
+  perform catalogo_mover(p_slug, p.id, v_dc, v_dt, v_q, case when v_tipo = 'troca' then 'troca (volta)' else 'devolucao' end || coalesce(' #' || v_num, ''), nullif(d->>'pedido_id', '')::bigint);
+  if v_tipo = 'troca' then
+    perform catalogo_mover(p_slug, p.id, v_pc, v_pt, 0 - v_q, 'troca (sai)' || coalesce(' #' || v_num, ''), nullif(d->>'pedido_id', '')::bigint);
+  end if;
+end $function$;
+
+-- catalogo_apagar: ganhou o tipo 'cupom'.
+-- catalogo_pedido_status: cancelar devolve o uso do cupom; reabrir conta de novo.
+-- catalogo_painel: devolve também cupons, trocas, eventos (120 dias) e até 2000 pedidos.
+-- catalogo_painel_salvar: ações cupom_salvar, cupom_excluir e troca_registrar.
+-- (versões completas aplicadas no banco de teste; exportar com pg_get_functiondef antes de levar para a produção)
+
+revoke all on function public.catalogo_cupom_calc(text, text, numeric), public.catalogo_salvar_cupom(text, jsonb), public.catalogo_registrar_troca(text, jsonb) from public, anon, authenticated;
+revoke all on function public.catalogo_cupom(text, text, numeric), public.catalogo_fazer_pedido(text, text, text, jsonb, jsonb, text, text, text, text),
+  public.catalogo_evento(text, text, text, text), public.catalogo_marca(text) from public;
+grant execute on function public.catalogo_cupom(text, text, numeric), public.catalogo_fazer_pedido(text, text, text, jsonb, jsonb, text, text, text, text),
+  public.catalogo_evento(text, text, text, text), public.catalogo_marca(text) to anon, authenticated;
+revoke all on function public.catalogo_pedido(text, text, text, jsonb, jsonb, text, text) from anon, authenticated;

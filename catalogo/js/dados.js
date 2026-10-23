@@ -51,6 +51,10 @@ window.LOJA = {
 
   categoriasTitulo: ['Compre por categoria', 'Escolha o que combina com você'],
 
+  // Cupons de demonstração (com a loja ligada ao banco, os cupons vêm do painel).
+  // tipo: 'pct' (porcentagem), 'valor' (reais) ou 'frete' (frete grátis). minimo: valor mínimo da compra.
+  cupons: [{ codigo: 'BEMVINDA10', tipo: 'pct', valor: 10, minimo: 100 }, { codigo: 'FRETEGRATIS', tipo: 'frete', valor: 0, minimo: 150 }],
+
   descontoPix: 5,                     // % de desconto no Pix; 0 = sem desconto
   parcelas: 5,                        // parcelas sem juros mostradas no produto; 0 = esconde
   freteGratisAcima: 299,              // 0 = não mostra

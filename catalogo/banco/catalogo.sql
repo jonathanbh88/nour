@@ -148,3 +148,49 @@ revoke all on public.catalogos, public.catalogo_categorias, public.catalogo_prod
   public.catalogo_pedidos, public.catalogo_avaliacoes, public.catalogo_contatos, public.catalogo_visitas from anon, authenticated;
 
 -- As funções estão em funcoes.sql (exportadas do banco com pg_get_functiondef).
+
+-- ---------- 23/10/2026 (2ª parte): cupons, trocas, analytics ----------
+create table public.catalogo_cupons (
+  id bigserial primary key,
+  slug text not null references public.catalogos(slug) on delete cascade,
+  codigo text not null check (codigo ~ '^[A-Z0-9_-]{3,20}$'),
+  tipo text not null default 'pct' check (tipo in ('pct','valor','frete')),
+  valor numeric(10,2) not null default 0 check (valor >= 0 and valor <= 100000),
+  minimo numeric(12,2) not null default 0 check (minimo >= 0),
+  inicio date, fim date,
+  limite int check (limite is null or limite > 0),
+  usos int not null default 0,
+  ativo boolean not null default true,
+  descricao text not null default '' check (char_length(descricao) <= 120),
+  criado timestamptz not null default now(),
+  unique (slug, codigo)
+);
+create table public.catalogo_trocas (
+  id bigserial primary key,
+  slug text not null references public.catalogos(slug) on delete cascade,
+  pedido_id bigint, pedido_numero int,
+  produto_id bigint, produto_nome text not null default '',
+  de_cor text not null default '', de_tam text not null default '',
+  para_cor text not null default '', para_tam text not null default '',
+  qtd int not null default 1 check (qtd between 1 and 99),
+  tipo text not null default 'troca' check (tipo in ('troca','devolucao')),
+  motivo text not null default 'tamanho' check (motivo in ('tamanho','defeito','cor','arrependimento','outro')),
+  valor numeric(12,2) not null default 0 check (valor >= 0),
+  obs text not null default '' check (char_length(obs) <= 200),
+  criado timestamptz not null default now()
+);
+create index on public.catalogo_trocas (slug, criado desc);
+-- Eventos do analytics agregados por dia (só de quem aceitou os cookies).
+create table public.catalogo_ev_dia (
+  slug text not null references public.catalogos(slug) on delete cascade,
+  dia date not null default (now() at time zone 'America/Sao_Paulo')::date,
+  tipo text not null, alvo text not null default '', origem text not null default '',
+  n int not null default 0,
+  primary key (slug, dia, tipo, alvo, origem)
+);
+alter table public.catalogo_pedidos add column cupom text not null default '', add column cupom_desconto numeric(12,2) not null default 0,
+  add column frete_gratis boolean not null default false, add column origem text not null default '';
+alter table public.catalogo_cupons enable row level security;
+alter table public.catalogo_trocas enable row level security;
+alter table public.catalogo_ev_dia enable row level security;
+revoke all on public.catalogo_cupons, public.catalogo_trocas, public.catalogo_ev_dia from anon, authenticated;
