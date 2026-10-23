@@ -155,7 +155,7 @@
   var favs = store('favs') || [];
   var cart = (store('cart') || []).filter(function (l) { var p = BYID[l.id]; return p && qtd(p, l.cor, l.tam) > 0; });
   cart.forEach(function (l) { l.qty = Math.min(l.qty, qtd(BYID[l.id], l.cor, l.tam)); });
-  var form = Object.assign({ nome: '', entrega: (L.entrega && L.entrega[0] || [''])[0], cep: '', end: '', pag: (L.pagamentos || [])[0] || '' }, store('form') || {});
+  var form = Object.assign({ nome: '', zap: '', entrega: (L.entrega && L.entrega[0] || [''])[0], cep: '', end: '', pag: (L.pagamentos || [])[0] || '' }, store('form') || {});
   var pref = Object.assign({ layout: 'grade', ordem: 'relevancia', tam: '' }, store('pref') || {});
   function save() { store('cart', cart); store('form', form); store('favs', favs); store('pref', pref); }
   function count() { return cart.reduce(function (s, l) { return s + l.qty; }, 0); }
@@ -517,6 +517,8 @@
   function problems() {
     var e = {};
     if (!form.nome.trim()) e.nome = 'Informe seu nome';
+    var zd = String(form.zap || '').replace(/\D/g, '');
+    if (zd.length < 10 || zd.length > 13) e.zap = 'Informe seu WhatsApp com DDD';
     if (form.entrega === 'correios' && String(form.cep).replace(/\D/g, '').length !== 8) e.cep = 'Informe um CEP com 8 números';
     if (form.entrega === 'motoboy' && !form.end.trim()) e.end = 'Informe o endereço de entrega';
     return e;
@@ -536,7 +538,7 @@
     else if (freteAcima() && form.entrega !== 'retirada') lines.push('Frete grátis (compra acima de ' + brl(+L.freteGratisAcima) + ')');
     var ent = (L.entrega || []).filter(function (x) { return x[0] === form.entrega; })[0];
     if (ent) lines.push('Receber: ' + ent[1] + (form.entrega === 'correios' ? ' · CEP ' + form.cep : form.entrega === 'motoboy' ? ' · ' + form.end : ''));
-    lines.push('Pagamento: ' + form.pag, 'Nome: ' + form.nome);
+    lines.push('Pagamento: ' + form.pag, 'Nome: ' + form.nome, 'WhatsApp: ' + form.zap);
     if (reg) lines.push('Código do pedido: ' + reg.codigo);
     return lines.join('\n');
   }
@@ -562,6 +564,7 @@
       (L.freteGratisAcima ? '<div class="frete-bar"><span>' + (falta > 0 ? 'Faltam <b class="num">' + brl(falta) + '</b> para o frete grátis' : '<b>Você ganhou frete grátis</b>') + '</span><i><em style="width:' + Math.min(100, sub / L.freteGratisAcima * 100) + '%"></em></i></div>' : '') +
       '<div class="form"><h3>Como você quer receber?</h3><div class="seg col">' + ents + '</div>' +
       '<label class="field"><span>Seu nome</span><input id="fNome" autocomplete="name" value="' + esc(form.nome) + '" placeholder="Como devemos te chamar">' + (e.nome && form._try ? '<em>' + e.nome + '</em>' : '') + '</label>' +
+      '<label class="field"><span>Seu WhatsApp</span><input id="fZap" type="tel" inputmode="tel" autocomplete="tel" value="' + esc(form.zap) + '" placeholder="(00) 00000-0000">' + (e.zap && form._try ? '<em>' + e.zap + '</em>' : '') + '</label>' +
       (form.entrega === 'correios' ? '<label class="field"><span>CEP</span><input id="fCep" inputmode="numeric" autocomplete="postal-code" value="' + esc(form.cep) + '" placeholder="00000-000">' + (e.cep && form._try ? '<em>' + e.cep + '</em>' : '') + '</label>' : '') +
       (form.entrega === 'motoboy' ? '<label class="field"><span>Endereço de entrega</span><input id="fEnd" autocomplete="street-address" value="' + esc(form.end) + '" placeholder="Rua, número e bairro">' + (e.end && form._try ? '<em>' + e.end + '</em>' : '') + '</label>' : '') +
       '<h3>Forma de pagamento</h3><div class="seg pay">' + pays + '</div>' +
@@ -587,7 +590,7 @@
     var codigo = Array.apply(null, Array(6)).map(function () { return 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'.charAt(Math.floor(Math.random() * 32)); }).join('');
     var ent = (L.entrega || []).filter(function (x) { return x[0] === form.entrega; })[0];
     window.nourRpc('catalogo_fazer_pedido', {
-      p_slug: L.id, p_codigo: codigo, p_nome: form.nome.trim(), p_contato: { cep: form.cep, endereco: form.end },
+      p_slug: L.id, p_codigo: codigo, p_nome: form.nome.trim(), p_contato: { cep: form.cep, endereco: form.end, whatsapp: String(form.zap || '').replace(/\D/g, '') },
       p_itens: cart.map(function (l) { return { id: +l.id, cor: l.cor, tam: l.tam, qtd: l.qty }; }),
       p_entrega: ent ? ent[1] : form.entrega, p_pagamento: form.pag, p_cupom: cup ? cup.codigo : '', p_origem: origem
     }).then(function (reg) {
@@ -658,7 +661,7 @@
     });
     var qT;
     document.addEventListener('input', function (ev) {
-      var id = ev.target.id, map = { fNome: 'nome', fCep: 'cep', fEnd: 'end' };
+      var id = ev.target.id, map = { fNome: 'nome', fZap: 'zap', fCep: 'cep', fEnd: 'end' };
       if (map[id]) {
         form[map[id]] = ev.target.value; save();
         var ok = !Object.keys(problems()).length, s = $('#send');
@@ -679,10 +682,13 @@
   // De onde a pessoa veio: ?utm_source=… ou o site anterior. Fica guardado na sessão.
   var origem = (function () {
     try { var o = sessionStorage.getItem('nourorigem'); if (o) return o; } catch (e) {}
-    var u = (location.search.match(/[?&]utm_source=([^&]+)/i) || [])[1], r = document.referrer, h = '';
+    var u = (location.search.match(/[?&]utm_source=([^&]+)/i) || [])[1], r = document.referrer, h = '', ua = navigator.userAgent || '';
     try { h = r ? new URL(r).hostname : ''; } catch (e) {}
+    // Link marcado (?utm_source=) vale primeiro; depois o site anterior; por último o app em que o link foi aberto.
     var t = (decodeURIComponent(u || '') + ' ' + h).toLowerCase();
-    var o2 = /instagram/.test(t) ? 'instagram' : /whatsapp|wa\.me/.test(t) ? 'whatsapp' : /google/.test(t) ? 'google' : /facebook|fb\./.test(t) ? 'facebook' : /tiktok/.test(t) ? 'tiktok' :
+    var o2 = /bio|nourbiosite/.test(t) ? 'biosite' : /instagram/.test(t) ? 'instagram' : /whatsapp|wa\.me/.test(t) ? 'whatsapp' : /google|bing|yahoo|duckduckgo/.test(t) ? 'google' :
+      /facebook|fb\./.test(t) ? 'facebook' : /tiktok/.test(t) ? 'tiktok' : /e-?mail|newsletter/.test(t) ? 'email' :
+      /Instagram/.test(ua) ? 'instagram' : /FBAN|FBAV/.test(ua) ? 'facebook' : /musical_ly|BytedanceWebview|TikTok/i.test(ua) ? 'tiktok' :
       !t.trim() || h === location.hostname ? 'direto' : 'outro';
     try { sessionStorage.setItem('nourorigem', o2); } catch (e) {}
     return o2;

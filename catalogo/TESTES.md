@@ -109,7 +109,7 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Faturamento conta só pedidos confirmados, enviados ou entregues; descontos Pix e cancelados aparecem separados.
 - [ ] Gráfico de visitas por dia; passar o mouse mostra o valor.
 - [ ] Produtos mais vendidos e vendas por pagamento e entrega.
-- [ ] "Baixar CSV" de pedidos e de clientes abre no Excel com acentos corretos.
+- [ ] "Excel" de pedidos e de clientes abre no Excel com acentos, valores em R$ e filtro no cabeçalho.
 - [ ] Clientes: busca, excluir, link do WhatsApp do cliente.
 - [ ] Avaliações: nova, editar, ocultar/mostrar na loja, excluir; avaliação ligada a produto aparece na página do produto.
 
@@ -138,7 +138,7 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Trocas: por motivo, por produto e dica de modelagem quando o tamanho trocado se repete.
 - [ ] Estoque: valor parado, cobertura em dias, produtos sem venda.
 - [ ] Clientes: quem mais compra, recorrência.
-- [ ] "Baixar CSV" em cada relatório abre no Excel com acentos corretos.
+- [ ] "Excel" e "PDF" em cada relatório: a planilha abre formatada; o PDF sai com cabeçalho (logo, loja, título, período) e rodapé (data de geração e parceiro) em todas as páginas.
 
 ## 10e. Painel: trocas e devoluções
 
@@ -193,6 +193,17 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Estilo Padrão, Minimalista e Moderno mudam o visual da loja.
 - [ ] Tema Natal e Black Friday trocam cores, selo do banner e a 1ª frase da faixa; desligar volta ao normal.
 - [ ] Modelos prontos com fotos reais e textos de venda (ver a galeria de modelos).
+
+## 16. Clientes (CRM), canais e duplicar produto
+
+- [ ] Pedido pede o WhatsApp do cliente; dois pedidos com o mesmo número viram o mesmo cliente (compras = 2, perfil Recorrente).
+- [ ] Clientes: indicadores (recompra, frequência, ticket, valor por cliente), filtros VIP / Recorrentes / Novos / Sumindo / Inativos / Interessados, busca e ordenação.
+- [ ] "Chame de volta" lista quem não compra há 45+ dias; o botão abre o WhatsApp com a mensagem pronta.
+- [ ] "Ver" abre a ficha do cliente com pedidos, preferências (tamanho e categoria) e mensagem editável.
+- [ ] "Copiar WhatsApps" copia os números do filtro atual.
+- [ ] Analytics → Canais: visitas, pedidos, vendas e conversão de Google, Bio Site, Instagram, WhatsApp, Facebook, TikTok, E-mail e Link direto; os links marcados (?utm_source=) caem no canal certo.
+- [ ] Produtos: o botão de copiar (na lista ou dentro do editor) abre uma cópia "(cópia)", sem código, com estoque zerado e oculta; só é criada ao salvar e respeita o limite do plano.
+- [ ] Movimentos de estoque com entradas em verde e saídas em vermelho, e exportação Excel/PDF.
 
 ## Fora deste teste (próximas fases)
 

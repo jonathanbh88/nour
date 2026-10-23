@@ -29,7 +29,9 @@
     star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>', brush: '<path d="M14 4l6 6-9 9H5v-6z"/>',
     key: '<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3"/>', tag: '<path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', chat: '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.3A8.4 8.4 0 1 1 21 11.5z"/>', ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>',
-    x: '<path d="M6 6l12 12M18 6L6 18"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>', plus: '<path d="M12 5v14M5 12h14"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'
+    x: '<path d="M6 6l12 12M18 6L6 18"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>', plus: '<path d="M12 5v14M5 12h14"/>', down: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+    alert: '<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>', repeat: '<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/>',
+    copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>', money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'
   };
   function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + I[n] + '</svg>'; }
 
@@ -235,7 +237,7 @@
     var max = Math.max.apply(null, rows.map(function (r) { return r[1]; })) || 1;
     return rows.length ? rows.map(function (r) { return '<div class="hbar"><span>' + esc(r[0]) + '</span><i><em style="width:' + (r[1] / max * 100) + '%"></em></i><b class="num">' + esc(fmt(r[1])) + '</b></div>'; }).join('') : '<p class="note">Sem dados no período.</p>';
   }
-  function kpi(t, v, s) { return '<div class="kpi"><span>' + esc(t) + '</span><b class="num">' + v + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>'; }
+  function kpi(t, v, s, icone) { return '<div class="kpi' + (icone ? ' ki' : '') + '">' + (icone ? '<em class="kic">' + ic(icone) + '</em>' : '') + '<span>' + esc(t) + '</span><b class="num">' + v + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>'; }
   function stPill(s) { var m = { novo: ['Novo', 'warn'], confirmado: ['Confirmado', 'ok'], enviado: ['Enviado', 'ok'], entregue: ['Entregue', 'ok'], cancelado: ['Cancelado', 'bad'] }[s] || [s, '']; return '<span class="pill ' + m[1] + '">' + m[0] + '</span>'; }
 
   /* ---------- início ---------- */
@@ -249,8 +251,8 @@
     var serie = serieDias(30, function (dd) { return soma(v30.filter(function (p) { return dia(p.criado) === dd; }), 'total'); });
     return '<h1>Olá, ' + esc(d.nome) + '</h1><p class="sub">Resumo dos últimos 30 dias</p>' +
       (passos.length ? '<div class="card todo"><h2>Falta pouco para a loja ficar completa</h2><ul>' + passos.map(function (x) { return '<li><button type="button" class="link" data-tab="' + x[2] + '">' + esc(x[1]) + '</button></li>'; }).join('') + '</ul></div>' : '') +
-      '<div class="kpis">' + kpi('Vendas confirmadas', brl(fat), v30.length + (v30.length === 1 ? ' pedido' : ' pedidos')) + kpi('Pedidos novos', num(novos.length), novos.length ? 'Confirme para baixar o estoque' : 'Nenhum esperando') +
-        kpi('Ticket médio', brl(v30.length ? fat / v30.length : 0)) + kpi('Visitas na loja', num(vis), vis ? 'Conversão ' + (v30.length / vis * 100).toFixed(1).replace('.', ',') + '%' : 'Contadas após o aceite de cookies') + '</div>' +
+      '<div class="kpis">' + kpi('Vendas confirmadas', brl(fat), v30.length + (v30.length === 1 ? ' pedido' : ' pedidos'), 'money') + kpi('Pedidos novos', num(novos.length), novos.length ? 'Confirme para baixar o estoque' : 'Nenhum esperando', 'bag') +
+        kpi('Ticket médio', brl(v30.length ? fat / v30.length : 0), '', 'tag') + kpi('Visitas na loja', num(vis), vis ? 'Conversão ' + (v30.length / vis * 100).toFixed(1).replace('.', ',') + '%' : 'Contadas após o aceite de cookies', 'eye') + '</div>' +
       '<div class="cols"><div class="card"><h2>Vendas por dia</h2>' + barras(serie, function (v, ax) { return ax ? (v >= 1000 ? (v / 1000).toLocaleString('pt-BR') + ' mil' : String(Math.round(v))) : brl(v); }) + '</div>' +
       '<div class="card"><h2>Estoque baixo</h2>' + (baixo.length ? '<ul class="lst">' + baixo.slice(0, 8).map(function (x) { return '<li><button type="button" class="link" data-edit="' + x.p.id + '">' + esc(x.p.nome) + '</button><small>' + esc(x.k.split('|').filter(Boolean).join(' · ')) + '</small>' + (x.q ? '<span class="pill warn">' + x.q + ' un.</span>' : '<span class="pill bad">Zerado</span>') + '</li>'; }).join('') + '</ul>' : '<p class="note">Nada acabando.</p>') + '</div></div>' +
       '<div class="card"><h2>Pedidos novos</h2>' + (novos.length ? novos.slice(0, 5).map(pedidoCard).join('') : '<p class="note">Quando um cliente enviar um pedido pelo WhatsApp, ele aparece aqui.</p>') + '</div>';
@@ -274,10 +276,10 @@
           '<td>' + esc(catNome[p.categoria] || '—') + '</td><td class="r num">' + (p.preco_de ? '<s>' + brl(p.preco_de) + '</s> ' : '') + brl(p.preco) + '</td>' +
           '<td class="r">' + (t === 0 ? '<span class="pill bad">Esgotado</span>' : t <= 3 ? '<span class="pill warn">' + t + '</span>' : '<span class="num">' + t + '</span>') + '</td>' +
           '<td><label class="sw"><input type="checkbox" data-ativo="' + p.id + '"' + (p.ativo ? ' checked' : '') + '><span>' + (p.ativo ? 'Visível' : 'Oculto') + '</span></label></td>' +
-          '<td class="r"><button type="button" class="btn ghost sm" data-edit="' + p.id + '">Editar</button></td></tr>';
+          '<td class="r nowrap"><button type="button" class="btn ghost sm" data-dup="' + p.id + '" aria-label="Duplicar ' + esc(p.nome) + '" title="Duplicar">' + ic('copy') + '</button><button type="button" class="btn ghost sm" data-edit="' + p.id + '">Editar</button></td></tr>';
       }).join('') + '</tbody></table></div>' : '<p class="empty">Nenhum produto encontrado.</p>') + '</div>' +
-      '<details class="card"><summary><h2>Movimentos de estoque</h2></summary><div class="tbl"><table><thead><tr><th>Quando</th><th>Produto</th><th>Variação</th><th class="r">Mudança</th><th class="r">Saldo</th><th>Motivo</th></tr></thead><tbody>' +
-      d.movimentos.slice(0, 80).map(function (m) { return '<tr><td>' + dataBr(m.em, 1) + '</td><td>' + esc(m.produto_nome) + '</td><td>' + esc([m.cor, m.tamanho].filter(Boolean).join(' · ') || '—') + '</td><td class="r num ' + (m.delta < 0 ? 'neg' : 'pos') + '">' + (m.delta > 0 ? '+' : '') + m.delta + '</td><td class="r num">' + (m.saldo == null ? '' : m.saldo) + '</td><td>' + esc(m.motivo) + '</td></tr>'; }).join('') +
+      '<details class="card"><summary><h2>Movimentos de estoque</h2></summary><div class="tools"><span class="note">Entradas, saídas, vendas e trocas das peças.</span><span class="sp"></span>' + expBtns('movimentos') + '</div><div class="tbl"><table><thead><tr><th>Quando</th><th>Produto</th><th>Variação</th><th class="r">Mudança</th><th class="r">Saldo</th><th>Motivo</th></tr></thead><tbody>' +
+      d.movimentos.slice(0, 80).map(function (m) { return '<tr><td>' + dataBr(m.em, 1) + '</td><td>' + esc(m.produto_nome) + '</td><td>' + esc([m.cor, m.tamanho].filter(Boolean).join(' · ') || '—') + '</td><td class="r"><span class="mv ' + (m.delta < 0 ? 'neg' : 'pos') + '">' + (m.delta < 0 ? '↓ ' : '↑ +') + m.delta + '</span></td><td class="r num">' + (m.saldo == null ? '' : m.saldo) + '</td><td>' + esc(m.motivo) + '</td></tr>'; }).join('') +
       '</tbody></table></div></details>';
   }
   var DESENHOS = ['camiseta', 'blusa', 'vestido', 'calca', 'saia', 'casaco', 'short', 'regata', 'moletom', 'tenis', 'sandalia', 'bolsa', 'bone', 'oculos', 'relogio', 'anel', 'colar', 'perfume', 'batom', 'pote', 'garrafa', 'celular', 'fone', 'racao', 'bola', 'ferramenta', 'tinta', 'pneu', 'flor', 'vinho', 'caderno', 'sofa', 'botijao', 'caixa'];
@@ -289,6 +291,19 @@
     if (!ed.cores.length) ed.cores = [['', '']];
     if (!ed.tamanhos.length) ed.tamanhos = [''];
     drawEditor(); dlg.showModal();
+  }
+  // Duplicar: abre o editor com uma cópia (sem código e com estoque zerado); só vira produto ao salvar.
+  function duplicarProduto(id) {
+    if (S.plano && S.plano.limites && S.d.produtos.length >= S.plano.limites.produtos) return toast(ERROS.limite_plano);
+    var base = id ? S.d.produtos.filter(function (x) { return String(x.id) === String(id); })[0] : ed;
+    if (!base) return;
+    var c = JSON.parse(JSON.stringify(base)); delete c.id;
+    c.nome = String(c.nome || '').slice(0, 70) + ' (cópia)'; c.sku = ''; c.estoque = {}; c.ativo = false;
+    ed = c; ed.duplicado = true;
+    if (!ed.cores.length) ed.cores = [['', '']];
+    if (!ed.tamanhos.length) ed.tamanhos = [''];
+    drawEditor(); if (!dlg.open) dlg.showModal();
+    toast('Cópia criada. Ajuste o que mudar e salve.');
   }
   function lerEditor() {
     if (!ed) return;
@@ -323,7 +338,7 @@
   function drawGrade() { var g = document.getElementById('egrade'); if (g) g.innerHTML = gradeHtml(); }
   function drawEditor() {
     var c = S.d.categorias, novo = !ed.id;
-    dlg.innerHTML = '<form class="sheet" id="fprod" novalidate><header><h2>' + (novo ? 'Novo produto' : 'Editar produto') + '</h2><button type="button" class="x" data-fechar aria-label="Fechar">' + ic('x') + '</button></header><div class="body">' +
+    dlg.innerHTML = '<form class="sheet" id="fprod" novalidate><header><h2>' + (ed.duplicado ? 'Cópia do produto' : novo ? 'Novo produto' : 'Editar produto') + '</h2><button type="button" class="x" data-fechar aria-label="Fechar">' + ic('x') + '</button></header><div class="body">' +
       '<div class="g2"><label class="field"><span>Nome</span><input id="e_nome" maxlength="120" value="' + esc(ed.nome) + '" required></label>' +
       '<label class="field"><span>Categoria</span><select id="e_categoria"><option value="">Sem categoria</option>' + c.map(function (x) { return '<option value="' + esc(x.chave) + '"' + (ed.categoria === x.chave ? ' selected' : '') + '>' + esc(x.nome) + '</option>'; }).join('') + '</select></label></div>' +
       '<div class="g3"><label class="field"><span>Preço (R$)</span><input id="e_preco" type="number" min="0" step="0.01" inputmode="decimal" value="' + esc(ed.preco) + '" required></label>' +
@@ -340,7 +355,7 @@
       '<button type="button" class="btn ghost sm" data-addcor>' + ic('plus') + 'Adicionar cor</button></fieldset>' +
       '<label class="field"><span>Tamanhos, separados por vírgula</span><input id="e_tams" value="' + esc(ed.tamanhos.join(', ')) + '" placeholder="PP, P, M, G, GG"></label>' +
       '<fieldset><legend>Estoque por variação <button type="button" class="link" data-regrade>atualizar grade</button></legend><div class="tbl" id="egrade">' + gradeHtml() + '</div></fieldset>' +
-      '</div><footer>' + (novo ? '' : '<button type="button" class="btn danger ghost" data-delprod>Excluir</button>') + '<span class="sp"></span><button type="button" class="btn ghost" data-fechar>Cancelar</button><button type="submit" class="btn">Salvar produto</button></footer></form>';
+      '</div><footer>' + (novo ? '' : '<button type="button" class="btn danger ghost" data-delprod>Excluir</button><button type="button" class="btn ghost" data-dup-ed>' + ic('copy') + 'Duplicar</button>') + '<span class="sp"></span><button type="button" class="btn ghost" data-fechar>Cancelar</button><button type="submit" class="btn">Salvar produto</button></footer></form>';
   }
 
   function editarCategoria(id) {
@@ -369,7 +384,7 @@
   function pedidos() {
     var d = S.d, c = {}; d.pedidos.forEach(function (p) { c[p.status] = (c[p.status] || 0) + 1; });
     var lista = d.pedidos.filter(function (p) { return S.pst === 'todos' || p.status === S.pst; });
-    return '<h1>Pedidos</h1><p class="sub">Os pedidos chegam pelo WhatsApp e ficam registrados aqui. Ao confirmar, o estoque é baixado; ao cancelar, ele volta.</p>' +
+    return '<div class="head"><div><h1>Pedidos</h1><p class="sub">Os pedidos chegam pelo WhatsApp e ficam registrados aqui. Ao confirmar, o estoque é baixado; ao cancelar, ele volta.</p></div>' + expBtns('pedidos') + '</div>' +
       '<div class="chips">' + [['novo', 'Novos'], ['confirmado', 'Confirmados'], ['enviado', 'Enviados'], ['entregue', 'Entregues'], ['cancelado', 'Cancelados'], ['todos', 'Todos']].map(function (x) {
         return '<button type="button" class="chip" data-pst="' + x[0] + '" aria-pressed="' + (S.pst === x[0]) + '">' + x[1] + ' <span class="num">' + (x[0] === 'todos' ? d.pedidos.length : c[x[0]] || 0) + '</span></button>'; }).join('') + '</div>' +
       (lista.length ? lista.map(pedidoCard).join('') : '<p class="empty">Nenhum pedido aqui.</p>');
@@ -390,7 +405,11 @@
     return linhas.length ? '<div class="tbl"><table><thead><tr>' + cab.map(function (c) { return '<th' + (/^[#R$]|peças|qtd|%|un\.|vist|vend|sacola|estoque|cobertura|pedidos|total|usos|desconto/i.test(c) ? ' class="r"' : '') + '>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
       linhas.map(function (l) { return '<tr>' + l.map(function (c, i) { return '<td' + (i && /^[−\d.,R$% —]+$|^R\$/.test(String(c)) ? ' class="r num"' : '') + '>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>' : '<p class="empty">' + esc(vazio || 'Sem dados no período.') + '</p>';
   }
-  var ORIGENS = { instagram: 'Instagram', whatsapp: 'WhatsApp', google: 'Google', facebook: 'Facebook', tiktok: 'TikTok', direto: 'Link direto', outro: 'Outros sites', '': 'Sem origem' };
+  var ORIGENS = { google: 'Google', biosite: 'Bio Site', instagram: 'Instagram', whatsapp: 'WhatsApp', facebook: 'Facebook', tiktok: 'TikTok', email: 'E-mail marketing', direto: 'Link direto', outro: 'Outros sites', '': 'Sem origem' };
+  // Links marcados por canal: a loja reconhece de onde a pessoa veio mesmo quando o app não informa.
+  var CANAIS = [['biosite', 'Bio Site', 'Botão da loja no seu Bio Site'], ['instagram', 'Instagram', 'Link da bio e stories'], ['whatsapp', 'WhatsApp', 'Status, grupo e lista de transmissão'],
+    ['google', 'Google', 'Perfil da empresa no Google (site)'], ['email', 'E-mail marketing', 'Botões dos e-mails'], ['facebook', 'Facebook', 'Página e anúncios'], ['tiktok', 'TikTok', 'Link da bio']];
+  function linkCanal(c) { return lojaUrl() + '?utm_source=' + c; }
   var MOTIVOS = { tamanho: 'Tamanho', defeito: 'Defeito', cor: 'Cor', arrependimento: 'Arrependimento', outro: 'Outro' };
 
   /* ---------- analytics ---------- */
@@ -416,12 +435,29 @@
       '<div class="kpis">' + kpi('Visitas', num(t.visita)) + kpi('Produtos vistos', num(t.produto)) + kpi('Adições à sacola', num(t.sacola)) + kpi('Pedidos enviados', num(peds.length), 'Conversão ' + pct(peds.length, t.visita)) + '</div>' +
       '<div class="cols"><div class="card"><h2>Visitas por dia</h2>' + barras(serie, function (v, ax) { return ax ? String(Math.round(v)) : v + (v === 1 ? ' visita' : ' visitas'); }) + '</div>' +
       '<div class="card"><h2>Funil de compra</h2>' + funil.map(function (f) { return '<div class="hbar"><span>' + f[0] + '</span><i><em style="width:' + (t.visita ? Math.min(100, f[1] / t.visita * 100) : 0) + '%"></em></i><b class="num">' + num(f[1]) + ' <small>' + pct(f[1], t.visita) + '</small></b></div>'; }).join('') + '</div></div>' +
+      canaisCard(porOrig, peds) +
       '<div class="cols"><div class="card"><h2>De onde vêm as visitas</h2>' + hbar(ordena(porOrig).map(function (x) { return [ORIGENS[x[0]] || x[0], x[1]]; }), num) + '</div>' +
       '<div class="card"><h2>Pedidos por origem</h2>' + hbar(ordena(pedOrig).map(function (x) { return [ORIGENS[x[0]] || x[0], x[1]]; }), function (v) { return v + (v === 1 ? ' pedido' : ' pedidos'); }) + '<h2 style="margin-top:16px">Aparelho</h2>' + hbar(ordena(porDisp).map(function (x) { return [x[0] === 'celular' ? 'Celular' : 'Computador', x[1]]; }), num) + '</div></div>' +
       '<div class="card"><h2>Produtos: vistos, sacola e vendidos</h2>' + tabela(['Produto', 'Vistos', 'Sacola', 'Vendidos', 'Conversão %'], prods) + '<p class="note">Muito visto e pouco vendido costuma ser preço, foto ou falta de tamanho.</p></div>' +
       '<div class="cols"><div class="card"><h2>O que procuram na busca</h2>' + hbar(ordena(buscas).slice(0, 10), function (v) { return v + 'x'; }) + '</div>' +
       '<div class="card"><h2>Outros cliques</h2>' + hbar([['Grupo de promoções', t.grupo], ['Avise-me (esgotados)', t.avise], ['Cupons aplicados', t.cupom]].filter(function (x) { return x[1]; }), num) + '</div></div>' +
       '<p class="note">Os números contam só quem aceitou os cookies (LGPD). Uma visita por dia e por aparelho.</p>';
+  }
+
+  // Canais lado a lado: visitas, pedidos, vendas e conversão de cada origem, mais o link marcado de cada um.
+  function canaisCard(porOrig, peds) {
+    var ped = {}, ven = {};
+    peds.forEach(function (p) { soma2(ped, p.origem || '', 1); if (VENDIDO.indexOf(p.status) > -1) soma2(ven, p.origem || '', +p.total); });
+    var ks = Object.keys(ORIGENS).filter(function (k) { return porOrig[k] || ped[k]; });
+    var max = Math.max.apply(null, [1].concat(ks.map(function (k) { return porOrig[k] || 0; })));
+    return '<div class="card"><h2>Canais</h2><p class="note">Visitas, pedidos e vendas de cada canal no período.</p>' +
+      (ks.length ? '<div class="canais">' + ks.sort(function (a, b) { return (porOrig[b] || 0) - (porOrig[a] || 0); }).map(function (k) {
+        return '<div class="canal"><span class="cico o-' + esc(k || 'nada') + '">' + esc((ORIGENS[k] || k).charAt(0)) + '</span><div class="cn"><b>' + esc(ORIGENS[k] || k) + '</b><i><em style="width:' + Math.round((porOrig[k] || 0) / max * 100) + '%"></em></i></div>' +
+          '<div class="cv"><b class="num">' + num(porOrig[k] || 0) + '</b><small>visitas</small></div><div class="cv"><b class="num">' + num(ped[k] || 0) + '</b><small>pedidos</small></div>' +
+          '<div class="cv"><b class="num">' + brl(ven[k] || 0) + '</b><small>vendas</small></div><div class="cv"><b class="num">' + pct(ped[k] || 0, porOrig[k] || 0) + '</b><small>conversão</small></div></div>';
+      }).join('') + '</div>' : '<p class="empty">Ainda sem visitas no período.</p>') +
+      '<details class="mais"><summary>Links marcados por canal (copie e use em cada lugar)</summary><p class="note">Sem o link marcado, o WhatsApp e alguns apps não dizem de onde a pessoa veio e a visita cai em “Link direto”.</p>' +
+      CANAIS.map(function (c) { return '<div class="field"><span>' + c[1] + ' <small class="note">· ' + c[2] + '</small></span><div class="copy"><input readonly id="lk_' + c[0] + '" value="' + esc(linkCanal(c[0])) + '" aria-label="Link para ' + c[1] + '"><button type="button" class="btn ghost sm" data-copy="lk_' + c[0] + '">Copiar</button></div></div>'; }).join('') + '</details></div>';
   }
 
   /* ---------- relatórios ---------- */
@@ -431,7 +467,7 @@
     return '<div class="head"><div><h1>Relatórios</h1><p class="sub">Vendas contam a partir da confirmação do pedido.</p></div>' + periodos() + '</div>' +
       '<div class="subtabs" role="tablist">' + SUBS.map(function (x) { return '<button type="button" role="tab" data-sub="' + x[0] + '" aria-selected="' + (sub === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div>' +
       ({ vendas: relVendas, financeiro: relFin, trocas: relTrocas, estoque: relEstoque, clientes: relClientes })[sub]() +
-      '<div class="card row"><span>Exportar este relatório para planilha (Excel).</span><button type="button" class="btn ghost" data-csv="' + sub + '">Baixar CSV</button></div>';
+      '<div class="card row"><span>Exportar este relatório</span><span class="sp"></span>' + expBtns(sub) + '</div>';
   }
   function itensVendidos(dias, desloc) {
     var out = []; vendidos(noPeriodo(S.d.pedidos, dias, desloc)).forEach(function (p) { p.itens.forEach(function (it) { out.push({ p: p, it: it }); }); }); return out;
@@ -507,17 +543,6 @@
       '<div class="card"><h2>Cadastros por dia</h2>' + barras(serie, function (v, ax) { return ax ? String(Math.round(v)) : v + (v === 1 ? ' cadastro' : ' cadastros'); }) + '</div>' +
       '<div class="card"><h2>Quem mais compra</h2>' + tabela(['Cliente', 'Pedidos', 'R$ total', 'Última compra'], lista.sort(function (a, b) { return b.t - a.t; }).slice(0, 20).map(function (c) { return [c.nome, c.n, brl(c.t), dataBr(c.ult)]; }), 'Nenhuma venda confirmada ainda.') +
       '<p class="note">Clientes são agrupados pelo nome informado no pedido.</p></div>';
-  }
-  function csvRelatorio(sub) {
-    var dias = S.periodo, n = sub + '-' + S.slug + '-' + dias + 'dias.csv';
-    if (sub === 'vendas') return csv(n, [['Data', 'Pedido', 'Produto', 'Código', 'Cor', 'Tamanho', 'Qtd', 'Preço', 'Total', 'Origem']].concat(itensVendidos(dias).map(function (x) {
-      return [dataBr(x.p.criado, 1), x.p.numero, x.it.nome, x.it.sku, x.it.cor, x.it.tam, x.it.qtd, x.it.preco, (x.it.qtd * x.it.preco).toFixed(2), ORIGENS[x.p.origem || '']]; })));
-    if (sub === 'financeiro' || sub === 'pedidos') return csv(n, [['Número', 'Data', 'Status', 'Cliente', 'Entrega', 'Pagamento', 'Subtotal', 'Cupom', 'Desconto cupom', 'Desconto Pix', 'Total', 'Código']].concat(noPeriodo(S.d.pedidos, dias).map(function (p) {
-      return [p.numero, dataBr(p.criado, 1), p.status, p.nome, p.entrega, p.pagamento, p.subtotal, p.cupom, p.cupom_desconto, p.desconto, p.total, p.codigo]; })));
-    if (sub === 'trocas') return csv(n, [['Data', 'Pedido', 'Produto', 'Tipo', 'De cor', 'De tamanho', 'Para cor', 'Para tamanho', 'Qtd', 'Motivo', 'Valor devolvido', 'Observação']].concat(noPeriodo(S.d.trocas, dias).map(function (t) {
-      return [dataBr(t.criado), t.pedido_numero || '', t.produto_nome, t.tipo, t.de_cor, t.de_tam, t.para_cor, t.para_tam, t.qtd, MOTIVOS[t.motivo], t.valor, t.obs]; })));
-    if (sub === 'estoque') { var l = [['Produto', 'Código', 'Cor', 'Tamanho', 'Estoque', 'Preço']]; S.d.produtos.forEach(function (p) { for (var k in p.estoque) { var c = k.split('|'); l.push([p.nome, p.sku, c[0], c[1], p.estoque[k], p.preco]); } }); return csv(n, l); }
-    return csv('clientes-' + S.slug + '.csv', [['Nome', 'WhatsApp', 'E-mail', 'Cadastro']].concat(S.d.contatos.map(function (c) { return [c.nome, c.whatsapp, c.email, dataBr(c.criado)]; })));
   }
 
   /* ---------- cupons ---------- */
@@ -596,22 +621,218 @@
     tr.motivo = val('t_mot'); tr.obs = val('t_obs');
   }
 
-  function csv(nome, linhas) {
-    var txt = '﻿' + linhas.map(function (l) { return l.map(function (c) { c = String(c == null ? '' : c); if (/^[=+\-@]/.test(c)) c = "'" + c; return '"' + c.replace(/"/g, '""') + '"'; }).join(';'); }).join('\r\n');
-    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'text/csv;charset=utf-8' })); a.download = nome; document.body.appendChild(a); a.click();
-    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  /* ---------- clientes (CRM, no mesmo jeito da Agenda) ---------- */
+  // O cliente é reconhecido pelo WhatsApp informado no pedido (ou pelo nome, nos pedidos antigos).
+  function zapNorm(z) { z = String(z || '').replace(/\D/g, ''); if (z.length >= 12 && z.indexOf('55') === 0) z = z.slice(2); return z.length >= 10 ? z : ''; }
+  function nomeNorm(n) { return String(n || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+  var PERFIS = { vip: ['VIP', 'vip'], recorrente: ['Recorrente', 'ok'], novo: ['Novo', 'info'], lead: ['Interessado', ''] };
+  var SITUACAO = { ativo: ['Ativo', 'ok'], sumindo: ['Sumindo', 'warn'], inativo: ['Inativo', 'bad'], '': ['—', ''] };
+  var SUMINDO = 45, INATIVO = 90;  // dias sem comprar
+  function baseClientes() {
+    var m = {}, hoje = Date.now();
+    S.d.pedidos.forEach(function (p) {
+      if (p.status === 'cancelado') return;
+      var z = zapNorm((p.contato || {}).whatsapp), k = z ? 'z' + z : 'n' + nomeNorm(p.nome);
+      var c = m[k] || (m[k] = { k: k, nome: p.nome, zap: z, pedidos: [], compras: 0, gasto: 0, primeira: 0, ultima: 0, aberto: 0, tams: {}, cats: {}, origem: p.origem || '' });
+      if (z && !c.zap) c.zap = z;
+      c.pedidos.push(p);
+      if (VENDIDO.indexOf(p.status) < 0) { c.aberto++; return; }
+      var t = new Date(p.criado).getTime();
+      c.compras++; c.gasto += +p.total || 0;
+      if (!c.primeira || t < c.primeira) { c.primeira = t; c.origem = p.origem || c.origem; }
+      if (t > c.ultima) { c.ultima = t; c.nome = p.nome; }
+      (p.itens || []).forEach(function (it) { if (it.tam) soma2(c.tams, it.tam, it.qtd); if (it.cat) soma2(c.cats, it.cat, it.qtd); });
+    });
+    (S.d.contatos || []).forEach(function (ct) {
+      var z = zapNorm(ct.whatsapp), k = z ? 'z' + z : 'n' + nomeNorm(ct.nome);
+      var c = m[k] || (m[k] = { k: k, nome: ct.nome, zap: z, pedidos: [], compras: 0, gasto: 0, primeira: 0, ultima: 0, aberto: 0, tams: {}, cats: {}, origem: '' });
+      c.novidades = true; c.email = ct.email || c.email; c.contatoId = ct.id; c.cadastro = ct.criado;
+    });
+    var lista = Object.keys(m).map(function (k) { return m[k]; });
+    var gastos = lista.filter(function (c) { return c.compras >= 2; }).map(function (c) { return c.gasto; }).sort(function (a, b) { return b - a; });
+    var corte = gastos.length ? gastos[Math.max(0, Math.ceil(gastos.length * 0.1) - 1)] : Infinity;
+    var catNome = {}; S.d.categorias.forEach(function (x) { catNome[x.chave] = x.nome; });
+    lista.forEach(function (c) {
+      c.dias = c.ultima ? Math.floor((hoje - c.ultima) / 864e5) : null;
+      c.ticket = c.compras ? c.gasto / c.compras : 0;
+      c.perfil = !c.compras ? 'lead' : c.compras >= 3 || (c.compras >= 2 && c.gasto >= corte) ? 'vip' : c.compras >= 2 ? 'recorrente' : 'novo';
+      c.situacao = !c.compras ? '' : c.dias >= INATIVO ? 'inativo' : c.dias >= SUMINDO ? 'sumindo' : 'ativo';
+      var tm = ordena(c.tams)[0], ca = ordena(c.cats)[0];
+      c.prefere = [tm ? 'Tam. ' + tm[0] : '', ca ? (catNome[ca[0]] || ca[0]) : ''].filter(Boolean).join(' · ');
+    });
+    return lista;
+  }
+  // Mensagem pronta para cada momento do cliente.
+  function msgCliente(c) {
+    var n = String(c.nome || '').split(' ')[0], loja = S.d.nome, link = lojaUrl() + '?utm_source=whatsapp';
+    var cup = (S.d.cupons || []).filter(function (x) { return cupomStatus(x)[0] === 'Ativo'; })[0], txtCup = cup ? ' Use o cupom ' + cup.codigo + ' (' + cupomTexto(cup).toLowerCase() + ').' : '';
+    if (c.situacao === 'sumindo' || c.situacao === 'inativo') return 'Oi, ' + n + '! Aqui é da ' + loja + '. Sentimos sua falta! Chegaram novidades que combinam com você.' + txtCup + ' Dá uma olhada: ' + link;
+    if (c.perfil === 'vip') return 'Oi, ' + n + '! Você é uma cliente especial da ' + loja + ' e queremos te mostrar as novidades antes de todo mundo.' + txtCup + ' ' + link;
+    if (c.perfil === 'novo') return 'Oi, ' + n + '! Aqui é da ' + loja + '. Obrigada pela sua compra! Deu tudo certo com o seu pedido? Qualquer coisa é só chamar. ' + link;
+    return 'Oi, ' + n + '! Vi que você quer receber as novidades da ' + loja + '. Dá uma olhada no que chegou:' + txtCup + ' ' + link;
+  }
+  function zapLink(c) { return c.zap ? 'https://wa.me/55' + c.zap + '?text=' + encodeURIComponent(msgCliente(c)) : ''; }
+  function filtroClientes(lista) {
+    var q = nomeNorm(S.cq), f = S.cf || 'todos';
+    return lista.filter(function (c) {
+      if (q && (nomeNorm(c.nome) + ' ' + c.zap + ' ' + (c.email || '')).indexOf(q) < 0) return false;
+      if (f === 'todos') return true;
+      if (f === 'sumindo' || f === 'inativo') return c.situacao === f;
+      return c.perfil === f;
+    }).sort(function (a, b) { return S.cord === 'gasto' ? b.gasto - a.gasto : S.cord === 'compras' ? b.compras - a.compras : S.cord === 'antigos' ? (b.dias || 0) - (a.dias || 0) : (b.ultima || 0) - (a.ultima || 0) || (b.compras - a.compras); });
+  }
+  function clientes() {
+    var lista = baseClientes(), dias = S.periodo, ini = Date.now() - dias * 864e5;
+    var comp = lista.filter(function (c) { return c.compras; }), rec = comp.filter(function (c) { return c.compras >= 2; });
+    var novosP = comp.filter(function (c) { return c.primeira >= ini; }).length;
+    var voltaramP = comp.filter(function (c) { return c.primeira < ini && c.pedidos.some(function (p) { return VENDIDO.indexOf(p.status) > -1 && new Date(p.criado).getTime() >= ini; }); }).length;
+    var nCompras = comp.reduce(function (s, c) { return s + c.compras; }, 0), gasto = comp.reduce(function (s, c) { return s + c.gasto; }, 0);
+    var conta = function (f) { return lista.filter(f).length; };
+    var segs = [['todos', 'Todos', lista.length], ['vip', 'VIP', conta(function (c) { return c.perfil === 'vip'; })], ['recorrente', 'Recorrentes', conta(function (c) { return c.perfil === 'recorrente'; })],
+      ['novo', 'Novos', conta(function (c) { return c.perfil === 'novo'; })], ['sumindo', 'Sumindo', conta(function (c) { return c.situacao === 'sumindo'; })], ['inativo', 'Inativos', conta(function (c) { return c.situacao === 'inativo'; })],
+      ['lead', 'Interessados', conta(function (c) { return c.perfil === 'lead'; })]];
+    var vis = filtroClientes(lista), grupo = ((S.d.loja.novidades || {}).grupoWhatsapp) || '';
+    var sum = lista.filter(function (c) { return c.situacao === 'sumindo' && c.zap; }).sort(function (a, b) { return b.gasto - a.gasto; }).slice(0, 6);
+    return '<div class="head"><div><h1>Clientes</h1><p class="sub">Quem compra, quem volta e quem está sumindo. O cliente é reconhecido pelo WhatsApp do pedido.</p></div>' + periodos() + '</div>' +
+      '<div class="kpis">' + kpi('Clientes que compraram', num(comp.length), num(lista.length - comp.length) + (lista.length - comp.length === 1 ? ' interessado' : ' interessados'), 'users') +
+        kpi('Novos no período', num(novosP), 'primeira compra nos últimos ' + dias + ' dias', 'plus') +
+        kpi('Voltaram no período', num(voltaramP), 'já tinham comprado antes', 'repeat') +
+        kpi('Taxa de recompra', pct(rec.length, comp.length), num(rec.length) + ' compraram 2 vezes ou mais', 'chart') +
+        kpi('Frequência', comp.length ? (nCompras / comp.length).toFixed(1).replace('.', ',') : '—', 'compras por cliente', 'bag') +
+        kpi('Ticket médio', brl(nCompras ? gasto / nCompras : 0), 'por compra', 'tag') +
+        kpi('Valor por cliente', brl(comp.length ? gasto / comp.length : 0), 'quanto cada cliente já gastou, em média', 'star') +
+        kpi('Sumindo', num(segs[4][2] + segs[5][2]), SUMINDO + '+ dias sem comprar', 'alert') + '</div>' +
+      (sum.length ? '<div class="card destaque"><h2>' + ic('alert') + 'Chame de volta</h2><p class="note">Clientes que compravam e não voltam há mais de ' + SUMINDO + ' dias. O botão abre o WhatsApp com a mensagem pronta.</p><div class="volta">' +
+        sum.map(function (c) { return '<div class="vc"><b>' + esc(c.nome) + '</b><small>' + c.compras + (c.compras === 1 ? ' compra' : ' compras') + ' · ' + brl(c.gasto) + ' · há ' + c.dias + ' dias</small><a class="btn sm zap" href="' + esc(zapLink(c)) + '" target="_blank" rel="noopener">' + ic('chat') + 'Chamar</a></div>'; }).join('') + '</div></div>' : '') +
+      '<div class="card"><div class="tools wrap2"><div class="chips">' + segs.map(function (x) { return '<button type="button" class="chip" data-cf="' + x[0] + '" aria-pressed="' + ((S.cf || 'todos') === x[0]) + '">' + x[1] + ' <span class="cnt">' + x[2] + '</span></button>'; }).join('') + '</div></div>' +
+        '<div class="tools"><input id="cq" type="search" placeholder="Buscar por nome, WhatsApp ou e-mail" value="' + esc(S.cq) + '" aria-label="Buscar clientes">' +
+        '<select id="cord" aria-label="Ordenar"><option value="recentes">Compra mais recente</option><option value="gasto"' + (S.cord === 'gasto' ? ' selected' : '') + '>Quem mais gastou</option><option value="compras"' + (S.cord === 'compras' ? ' selected' : '') + '>Mais compras</option><option value="antigos"' + (S.cord === 'antigos' ? ' selected' : '') + '>Há mais tempo sem comprar</option></select>' +
+        '<span class="sp"></span><button type="button" class="btn ghost sm" data-copiar-zaps>' + ic('chat') + 'Copiar WhatsApps (' + vis.filter(function (c) { return c.zap; }).length + ')</button>' + expBtns('clientes') + '</div>' +
+        (vis.length ? '<div class="tbl"><table class="crm"><thead><tr><th>Cliente</th><th>Perfil</th><th class="r">Compras</th><th class="r">Total gasto</th><th class="r">Ticket</th><th>Última compra</th><th>Prefere</th><th></th></tr></thead><tbody>' + vis.slice(0, 300).map(function (c) {
+          var pf = PERFIS[c.perfil], st = SITUACAO[c.situacao];
+          return '<tr><td><span class="pr"><span class="av">' + esc(String(c.nome || '?').charAt(0).toUpperCase()) + '</span><span><b>' + esc(c.nome) + '</b><small class="mono">' + esc(c.zap ? fmtZap(c.zap) : c.email || 'sem WhatsApp') + (c.novidades ? ' · recebe novidades' : '') + '</small></span></span></td>' +
+            '<td><span class="pill ' + pf[1] + '">' + pf[0] + '</span>' + (c.situacao && c.situacao !== 'ativo' ? ' <span class="pill ' + st[1] + '">' + st[0] + '</span>' : '') + '</td>' +
+            '<td class="r num">' + c.compras + (c.aberto ? ' <small class="note">+' + c.aberto + ' em aberto</small>' : '') + '</td><td class="r num">' + brl(c.gasto) + '</td><td class="r num">' + (c.compras ? brl(c.ticket) : '—') + '</td>' +
+            '<td>' + (c.ultima ? dataBr(c.ultima) + ' <small class="note">há ' + c.dias + (c.dias === 1 ? ' dia' : ' dias') + '</small>' : c.cadastro ? '<small class="note">cadastro ' + dataBr(c.cadastro) + '</small>' : '—') + '</td>' +
+            '<td><small>' + esc(c.prefere || '—') + '</small></td>' +
+            '<td class="r nowrap">' + (c.zap ? '<a class="btn ghost sm zap" href="' + esc(zapLink(c)) + '" target="_blank" rel="noopener" aria-label="WhatsApp de ' + esc(c.nome) + '">' + ic('chat') + '</a>' : '') + '<button type="button" class="btn ghost sm" data-ver-cli="' + esc(c.k) + '">Ver</button></td></tr>';
+        }).join('') + '</tbody></table></div>' : '<p class="empty">Nenhum cliente neste filtro.</p>') + '</div>' +
+      '<details class="card"><summary><h2>Cadastros de “Receba as novidades” (' + S.d.contatos.length + ')</h2></summary>' +
+        '<div class="card row flat"><span>Grupo de promoções no WhatsApp: ' + (grupo ? '<b>ativo</b>' : '<b>sem link</b>') + '</span><button type="button" class="btn ghost sm" data-tab="loja">' + (grupo ? 'Trocar link' : 'Colocar link') + '</button>' + expBtns('contatos') + '</div>' +
+        (S.d.contatos.length ? '<div class="tbl"><table><thead><tr><th>Nome</th><th>WhatsApp</th><th>E-mail</th><th>Cadastro</th><th></th></tr></thead><tbody>' + S.d.contatos.map(function (c) {
+          return '<tr><td>' + esc(c.nome) + '</td><td>' + (c.whatsapp ? '<a href="https://wa.me/' + esc(c.whatsapp.length <= 11 ? '55' + c.whatsapp : c.whatsapp) + '" target="_blank" rel="noopener" class="num">' + esc(c.whatsapp) + '</a>' : '—') + '</td><td>' + esc(c.email || '—') + '</td><td>' + dataBr(c.criado) + '</td>' +
+            '<td class="r"><button type="button" class="btn ghost sm danger" data-delcont="' + c.id + '">Excluir</button></td></tr>'; }).join('') + '</tbody></table></div>' : '<p class="empty">Nenhum cadastro ainda.</p>') + '</details>' +
+      '<p class="note">Perfis: <b>Novo</b> 1 compra · <b>Recorrente</b> 2 compras · <b>VIP</b> 3 compras ou mais (ou entre os que mais gastam) · <b>Interessado</b> cadastrou ou pediu, mas ainda não comprou. <b>Sumindo</b> ' + SUMINDO + ' a ' + (INATIVO - 1) + ' dias sem comprar · <b>Inativo</b> ' + INATIVO + ' dias ou mais.</p>';
+  }
+  function fmtZap(z) { return z.length === 11 ? '(' + z.slice(0, 2) + ') ' + z.slice(2, 7) + '-' + z.slice(7) : z.length === 10 ? '(' + z.slice(0, 2) + ') ' + z.slice(2, 6) + '-' + z.slice(6) : z; }
+  // Ficha do cliente: compras, preferências e mensagem pronta.
+  function verCliente(k) {
+    var c = baseClientes().filter(function (x) { return x.k === k; })[0]; if (!c) return;
+    var pf = PERFIS[c.perfil], st = SITUACAO[c.situacao];
+    dlg.innerHTML = '<div class="sheet"><header><h2>' + esc(c.nome) + '</h2><button type="button" class="x" data-fechar aria-label="Fechar">' + ic('x') + '</button></header><div class="body">' +
+      '<p><span class="pill ' + pf[1] + '">' + pf[0] + '</span> ' + (c.situacao ? '<span class="pill ' + st[1] + '">' + st[0] + '</span>' : '') + (c.novidades ? ' <span class="pill">Recebe novidades</span>' : '') + '</p>' +
+      '<div class="kpis k3">' + kpi('Compras', num(c.compras)) + kpi('Total gasto', brl(c.gasto)) + kpi('Ticket médio', c.compras ? brl(c.ticket) : '—') + '</div>' +
+      '<p class="note">' + [c.zap ? 'WhatsApp ' + fmtZap(c.zap) : '', c.email || '', c.primeira ? 'Cliente desde ' + dataBr(c.primeira) : '', c.origem ? 'Chegou pelo ' + (ORIGENS[c.origem] || c.origem) : '', c.prefere ? 'Prefere ' + c.prefere : ''].filter(Boolean).map(esc).join(' · ') + '</p>' +
+      (c.zap ? '<label class="field"><span>Mensagem pronta</span><textarea id="cli_msg" rows="3">' + esc(msgCliente(c)) + '</textarea></label><a class="btn zap" id="cli_zap" href="' + esc(zapLink(c)) + '" target="_blank" rel="noopener">' + ic('chat') + 'Enviar no WhatsApp</a>' : '') +
+      '<h3>Pedidos</h3>' + (c.pedidos.length ? '<div class="tbl"><table><thead><tr><th>Pedido</th><th>Data</th><th>Situação</th><th class="r">Total</th><th>Itens</th></tr></thead><tbody>' + c.pedidos.slice().sort(function (a, b) { return a.criado < b.criado ? 1 : -1; }).map(function (p) {
+        return '<tr><td class="num">#' + p.numero + '</td><td>' + dataBr(p.criado) + '</td><td>' + stPill(p.status) + '</td><td class="r num">' + brl(p.total) + '</td><td><small>' + esc((p.itens || []).map(function (it) { return it.qtd + '× ' + it.nome + (it.tam ? ' ' + it.tam : ''); }).join(', ')) + '</small></td></tr>'; }).join('') + '</tbody></table></div>' : '<p class="empty">Ainda não comprou.</p>') +
+      '</div></div>';
+    dlg.showModal();
   }
 
-  /* ---------- clientes ---------- */
-  function clientes() {
-    var q = S.cq.toLowerCase(), cs = S.d.contatos.filter(function (c) { return !q || (c.nome + ' ' + c.email + ' ' + c.whatsapp).toLowerCase().indexOf(q) > -1; });
-    var grupo = ((S.d.loja.novidades || {}).grupoWhatsapp) || '';
-    return '<div class="head"><div><h1>Clientes</h1><p class="sub">Quem se cadastrou em “Receba as novidades”. Use para e-mail marketing e listas de transmissão.</p></div><button type="button" class="btn ghost" data-csv="contatos">Baixar CSV</button></div>' +
-      '<div class="card row"><span>Grupo de promoções no WhatsApp: ' + (grupo ? '<b>ativo</b>' : '<b>sem link</b>') + '</span><button type="button" class="btn ghost sm" data-tab="loja">' + (grupo ? 'Trocar link' : 'Colocar link') + '</button></div>' +
-      '<div class="card"><div class="tools"><input id="cq" type="search" placeholder="Buscar por nome, e-mail ou WhatsApp" value="' + esc(S.cq) + '" aria-label="Buscar clientes"><span class="note">' + cs.length + ' contatos</span></div>' +
-      (cs.length ? '<div class="tbl"><table><thead><tr><th>Nome</th><th>WhatsApp</th><th>E-mail</th><th>Cadastro</th><th></th></tr></thead><tbody>' + cs.map(function (c) {
-        return '<tr><td>' + esc(c.nome) + '</td><td>' + (c.whatsapp ? '<a href="https://wa.me/' + esc(c.whatsapp.length <= 11 ? '55' + c.whatsapp : c.whatsapp) + '" target="_blank" rel="noopener" class="num">' + esc(c.whatsapp) + '</a>' : '—') + '</td><td>' + esc(c.email || '—') + '</td><td>' + dataBr(c.criado) + '</td>' +
-          '<td class="r"><button type="button" class="btn ghost sm danger" data-delcont="' + c.id + '">Excluir</button></td></tr>'; }).join('') + '</tbody></table></div>' : '<p class="empty">Nenhum cadastro ainda.</p>') + '</div>';
+  /* ---------- exportar: Excel (.xlsx) e PDF com cabeçalho e rodapé ---------- */
+  function expBtns(tipo) { return '<span class="exp"><button type="button" class="btn ghost sm" data-exp="' + tipo + '" data-fmt="xlsx">' + ic('down') + 'Excel</button><button type="button" class="btn ghost sm" data-exp="' + tipo + '" data-fmt="pdf">' + ic('down') + 'PDF</button></span>'; }
+  function dataX(iso, hora) { var d = new Date(iso); return d.toLocaleDateString('pt-BR') + (hora ? ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''); }
+  function dadosExport(tipo) {
+    var dias = S.periodo, per = 'Últimos ' + dias + ' dias';
+    if (tipo === 'vendas') return { titulo: 'Relatório de vendas', periodo: per, cols: ['Data', 'Pedido', 'Produto', 'Código', 'Cor', 'Tamanho', 'Qtd', 'Preço', 'Total', 'Origem'], tipos: 'ttttttnmmt',
+      linhas: itensVendidos(dias).map(function (x) { return [dataX(x.p.criado, 1), '#' + x.p.numero, x.it.nome, x.it.sku, x.it.cor, x.it.tam, x.it.qtd, +x.it.preco, x.it.qtd * x.it.preco, ORIGENS[x.p.origem || '']]; }) };
+    if (tipo === 'financeiro' || tipo === 'pedidos') return { titulo: tipo === 'pedidos' ? 'Pedidos' : 'Relatório financeiro', periodo: per, cols: ['Pedido', 'Data', 'Situação', 'Cliente', 'Entrega', 'Pagamento', 'Subtotal', 'Cupom', 'Desc. cupom', 'Desc. Pix', 'Total'], tipos: 'ttttttmtmmm',
+      linhas: noPeriodo(S.d.pedidos, dias).map(function (p) { return ['#' + p.numero, dataX(p.criado, 1), p.status, p.nome, p.entrega, p.pagamento, +p.subtotal, p.cupom || '', +p.cupom_desconto || 0, +p.desconto || 0, +p.total]; }) };
+    if (tipo === 'trocas') return { titulo: 'Trocas e devoluções', periodo: per, cols: ['Data', 'Pedido', 'Produto', 'Tipo', 'De', 'Para', 'Qtd', 'Motivo', 'Devolvido'], tipos: 'ttttttntm',
+      linhas: noPeriodo(S.d.trocas, dias).map(function (t) { return [dataX(t.criado), t.pedido_numero ? '#' + t.pedido_numero : '', t.produto_nome, t.tipo, [t.de_cor, t.de_tam].filter(Boolean).join(' '), [t.para_cor, t.para_tam].filter(Boolean).join(' '), t.qtd, MOTIVOS[t.motivo] || '', +t.valor || 0]; }) };
+    if (tipo === 'estoque') { var l = []; S.d.produtos.forEach(function (p) { for (var k in p.estoque) { var c = k.split('|'); l.push([p.nome, p.sku, c[0], c[1], +p.estoque[k], +p.preco, p.estoque[k] * p.preco]); } });
+      return { titulo: 'Estoque', periodo: 'Posição atual', cols: ['Produto', 'Código', 'Cor', 'Tamanho', 'Estoque', 'Preço', 'Valor em estoque'], tipos: 'ttttnmm', linhas: l }; }
+    if (tipo === 'movimentos') return { titulo: 'Movimentos de estoque', periodo: per, cols: ['Quando', 'Produto', 'Variação', 'Mudança', 'Saldo', 'Motivo'], tipos: 'tttnnt',
+      linhas: noPeriodo(S.d.movimentos, dias, 0, 'em').map(function (m) { return [dataX(m.em, 1), m.produto_nome, [m.cor, m.tamanho].filter(Boolean).join(' · '), +m.delta, m.saldo == null ? '' : +m.saldo, m.motivo]; }) };
+    if (tipo === 'contatos') return { titulo: 'Cadastros de novidades', periodo: 'Todos', cols: ['Nome', 'WhatsApp', 'E-mail', 'Cadastro'], tipos: 'tttt', linhas: S.d.contatos.map(function (c) { return [c.nome, c.whatsapp, c.email, dataX(c.criado)]; }) };
+    var f = filtroClientes(baseClientes()), seg = (S.cf && S.cf !== 'todos') ? ' · ' + ({ vip: 'VIP', recorrente: 'Recorrentes', novo: 'Novos', sumindo: 'Sumindo', inativo: 'Inativos', lead: 'Interessados' })[S.cf] : '';
+    return { titulo: 'Clientes' + seg, periodo: 'Posição atual', cols: ['Cliente', 'WhatsApp', 'E-mail', 'Perfil', 'Situação', 'Compras', 'Total gasto', 'Ticket médio', 'Última compra', 'Dias sem comprar', 'Prefere'], tipos: 'tttttnmmtnt',
+      linhas: f.map(function (c) { return [c.nome, c.zap ? fmtZap(c.zap) : '', c.email || '', PERFIS[c.perfil][0], SITUACAO[c.situacao][0], c.compras, c.gasto, c.ticket, c.ultima ? dataX(c.ultima) : '', c.dias == null ? '' : c.dias, c.prefere]; }) };
+  }
+  function exportar(tipo, fmt) {
+    var d = dadosExport(tipo); if (!d.linhas.length) return toast('Nada para exportar neste filtro.');
+    var nome = (tipo + '-' + S.slug + '-' + dia(Date.now())).replace(/[^a-z0-9-]/gi, '');
+    if (fmt === 'pdf') return pdf(d);
+    baixar(nome + '.xlsx', xlsx(d), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  }
+  function baixar(nome, dados, tipo) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([dados], { type: tipo })); a.download = nome; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+  // Planilha .xlsx de verdade (zip sem compressão): cabeçalho em negrito, números como número e R$ formatado.
+  function xlsx(d) {
+    function x(v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ''); }
+    function col(i) { var s = ''; i++; while (i) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; }
+    function cel(v, r, c, est) {
+      var ref = col(c) + r, t = d.tipos ? d.tipos.charAt(c) : 't';
+      if (r > 3 && (t === 'n' || t === 'm') && v !== '' && v != null && isFinite(+v)) return '<c r="' + ref + '" s="' + (t === 'm' ? 3 : 0) + '"><v>' + (t === 'm' ? Math.round(v * 100) / 100 : +v) + '</v></c>';
+      return '<c r="' + ref + '" t="inlineStr"' + (est ? ' s="' + est + '"' : '') + '><is><t xml:space="preserve">' + x(v) + '</t></is></c>';
+    }
+    var larg = d.cols.map(function (h, i) { return Math.min(50, Math.max(String(h).length, d.linhas.reduce(function (m, l) { return Math.max(m, String(l[i] == null ? '' : l[i]).length); }, 0)) + 3); });
+    var rows = '<row r="1">' + cel(S.d.nome + ' · ' + d.titulo, 1, 0, 2) + '</row><row r="2">' + cel(d.periodo + ' · gerado em ' + dataX(Date.now(), 1), 2, 0) + '</row>' +
+      '<row r="3">' + d.cols.map(function (h, i) { return cel(h, 3, i, 1); }).join('') + '</row>' +
+      d.linhas.map(function (l, ri) { return '<row r="' + (ri + 4) + '">' + l.map(function (v, i) { return cel(v, ri + 4, i); }).join('') + '</row>'; }).join('');
+    var sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="3" topLeftCell="A4" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>' +
+      larg.map(function (w, i) { return '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>'; }).join('') + '</cols><sheetData>' + rows + '</sheetData><autoFilter ref="A3:' + col(d.cols.length - 1) + (d.linhas.length + 3) + '"/></worksheet>';
+    var styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="&quot;R$&quot; #,##0.00"/></numFmts>' +
+      '<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="14"/><name val="Calibri"/></font></fonts>' +
+      '<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF' + cor((S.d.loja.cores || {}).p1, '#1E1630').slice(1).toUpperCase() + '"/></patternFill></fill></fills>' +
+      '<borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="4"><xf/><xf fontId="1" fillId="2" applyFont="1" applyFill="1"/><xf fontId="2" applyFont="1"/><xf numFmtId="164" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+    var arqs = [
+      ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+      ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+      ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="' + x(d.titulo.slice(0, 31).replace(/[\\\/?*\[\]:]/g, ' ')) + '" sheetId="1" r:id="rId1"/></sheets><definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">\'' + x(d.titulo.slice(0, 31).replace(/[\\\/?*\[\]:]/g, ' ')) + '\'!$A$3:$' + col(d.cols.length - 1) + '$' + (d.linhas.length + 3) + '</definedName></definedNames></workbook>'],
+      ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+      ['xl/worksheets/sheet1.xml', sheet], ['xl/styles.xml', styles]];
+    return zip(arqs);
+  }
+  // Zip mínimo (método "guardado", sem compressão), suficiente para o Excel abrir.
+  var CRC = (function () { var t = []; for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(b) { var c = 0xFFFFFFFF; for (var i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function zip(arqs) {
+    var enc = new TextEncoder(), partes = [], central = [], off = 0;
+    function u16(v) { return [v & 255, (v >>> 8) & 255]; }
+    function u32(v) { return [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255]; }
+    arqs.forEach(function (a) {
+      var nome = enc.encode(a[0]), dados = enc.encode(a[1]), crc = crc32(dados);
+      var loc = [].concat(u32(0x04034b50), u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(crc), u32(dados.length), u32(dados.length), u16(nome.length), u16(0));
+      partes.push(new Uint8Array(loc), nome, dados);
+      central.push(new Uint8Array([].concat(u32(0x02014b50), u16(20), u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(crc), u32(dados.length), u32(dados.length), u16(nome.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(off))), nome);
+      off += loc.length + nome.length + dados.length;
+    });
+    var tam = central.reduce(function (s, b) { return s + b.length; }, 0);
+    var fim = new Uint8Array([].concat(u32(0x06054b50), u16(0), u16(0), u16(arqs.length), u16(arqs.length), u32(tam), u32(off), u16(0)));
+    return new Blob(partes.concat(central, [fim]));
+  }
+  // PDF: abre a impressão com cabeçalho (logo, loja, título e período) e rodapé (geração e página); o "Salvar como PDF" gera o arquivo.
+  function pdf(d) {
+    var L = S.d.loja || {}, pc = L.parceiro || {}, el = document.getElementById('imprimir');
+    if (el) el.remove();
+    el = document.createElement('div'); el.id = 'imprimir';
+    var tot = d.cols.map(function (c, i) { var t = d.tipos ? d.tipos.charAt(i) : 't'; return t === 'm' ? brl(d.linhas.reduce(function (s, l) { return s + (+l[i] || 0); }, 0)) : t === 'n' && !/dias|saldo/i.test(c) ? num(d.linhas.reduce(function (s, l) { return s + (+l[i] || 0); }, 0)) : ''; });
+    var temTot = tot.some(Boolean);
+    el.innerHTML = '<table class="pdoc"><thead><tr><td colspan="' + d.cols.length + '"><div class="phead">' + (url(L.logo) ? '<img src="' + esc(url(L.logo)) + '" alt="">' : '<span class="plog">' + esc(String(S.d.nome || '').charAt(0)) + '</span>') +
+      '<div><b>' + esc(S.d.nome) + '</b><small>' + esc([L.cidade, L.telefone, L.email].filter(Boolean).join(' · ')) + '</small></div><div class="pt"><b>' + esc(d.titulo) + '</b><small>' + esc(d.periodo) + ' · ' + num(d.linhas.length) + ' linhas</small></div></div></td></tr>' +
+      '<tr>' + d.cols.map(function (c, i) { var t = d.tipos ? d.tipos.charAt(i) : 't'; return '<th' + (t !== 't' ? ' class="r"' : '') + '>' + esc(c) + '</th>'; }).join('') + '</tr></thead>' +
+      '<tbody>' + d.linhas.map(function (l) { return '<tr>' + l.map(function (v, i) { var t = d.tipos ? d.tipos.charAt(i) : 't'; return '<td' + (t !== 't' ? ' class="r"' : '') + '>' + esc(t === 'm' && v !== '' ? brl(v) : t === 'n' && v !== '' ? num(v) : v) + '</td>'; }).join('') + '</tr>'; }).join('') +
+      (temTot ? '<tr class="ptot">' + tot.map(function (v, i) { return '<td' + (v ? ' class="r"' : '') + '>' + (i === 0 && !v ? 'Total' : esc(v)) + '</td>'; }).join('') + '</tr>' : '') + '</tbody>' +
+      '<tfoot><tr><td colspan="' + d.cols.length + '"><div class="pfoot"><span>Gerado em ' + esc(dataX(Date.now(), 1)) + ' · Painel do catálogo' + (pc.nome ? ' · ' + esc(pc.nome) : ' · Nour') + '</span><span>' + esc(S.d.nome) + '</span></div></td></tr></tfoot></table>';
+    document.body.appendChild(el);
+    document.documentElement.classList.add('imprimindo');
+    var fim = function () { document.documentElement.classList.remove('imprimindo'); el.remove(); window.removeEventListener('afterprint', fim); };
+    window.addEventListener('afterprint', fim);
+    setTimeout(function () { window.print(); }, 50);
   }
 
   /* ---------- avaliações ---------- */
@@ -875,7 +1096,17 @@
     }
     if ((b = t.closest('[data-pst]'))) { S.pst = b.getAttribute('data-pst'); render(); return; }
     if ((b = t.closest('[data-per]'))) { S.periodo = +b.getAttribute('data-per'); render(); return; }
-    if ((b = t.closest('[data-csv]'))) { var tipoCsv = b.getAttribute('data-csv'); csvRelatorio(tipoCsv === 'contatos' ? 'clientes' : tipoCsv); return; }
+    if ((b = t.closest('[data-exp]'))) { exportar(b.getAttribute('data-exp'), b.getAttribute('data-fmt')); return; }
+    if ((b = t.closest('[data-cf]'))) { S.cf = b.getAttribute('data-cf'); render(); return; }
+    if ((b = t.closest('[data-ver-cli]'))) { verCliente(b.getAttribute('data-ver-cli')); return; }
+    if (t.closest('[data-copiar-zaps]')) {
+      var zs = filtroClientes(baseClientes()).filter(function (c) { return c.zap; }).map(function (c) { return '55' + c.zap; }).join('\n');
+      if (!zs) return toast('Nenhum WhatsApp neste filtro.');
+      (navigator.clipboard ? navigator.clipboard.writeText(zs) : Promise.reject()).then(function () { toast('WhatsApps copiados. Cole na lista de transmissão.'); }, function () { prompt('Copie os números:', zs); });
+      return;
+    }
+    if ((b = t.closest('[data-dup]'))) { duplicarProduto(b.getAttribute('data-dup')); return; }
+    if (t.closest('[data-dup-ed]')) { lerEditor(); duplicarProduto(null); return; }
     if ((b = t.closest('[data-sub]'))) { S.sub = b.getAttribute('data-sub'); render(); return; }
     if (t.closest('[data-novo-cupom]')) return editarCupom(null);
     if ((b = t.closest('[data-edit-cupom]'))) return editarCupom(b.getAttribute('data-edit-cupom'));
@@ -939,6 +1170,7 @@
     if (t.type === 'radio' && t.closest('.fontpick')) { $$('.fontopt', t.closest('.fontpick')).forEach(function (o) { o.classList.toggle('on', o.contains(t)); }); }
     if (t.closest && t.closest('#floja')) { var dt2 = $('#dirty'); if (dt2) dt2.textContent = 'Alterações não salvas'; previa(); }
     if (t.id === 'pcat') { S.cat = t.value; render(); }
+    if (t.id === 'cord') { S.cord = t.value; render(); }
     if (t.hasAttribute && t.hasAttribute('data-ativo')) {
       var p = S.d.produtos.filter(function (x) { return String(x.id) === t.getAttribute('data-ativo'); })[0];
       salvar('produto_salvar', Object.assign({}, p, { ativo: t.checked }), t.checked ? 'Produto visível na loja' : 'Produto oculto da loja').then(render, render);
@@ -991,7 +1223,7 @@
       if (nomes.some(function (n, i) { return n && nomes.indexOf(n) !== i; })) return toast('Há cores com o mesmo nome.');
       var bad = ed.fotos.filter(function (x) { return !url(x); }); if (bad.length) return toast('Use links de foto que começam com https://');
       var est = {}; ed.cores.forEach(function (c) { ed.tamanhos.forEach(function (tm) { var k = c[0] + '|' + tm; est[k] = +ed.estoque[k] || 0; }); });
-      var dados = Object.assign({}, ed, { estoque: est, cores: ed.cores[0][0] || ed.cores.length > 1 ? ed.cores : [], tamanhos: ed.tamanhos[0] ? ed.tamanhos : [] });
+      var dados = Object.assign({}, ed, { duplicado: undefined, estoque: est, cores: ed.cores[0][0] || ed.cores.length > 1 ? ed.cores : [], tamanhos: ed.tamanhos[0] ? ed.tamanhos : [] });
       trava(true);
       salvar('produto_salvar', dados, 'Produto salvo').then(function () { dlg.close(); ed = null; render(); }, function () { trava(false); });
     } else if (f.id === 'fcat') {

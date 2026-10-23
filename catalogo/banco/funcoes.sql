@@ -364,11 +364,16 @@ CREATE OR REPLACE FUNCTION public.catalogo_cupom(p_slug text, p_codigo text, p_s
     else jsonb_build_object('ok', false, 'erro', 'loja_indisponivel') end;
 $function$;
 
+-- Origens aceitas no analytics e nos pedidos (lista fechada).
+CREATE OR REPLACE FUNCTION public.catalogo_origem_ok(p text) RETURNS text LANGUAGE sql IMMUTABLE SET search_path TO 'public' AS $function$
+  select case when p = any (array['instagram','whatsapp','google','biosite','facebook','tiktok','email','direto','outro']) then p else '' end;
+$function$;
+
 CREATE OR REPLACE FUNCTION public.catalogo_fazer_pedido(p_slug text, p_codigo text, p_nome text, p_contato jsonb, p_itens jsonb, p_entrega text, p_pagamento text, p_cupom text, p_origem text)
  RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
 declare
   c catalogos; it jsonb; p catalogo_produtos; v_qtd int; v_cor text; v_tam text; v_est int; v_cup jsonb; v_cdesc numeric := 0; v_fg boolean := false; v_cod text := '';
-  v_itens jsonb := '[]'::jsonb; v_sub numeric := 0; v_desc numeric := 0; v_pct numeric; v_num int; v_ped catalogo_pedidos;
+  v_itens jsonb := '[]'::jsonb; v_sub numeric := 0; v_desc numeric := 0; v_pct numeric; v_num int; v_ped catalogo_pedidos; v_zap text;
 begin
   select * into c from catalogos where slug = p_slug and ativo;
   if not found then raise exception 'loja_indisponivel'; end if;
@@ -378,6 +383,9 @@ begin
   if p_codigo !~ '^[A-Z0-9]{4,12}$' then raise exception 'codigo_invalido'; end if;
   p_nome := btrim(coalesce(p_nome, ''));
   if char_length(p_nome) not between 1 and 80 then raise exception 'nome_invalido'; end if;
+  -- WhatsApp do cliente (para o CRM reconhecer quem volta a comprar): só dígitos, 10 a 13.
+  v_zap := regexp_replace(coalesce(p_contato->>'whatsapp', ''), '[^0-9]', '', 'g');
+  if char_length(v_zap) not between 10 and 13 then v_zap := ''; end if;
   if jsonb_typeof(p_itens) != 'array' or jsonb_array_length(p_itens) not between 1 and 50 then raise exception 'itens_invalidos'; end if;
   for it in select * from jsonb_array_elements(p_itens) loop
     v_qtd := (it->>'qtd')::int; v_cor := coalesce(it->>'cor', ''); v_tam := coalesce(it->>'tam', '');
@@ -404,16 +412,16 @@ begin
   select coalesce(max(numero), 1000) + 1 into v_num from catalogo_pedidos where slug = p_slug;
   insert into catalogo_pedidos (slug, numero, codigo, nome, contato, itens, subtotal, desconto, total, entrega, pagamento, cupom, cupom_desconto, frete_gratis, origem)
   values (p_slug, v_num, p_codigo, p_nome,
-          jsonb_build_object('cep', left(coalesce(p_contato->>'cep', ''), 10), 'endereco', left(coalesce(p_contato->>'endereco', ''), 200)),
+          jsonb_build_object('cep', left(coalesce(p_contato->>'cep', ''), 10), 'endereco', left(coalesce(p_contato->>'endereco', ''), 200), 'whatsapp', v_zap),
           v_itens, v_sub, v_desc, v_sub - v_cdesc - v_desc, left(coalesce(p_entrega, ''), 60), left(coalesce(p_pagamento, ''), 60), v_cod, v_cdesc, v_fg,
-          case when p_origem = any (array['instagram','whatsapp','google','facebook','tiktok','direto','outro']) then p_origem else '' end)
+          catalogo_origem_ok(p_origem))
   returning * into v_ped;
   if v_cod != '' then update catalogo_cupons set usos = usos + 1 where slug = p_slug and codigo = v_cod; end if;
   return jsonb_build_object('numero', v_ped.numero, 'codigo', v_ped.codigo, 'total', v_ped.total, 'cupom_desconto', v_cdesc, 'desconto', v_desc, 'frete_gratis', v_fg);
 end $function$;
 
 CREATE OR REPLACE FUNCTION public.catalogo_evento(p_slug text, p_tipo text, p_alvo text, p_origem text) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
-declare v_o text := case when p_origem = any (array['instagram','whatsapp','google','facebook','tiktok','direto','outro']) then p_origem else 'outro' end;
+declare v_o text := coalesce(nullif(catalogo_origem_ok(p_origem), ''), 'outro');
 begin
   if not (p_tipo = any (array['visita','produto','sacola','pedido','busca','cupom','avise','grupo'])) then return; end if;
   if not exists (select 1 from catalogos where slug = p_slug and ativo) then return; end if;
