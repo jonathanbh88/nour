@@ -1,0 +1,137 @@
+# Roteiro de testes · Nour Catálogo
+
+Marque cada item ao testar. Teste no computador **e** no celular, no tema claro **e** no escuro.
+A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código de acesso foram passados por mensagem e não ficam neste arquivo.
+
+## 1. Loja: topo e navegação
+
+- [ ] Faixa rotativa no topo passa as 3 frases sem parar e sem cortar texto.
+- [ ] Linha de contatos: WhatsApp abre conversa com a loja; Instagram abre o perfil.
+- [ ] Logo/nome volta para o início.
+- [ ] Menu de categorias (computador) abre a página de cada categoria.
+- [ ] Busca: digitar "vestido" filtra; apagar volta ao início; o endereço muda para `#busca-vestido`.
+- [ ] Botão de tema (lua/sol) troca claro/escuro e lembra a escolha ao recarregar.
+- [ ] Coração no topo abre Favoritos; contador mostra a quantidade.
+- [ ] Sacola no topo abre a sacola; contador mostra a quantidade de peças.
+
+## 2. Loja: vitrine
+
+- [ ] Banner: sem arte, mostra o banner montado com as cores da loja; com arte cadastrada no painel, mostra a imagem (e a versão celular no celular). Com 2 ou 3 artes, troca sozinho a cada 6 s e as bolinhas trocam de arte.
+- [ ] Benefícios (envio, Pix, compra segura, troca) aparecem abaixo do banner.
+- [ ] "Compre por categoria": título, círculos e cards com a chamada de cada categoria; passar o mouse dá zoom.
+- [ ] Mais vendidos: título centralizado, setas passam os produtos, as setas somem quando não há mais o que passar.
+- [ ] Ofertas: título igual ao do painel (ex.: "Outlet"); "Ver todas as ofertas" abre só produtos em oferta.
+- [ ] Vitrine por categoria só aparece com 3 produtos ou mais.
+- [ ] Avaliações: nota geral, selo "Loja verificada", ícone da origem (WhatsApp, Instagram, Google), "Compra verificada".
+- [ ] Rodapé: categorias, contato, horários agrupados ("Segunda a sexta"), frete grátis, "Feito por" com nome/logo do parceiro, links de cookies e privacidade, ano atual.
+
+## 3. Loja: card e página do produto
+
+- [ ] Passar o mouse na foto troca para a 2ª foto (ou o desenho espelhado) com zoom; aparece "Ver detalhes".
+- [ ] Selo "NOVO" / "% OFF" / "ESGOTADO" corretos.
+- [ ] Tamanhos sem estoque aparecem riscados no card.
+- [ ] Coração salva/remove dos favoritos e mostra aviso.
+- [ ] Página do produto: fotos em miniatura, zoom ao passar o mouse, preço "de", preço no Pix, parcelas.
+- [ ] Cor esgotada aparece riscada; tamanho sem estoque fica desabilitado.
+- [ ] "Últimas X unidades" quando restam 2 ou menos.
+- [ ] Botão de quantidade não passa do estoque.
+- [ ] Sem escolher tamanho, "Adicionar" pede para escolher.
+- [ ] Tabela de medidas abre e fecha.
+- [ ] Código (SKU) muda conforme cor e tamanho.
+- [ ] Produto esgotado mostra "Avise-me quando chegar" (abre WhatsApp).
+
+## 4. Loja: lista, filtros e sacola
+
+- [ ] Página de categoria: botões grade/lista funcionam e são lembrados.
+- [ ] Filtro de tamanho mostra só produtos com aquele tamanho em estoque.
+- [ ] Ordenar por menor preço, maior preço, desconto e avaliação.
+- [ ] Sacola: + e − respeitam o estoque; "Esvaziar" limpa.
+- [ ] Barra de frete grátis mostra quanto falta.
+- [ ] Trocar entrega (Correios pede CEP; motoboy pede endereço; retirada não pede nada).
+- [ ] Escolher Pix mostra o desconto; outro pagamento tira o desconto.
+- [ ] Enviar sem nome/CEP mostra o erro no campo.
+- [ ] **Enviar pedido:** abre o WhatsApp com "Pedido #número", itens, cor, tamanho, código, total e "Código do pedido". A sacola esvazia. O pedido aparece no painel como **Novo**.
+- [ ] Se outra pessoa comprou a última peça antes: aparece "acabou de esgotar" e o WhatsApp não abre.
+
+## 5. Loja: cadastro, cookies e privacidade
+
+- [ ] Aviso de cookies aparece na primeira visita; "Aceitar" e "Só necessários" fecham e lembram.
+- [ ] "Cookies e privacidade" no rodapé reabre o aviso.
+- [ ] Visita só é contada (painel → Financeiro e visitas) depois de "Aceitar".
+- [ ] "Receba as novidades": sem nome dá erro; WhatsApp ou e-mail inválido dá erro; sem marcar o aceite dá erro.
+- [ ] Cadastro válido mostra "Pronto" e aparece no painel → Clientes. Repetir o mesmo e-mail não duplica.
+- [ ] "Entrar no grupo de promoções" aparece só com o link cadastrado no painel.
+- [ ] Endereço com loja que não existe mostra "Loja não encontrada".
+
+## 6. Painel: acesso
+
+- [ ] Abrir o link do painel com o código entra direto e o código some do endereço.
+- [ ] Código errado: "Loja ou código de acesso incorreto".
+- [ ] "Lembrar neste aparelho" mantém a entrada após fechar o navegador; sem marcar, sai ao fechar.
+- [ ] "Sair" volta para a tela de entrada.
+- [ ] Acesso → "Gerar novo código": mostra o novo código uma vez; o antigo deixa de funcionar (testar em outra aba).
+
+## 7. Painel: configuração inicial (igual à Agenda)
+
+- [ ] Loja nova abre o passo a passo: nome e WhatsApp → modelo → cores.
+- [ ] Escolher um modelo traz categorias, produtos e cores do modelo (avisa que substitui os produtos atuais).
+- [ ] Paletas prontas e as 3 cores ajustáveis mudam a prévia.
+- [ ] Concluir abre o painel já com as cores da loja. Acesso → "Refazer configuração" abre de novo.
+
+## 8. Painel: produtos e estoque
+
+- [ ] Novo produto: nome, categoria, preço, preço "de", SKU, marca, selo, desenho, visível, mais vendidos, ofertas, descrição, composição, fotos (links https), cores (nome + cor), tamanhos.
+- [ ] Mudar tamanhos ou cores atualiza a grade de estoque sem perder os números já digitados.
+- [ ] Renomear uma cor leva o estoque junto.
+- [ ] Preço "de" menor que o preço é recusado; foto sem https é recusada; duas cores com o mesmo nome são recusadas.
+- [ ] Salvar atualiza a lista; a loja mostra a mudança ao recarregar.
+- [ ] Interruptor "Visível/Oculto" esconde e mostra o produto na loja.
+- [ ] Excluir pede confirmação.
+- [ ] Categorias: criar, editar (nome, chamada, desenho, cor, foto) e excluir.
+- [ ] Busca e filtro por categoria.
+- [ ] "Movimentos de estoque" registra entrada, ajuste, venda e devolução, com saldo.
+
+## 9. Painel: pedidos
+
+- [ ] Abas Novos / Confirmados / Enviados / Entregues / Cancelados / Todos com contagem.
+- [ ] **Confirmar pedido baixa o estoque** (ver em Produtos e Movimentos).
+- [ ] Marcar enviado e entregue.
+- [ ] **Cancelar devolve o estoque** se ele já tinha sido baixado; pede confirmação.
+- [ ] Reabrir pedido cancelado.
+- [ ] Contador de pedidos novos no menu.
+
+## 10. Painel: financeiro, visitas, clientes e avaliações
+
+- [ ] Período 7 / 30 / 90 dias muda os números.
+- [ ] Faturamento conta só pedidos confirmados, enviados ou entregues; descontos Pix e cancelados aparecem separados.
+- [ ] Gráfico de visitas por dia; passar o mouse mostra o valor.
+- [ ] Produtos mais vendidos e vendas por pagamento e entrega.
+- [ ] "Baixar CSV" de pedidos e de clientes abre no Excel com acentos corretos.
+- [ ] Clientes: busca, excluir, link do WhatsApp do cliente.
+- [ ] Avaliações: nova, editar, ocultar/mostrar na loja, excluir; avaliação ligada a produto aparece na página do produto.
+
+## 11. Painel: aparência e loja
+
+- [ ] Todas as seções salvam: identidade, cores, tema, contato, horários, faixa (3 frases), banners em imagem (até 3) e banner montado, vitrines (título das categorias, ofertas com título livre, novidades com link do grupo), vendas (Pix, parcelas, frete grátis, nomes das variações, entregas, pagamentos), privacidade (cookies, termos, política), white label.
+- [ ] Sair da página com alterações não salvas avisa.
+- [ ] WhatsApp sem DDD é recusado; links sem https são recusados.
+- [ ] White label: com nome/logo do parceiro, a loja mostra "Feito por [parceiro]" e o painel mostra "Painel por [parceiro]"; sem nada, mostra Nour.
+
+## 12. Segurança (já testado no banco; repetir se quiser)
+
+- [x] Com a chave pública não dá para ler nenhuma tabela direto (só pelas funções).
+- [x] Painel recusa código errado; o código fica salvo só como sha256 e não aparece nos dados públicos.
+- [x] Pedido: preço e total são calculados no servidor; preço falso enviado pelo navegador é ignorado.
+- [x] Pedido acima do estoque é recusado.
+- [x] Limite de 10 pedidos e 20 cadastros por minuto por loja.
+- [x] Confirmar baixa o estoque; cancelar devolve.
+- [x] Código colado em nome de produto, categoria, avaliação, faixa ou rodapé aparece como texto, sem executar (testado no navegador).
+- [x] Links `javascript:` em foto, logo, banner, grupo ou parceiro são descartados; cores inválidas voltam para a padrão (testado no navegador).
+- [ ] Testar: abrir o painel dentro de um iframe em outro site — deve ser bloqueado.
+
+## Fora deste teste (próximas fases)
+
+- Envio de foto direto do celular (hoje é por link https).
+- Pagamento online (Mercado Pago) e frete calculado (Melhor Envio).
+- E-mail marketing disparado pelo painel (a lista de clientes já está pronta para isso).
+- Ligação com o login do Bio Site/Agenda (hoje o painel usa código de acesso próprio).

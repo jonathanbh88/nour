@@ -21,4 +21,10 @@ Para lojas de produto: roupas, calçados, acessórios, cosméticos, pet, constru
 - `catalogo/css/catalogo.css` — visual, com tema claro e escuro
 - `catalogo/modelos/` — 20 modelos prontos, um por tipo de loja do Bio Site. Veja todos em `catalogo/modelos/index.html` ou abra um direto com `catalogo/index.html?modelo=pet-shop`. Para começar uma loja, copie o modelo para `catalogo/js/dados.js`.
 
-Para testar, abra `cardapio/index.html` ou `catalogo/index.html` no navegador.
+- `catalogo/painel/` — painel do lojista: configuração inicial (nome, WhatsApp, modelo e cores), produtos com grade e estoque, pedidos (confirmar baixa o estoque, cancelar devolve), financeiro e visitas, clientes (cadastro de novidades), avaliações, aparência, white label e código de acesso
+- `catalogo/js/config.js` — endereço do banco e chave pública. Com `catalogo/index.html?loja=slug`, a loja lê o banco; sem isso, usa `js/dados.js`
+- `catalogo/banco/` — SQL das tabelas e funções (Supabase). Nenhuma tabela é acessível pela chave pública; tudo passa pelas funções, que validam preço, estoque e código de acesso
+- `catalogo/TESTES.md` — roteiro de testes
+- `vercel.json` — cabeçalhos de segurança da hospedagem
+
+Para testar sem banco, abra `cardapio/index.html` ou `catalogo/index.html` no navegador.

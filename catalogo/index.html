@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#8C2A5B">
 <title>Catálogo</title>
 <meta name="description" content="Catálogo digital com pedido pelo WhatsApp.">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src https://*.supabase.co; base-uri 'self'; form-action 'none'">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,12 +15,21 @@
 </head>
 <body>
 <div id="app"></div>
+<script src="js/config.js"></script>
 <script>
-/* ?modelo=pet-shop abre um modelo pronto da pasta modelos/ (para demonstração); sem isso, usa js/dados.js */
+/* ?loja=slug lê a loja do banco; ?modelo=pet-shop abre um modelo pronto (demonstração); sem nada, usa js/dados.js */
 (function () {
-  var m = (location.search.match(/[?&]modelo=([a-z0-9-]+)/) || [])[1];
-  var fila = [m ? 'modelos/' + m + '.js' : 'js/dados.js', 'js/catalogo.js'];
-  (function next() { var src = fila.shift(); if (!src) return; var s = document.createElement('script'); s.src = src; s.onload = next; s.onerror = function () { if (m) location.replace(location.pathname); }; document.body.appendChild(s); })();
+  var q = location.search, loja = (q.match(/[?&]loja=([a-z0-9-]+)/) || [])[1], m = (q.match(/[?&]modelo=([a-z0-9-]+)/) || [])[1];
+  function load(src, next) { var s = document.createElement('script'); s.src = src; s.onload = next || null; s.onerror = function () { if (m) location.replace(location.pathname); }; document.body.appendChild(s); }
+  function aviso(t) { document.getElementById('app').innerHTML = '<div style="max-width:420px;margin:18vh auto;padding:0 16px;text-align:center;font-family:Outfit,system-ui,sans-serif"><h1 style="font-size:1.4rem">' + t + '</h1><p style="color:#6B617D">Confira o endereço ou fale com a loja.</p></div>'; }
+  if (loja) {
+    window.nourRpc('catalogo_publico', { p_slug: loja }).then(function (d) {
+      if (!d || !d.loja) return aviso('Loja não encontrada');
+      window.LOJA = Object.assign({ nome: d.nome }, d.loja, { id: d.slug, api: true, avaliacoes: d.avaliacoes || [] });
+      window.CATEGORIAS = d.categorias || []; window.PRODUTOS = d.produtos || [];
+      load('js/catalogo.js');
+    }).catch(function () { aviso('Não foi possível abrir a loja agora'); });
+  } else load(m ? 'modelos/' + m + '.js' : 'js/dados.js', function () { load('js/catalogo.js'); });
 })();
 </script>
 </body>
