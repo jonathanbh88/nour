@@ -7,6 +7,7 @@
   'use strict';
   var app = document.getElementById('app'), dlg = document.getElementById('dlg');
   var S = { slug: '', token: '', d: null, tab: 'inicio', q: '', cat: '', pst: 'novo', periodo: 30, cq: '' };
+  try { var temaSalvo = localStorage.getItem('nourpaineltema'); if (temaSalvo === 'dark' || temaSalvo === 'light') document.documentElement.setAttribute('data-theme', temaSalvo); } catch (e) {}
 
   /* ---------- utilidades ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -31,7 +32,9 @@
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', chat: '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.3A8.4 8.4 0 1 1 21 11.5z"/>', ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>', plus: '<path d="M12 5v14M5 12h14"/>', down: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
     alert: '<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>', repeat: '<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/>',
-    copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>', money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'
+    copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>', money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>', moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+    grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>', link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
   };
   function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + I[n] + '</svg>'; }
 
@@ -185,17 +188,50 @@
   }
   function lojaUrl() { return new URL('/loja/' + encodeURIComponent(S.slug) + '/', location.href).href; }
 
-  /* ---------- estrutura ---------- */
-  var TABS = [['inicio', 'Início', 'home'], ['produtos', 'Produtos e estoque', 'box'], ['pedidos', 'Pedidos', 'bag'], ['cupons', 'Cupons', 'tag'], ['analytics', 'Analytics', 'eye'],
-    ['relatorios', 'Relatórios', 'chart'], ['clientes', 'Clientes', 'users'], ['avaliacoes', 'Avaliações', 'star'], ['loja', 'Editar loja', 'brush'], ['acesso', 'Acesso', 'key']];
+  /* ---------- estrutura: menu em grupos, barra do topo e navegação de baixo no celular ---------- */
+  var GRUPOS = [['Visão geral', [['inicio', 'Início', 'home']]],
+    ['Vendas', [['pedidos', 'Pedidos', 'bag'], ['clientes', 'Clientes', 'users'], ['cupons', 'Cupons', 'tag']]],
+    ['Catálogo', [['produtos', 'Produtos e estoque', 'box'], ['avaliacoes', 'Avaliações', 'star']]],
+    ['Resultados', [['analytics', 'Analytics', 'eye'], ['relatorios', 'Relatórios', 'chart']]],
+    ['Configurações', [['loja', 'Editar loja', 'brush'], ['acesso', 'Acesso e links', 'key']]]];
+  var TELAS = { inicio: inicio, produtos: produtos, pedidos: pedidos, cupons: cupons, analytics: analytics, relatorios: relatorios, clientes: clientes, avaliacoes: avaliacoes, loja: loja, acesso: acesso };
+  var BAIXO = ['inicio', 'pedidos', 'produtos', 'clientes'];
+  function aba(id) { var r = null; GRUPOS.forEach(function (g) { g[1].forEach(function (t) { if (t[0] === id) r = { g: g[0], t: t }; }); }); return r || { g: '', t: [id, id, 'home'] }; }
+  // Números que pedem atenção, mostrados no menu.
+  function avisos() {
+    var d = S.d, esg = 0, sum = 0;
+    d.produtos.forEach(function (p) { if (p.ativo && !totalEst(p)) esg++; });
+    try { sum = baseClientes().filter(function (c) { return c.situacao === 'sumindo'; }).length; } catch (e) {}
+    return { pedidos: [d.pedidos.filter(function (p) { return p.status === 'novo'; }).length, ''], produtos: [esg, 'bad'], clientes: [sum, 'warn'] };
+  }
+  function itemMenu(t, av, cls) {
+    var n = av[t[0]];
+    return '<button type="button" class="' + cls + '" data-tab="' + t[0] + '"' + (S.tab === t[0] ? ' aria-current="page"' : '') + '><i>' + ic(t[2]) + '</i><span>' + t[1] + '</span>' + (n && n[0] ? '<em class="num ' + n[1] + '">' + n[0] + '</em>' : '') + '</button>';
+  }
+  function temaAtual() { return document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
   function render() {
-    var d = S.d, novos = d.pedidos.filter(function (p) { return p.status === 'novo'; }).length;
+    var d = S.d, av = avisos(), at = aba(S.tab);
     var init = String(d.nome || 'L').split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
-    app.innerHTML = '<div class="shell"><aside class="side"><div class="who"><span class="ring"><span class="in">' + esc(init) + '</span></span><span><b>' + esc(d.nome) + '</b><small>Painel do catálogo</small></span></div>' +
-      '<nav aria-label="Seções">' + TABS.map(function (t) { return '<button type="button" class="nv" data-tab="' + t[0] + '"' + (S.tab === t[0] ? ' aria-current="page"' : '') + '>' + ic(t[2]) + '<span>' + t[1] + '</span>' + (t[0] === 'pedidos' && novos ? '<em class="num">' + novos + '</em>' : '') + '</button>'; }).join('') + '</nav>' +
-      '<div class="sidefoot"><a class="nv" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + '<span>Ver minha loja</span></a><button type="button" class="nv" data-sair>' + ic('out') + '<span>Sair</span></button>' +
+    var L = d.loja || {};
+    app.innerHTML = '<div class="shell"><aside class="side"><div class="who"><span class="ring">' + (url(L.logo) ? '<img src="' + esc(url(L.logo)) + '" alt="">' : '<span class="in">' + esc(init) + '</span>') + '</span><span><b>' + esc(d.nome) + '</b><a href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener" class="on">Loja no ar</a></span></div>' +
+      '<nav aria-label="Seções">' + GRUPOS.map(function (g) { return '<div class="grp"><small>' + g[0] + '</small>' + g[1].map(function (t) { return itemMenu(t, av, 'nv'); }).join('') + '</div>'; }).join('') + '</nav>' +
+      '<div class="sidefoot"><a class="nv" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener"><i>' + ic('ext') + '</i><span>Ver minha loja</span></a><button type="button" class="nv" data-sair><i>' + ic('out') + '</i><span>Sair</span></button>' +
       parceiroRodape() + '</div></aside>' +
-      '<main class="main" id="main">' + ({ inicio: inicio, produtos: produtos, pedidos: pedidos, cupons: cupons, analytics: analytics, relatorios: relatorios, clientes: clientes, avaliacoes: avaliacoes, loja: loja, acesso: acesso })[S.tab]() + '</main></div>';
+      '<div class="area"><header class="topbar"><div class="crumb">' + (at.g ? '<span>' + at.g + '</span><i>›</i>' : '') + '<b>' + esc(at.t[1]) + '</b></div><span class="sp"></span>' +
+        '<button type="button" class="ib" data-tema aria-label="' + (temaAtual() === 'dark' ? 'Usar tema claro' : 'Usar tema escuro') + '">' + ic(temaAtual() === 'dark' ? 'sun' : 'moon') + '</button>' +
+        '<button type="button" class="btn ghost sm hide-s" data-copiar-link>' + ic('link') + 'Copiar link</button><a class="btn sm" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + '<span class="hide-s">Ver loja</span></a></header>' +
+      '<main class="main" id="main" data-tela="' + esc(S.tab) + '">' + TELAS[S.tab]() + '</main></div>' +
+      '<nav class="bnav" aria-label="Atalhos">' + BAIXO.map(function (id) { var t = aba(id).t; return itemMenu([t[0], t[1].split(' e ')[0], t[2]], av, 'bn'); }).join('') +
+        '<button type="button" class="bn" data-mais' + (BAIXO.indexOf(S.tab) < 0 ? ' aria-current="page"' : '') + '><i>' + ic('grid') + '</i><span>Mais</span></button></nav></div>';
+  }
+  // Menu completo no celular, em blocos por grupo.
+  function menuMais() {
+    var av = avisos();
+    dlg.innerHTML = '<div class="sheet sm menu-mais"><header><h2>Menu</h2><button type="button" class="x" data-fechar aria-label="Fechar">' + ic('x') + '</button></header><div class="body">' +
+      GRUPOS.map(function (g) { return '<section><small>' + g[0] + '</small><div class="tiles">' + g[1].map(function (t) { return itemMenu(t, av, 'tile'); }).join('') + '</div></section>'; }).join('') +
+      '<div class="tiles"><a class="tile" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener"><i>' + ic('ext') + '</i><span>Ver minha loja</span></a><button type="button" class="tile" data-sair><i>' + ic('out') + '</i><span>Sair</span></button></div>' +
+      parceiroRodape() + '</div></div>';
+    dlg.showModal();
   }
   // White label: rodapé do menu com a marca e o suporte do parceiro (sem parceiro, Nour).
   function parceiroRodape() {
@@ -249,7 +285,10 @@
     var passos = [[d.loja.whatsapp, 'WhatsApp de pedidos', 'loja'], [d.loja.logo, 'Logo da loja', 'loja'], [d.produtos.some(function (p) { return p.fotos && p.fotos.length; }), 'Fotos nos produtos', 'produtos'],
       [d.categorias.length, 'Categorias', 'produtos'], [(d.loja.novidades || {}).grupoWhatsapp, 'Link do grupo de promoções', 'loja']].filter(function (x) { return !x[0]; });
     var serie = serieDias(30, function (dd) { return soma(v30.filter(function (p) { return dia(p.criado) === dd; }), 'total'); });
-    return '<h1>Olá, ' + esc(d.nome) + '</h1><p class="sub">Resumo dos últimos 30 dias</p>' +
+    var h = new Date().getHours(), saud = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+    return '<section class="boasvindas"><div><small>' + saud + '</small><h1>' + esc(d.nome) + '</h1><p>Resumo dos últimos 30 dias da sua loja.</p></div>' +
+      '<div class="atalhos"><button type="button" data-novo-prod>' + ic('plus') + 'Novo produto</button><button type="button" data-tab="pedidos">' + ic('bag') + 'Pedidos' + (novos.length ? ' <em class="num">' + novos.length + '</em>' : '') + '</button>' +
+      '<button type="button" data-tab="clientes">' + ic('users') + 'Clientes</button><button type="button" data-copiar-link>' + ic('link') + 'Copiar link</button></div></section>' +
       (passos.length ? '<div class="card todo"><h2>Falta pouco para a loja ficar completa</h2><ul>' + passos.map(function (x) { return '<li><button type="button" class="link" data-tab="' + x[2] + '">' + esc(x[1]) + '</button></li>'; }).join('') + '</ul></div>' : '') +
       '<div class="kpis">' + kpi('Vendas confirmadas', brl(fat), v30.length + (v30.length === 1 ? ' pedido' : ' pedidos'), 'money') + kpi('Pedidos novos', num(novos.length), novos.length ? 'Confirme para baixar o estoque' : 'Nenhum esperando', 'bag') +
         kpi('Ticket médio', brl(v30.length ? fat / v30.length : 0), '', 'tag') + kpi('Visitas na loja', num(vis), vis ? 'Conversão ' + (v30.length / vis * 100).toFixed(1).replace('.', ',') + '%' : 'Contadas após o aceite de cookies', 'eye') + '</div>' +
@@ -385,7 +424,7 @@
     var d = S.d, c = {}; d.pedidos.forEach(function (p) { c[p.status] = (c[p.status] || 0) + 1; });
     var lista = d.pedidos.filter(function (p) { return S.pst === 'todos' || p.status === S.pst; });
     return '<div class="head"><div><h1>Pedidos</h1><p class="sub">Os pedidos chegam pelo WhatsApp e ficam registrados aqui. Ao confirmar, o estoque é baixado; ao cancelar, ele volta.</p></div>' + expBtns('pedidos') + '</div>' +
-      '<div class="chips">' + [['novo', 'Novos'], ['confirmado', 'Confirmados'], ['enviado', 'Enviados'], ['entregue', 'Entregues'], ['cancelado', 'Cancelados'], ['todos', 'Todos']].map(function (x) {
+      '<div class="chips stt">' + [['novo', 'Novos'], ['confirmado', 'Confirmados'], ['enviado', 'Enviados'], ['entregue', 'Entregues'], ['cancelado', 'Cancelados'], ['todos', 'Todos']].map(function (x) {
         return '<button type="button" class="chip" data-pst="' + x[0] + '" aria-pressed="' + (S.pst === x[0]) + '">' + x[1] + ' <span class="num">' + (x[0] === 'todos' ? d.pedidos.length : c[x[0]] || 0) + '</span></button>'; }).join('') + '</div>' +
       (lista.length ? lista.map(pedidoCard).join('') : '<p class="empty">Nenhum pedido aqui.</p>');
   }
@@ -1008,7 +1047,7 @@
   /* ---------- acesso ---------- */
   function acesso() {
     var painel = new URL('./?loja=' + encodeURIComponent(S.slug), location.href).href;
-    return '<h1>Acesso</h1><p class="sub">Links para divulgar e o código que protege este painel.</p>' +
+    return '<div class="head"><div><h1>Acesso e links</h1><p class="sub">Links para divulgar e o código que protege este painel.</p></div></div>' +
       '<div class="card"><h2>Link da loja</h2><div class="copy"><input readonly id="lnkLoja" value="' + esc(lojaUrl()) + '" aria-label="Link da loja"><button type="button" class="btn ghost" data-copy="lnkLoja">Copiar</button></div><p class="note">Coloque este link no Bio Site, no Instagram e no WhatsApp.</p></div>' +
       '<div class="card"><h2>Link do painel</h2><div class="copy"><input readonly id="lnkPainel" value="' + esc(painel) + '" aria-label="Link do painel"><button type="button" class="btn ghost" data-copy="lnkPainel">Copiar</button></div><p class="note">O link não abre o painel sozinho: pede o código de acesso.</p></div>' +
       '<div class="card"><h2>Código de acesso</h2><p>Troque o código se alguém que não deveria tiver acesso. Quem estiver com o código antigo perde o acesso na hora.</p><div id="novoCod"></div><button type="button" class="btn danger ghost" data-trocar>Gerar novo código</button></div>' +
@@ -1067,8 +1106,11 @@
   document.addEventListener('click', function (ev) {
     var t = ev.target, b;
     if (t === dlg || t.closest('[data-fechar]')) { dlg.close(); ed = null; tr = null; return; }
-    if ((b = t.closest('[data-tab]'))) { S.tab = b.getAttribute('data-tab'); render(); window.scrollTo(0, 0); return; }
-    if (t.closest('[data-sair]')) { esquecer(); S.d = null; S.token = ''; login(); return; }
+    if ((b = t.closest('[data-tab]'))) { if (dlg.open) dlg.close(); S.tab = b.getAttribute('data-tab'); render(); window.scrollTo(0, 0); return; }
+    if (t.closest('[data-mais]')) return menuMais();
+    if (t.closest('[data-tema]')) { var novo = temaAtual() === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', novo); try { localStorage.setItem('nourpaineltema', novo); } catch (e) {} render(); return; }
+    if (t.closest('[data-copiar-link]')) { (navigator.clipboard ? navigator.clipboard.writeText(lojaUrl()) : Promise.reject()).then(function () { toast('Link da loja copiado'); }, function () { prompt('Copie o link:', lojaUrl()); }); return; }
+    if (t.closest('[data-sair]')) { if (dlg.open) dlg.close(); esquecer(); S.d = null; S.token = ''; login(); return; }
     if ((b = t.closest('[data-edit]'))) { if (S.tab !== 'produtos') { S.tab = 'produtos'; render(); } editarProduto(b.getAttribute('data-edit')); return; }
     if (t.closest('[data-novo-prod]')) { if (S.plano && S.plano.limites && S.d.produtos.length >= S.plano.limites.produtos) return toast(ERROS.limite_plano); return editarProduto(null); }
     if ((b = t.closest('[data-edit-cat]'))) return editarCategoria(b.getAttribute('data-edit-cat'));
