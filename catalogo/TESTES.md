@@ -205,6 +205,12 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Produtos: o botão de copiar (na lista ou dentro do editor) abre uma cópia "(cópia)", sem código, com estoque zerado e oculta; só é criada ao salvar e respeita o limite do plano.
 - [ ] Movimentos de estoque com entradas em verde e saídas em vermelho, e exportação Excel/PDF.
 
+## 17. Topo, rodapé e pagamento na loja
+
+- [ ] Faixa de contato do topo alinhada ao cabeçalho: atendimento pelo WhatsApp e e-mail à esquerda, Instagram/WhatsApp/e-mail juntos à direita (some no celular).
+- [ ] Rodapé com "Formas de pagamento" (as marcadas no painel), parcelas sem juros e desconto no Pix.
+- [ ] White label: com "Mostrar o Instagram/WhatsApp do parceiro" ligados, os ícones aparecem ao lado de "Feito por"; desligados, somem.
+
 ## Fora deste teste (próximas fases)
 
 - Pagamento online (Mercado Pago) e frete calculado (Melhor Envio).

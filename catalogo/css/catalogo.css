@@ -43,10 +43,21 @@ img{max-width:100%}
 .tick span{margin:0 14px}
 .tick span:nth-child(even){color:var(--p3)}
 @keyframes marq{to{transform:translateX(-50%)}}
-.info{display:flex;align-items:center;gap:18px;font-size:.8rem;color:var(--muted);padding-block:6px;border-bottom:1px solid var(--line);max-width:none}
+.info{font-size:.8rem;color:var(--muted);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--p1) 4%,var(--card))}
+.info .wrap{display:flex;align-items:center;gap:22px;padding-block:5px}
 .info a,.info span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.info a:hover{color:var(--ink)}
+.info b{color:var(--ink);font-weight:600}
 .info svg{width:15px;height:15px}
 .info .r{margin-left:auto}
+.info .soc{width:26px;height:26px}.info .soc svg{width:14px;height:14px}
+@media (max-width:640px){.info{display:none}}
+.socs{display:inline-flex;gap:8px;align-items:center}
+.soc{width:36px;height:36px;border-radius:50%;display:inline-grid;place-items:center;border:1px solid var(--line);color:var(--ink);background:var(--card);transition:background .15s,color .15s,border-color .15s}
+.soc svg{width:17px;height:17px}
+.soc:hover{background:var(--p1);border-color:var(--p1);color:var(--hi)}
+.soc.sm{width:26px;height:26px}.soc.sm svg{width:13px;height:13px}
+.about .socs{margin:4px 0 6px}
 .nav{display:flex;align-items:center;gap:22px;padding-block:12px}
 .logo{display:flex;align-items:center;gap:10px;min-width:0;flex:none}
 .logo b{font-family:var(--fh);font-size:1.3rem;line-height:1.1;white-space:nowrap}
@@ -499,3 +510,13 @@ main.seo{max-width:960px;margin:0 auto;padding:24px 16px;font-family:Outfit,syst
 .saz-blackfriday .hero .kick{background:#FFD400;color:#111;font-weight:800}
 .saz-blackfriday .tick{background:#111;color:#FFD400}
 .saz-blackfriday .tag{background:#FFD400;color:#111}
+
+/* formas de pagamento no rodapé */
+.pays{display:flex;justify-content:space-between;align-items:flex-end;gap:18px 32px;flex-wrap:wrap;padding-block:22px;border-top:1px solid var(--line)}
+.pchips{display:flex;flex-wrap:wrap;gap:8px}
+.pchip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;font-size:.85rem;font-weight:600;background:var(--bg)}
+.pchip svg{width:17px;height:17px;color:var(--p1)}
+.pinfo{display:grid;gap:6px;font-size:.88rem;color:var(--muted)}
+.pinfo span{display:flex;align-items:center;gap:8px}.pinfo svg{width:17px;height:17px;color:var(--ink);flex:none}
+.pinfo b{color:var(--ink)}
+.madeby a{display:inline-flex;align-items:center;gap:8px}

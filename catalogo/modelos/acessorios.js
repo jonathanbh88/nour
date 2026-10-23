@@ -106,7 +106,7 @@ window.LOJA = {
   ],
   "descontoPix": 5,
   "parcelas": 5,
-  "freteGratisAcima": 299,
+  "freteGratisAcima": 149,
   "rotulos": {
     "cor": "Cor",
     "tamanho": "Tamanho"

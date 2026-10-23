@@ -64,6 +64,8 @@
     list: '<rect x="4" y="4" width="6" height="6" rx="1.5"/><path d="M13 7h7"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M13 17h7"/>',
     envio: '<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',
     pix: '<path d="m12 3 9 9-9 9-9-9z"/><path d="m8 12 4-4 4 4-4 4z"/>',
+    card: '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/>', cash: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>',
+    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>', barcode: '<path d="M4 5v14M7 5v14M11 5v14M14 5v14M17 5v14M20 5v14"/>',
     seguro: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
     troca: '<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
     go: '<path d="M9 5l7 7-7 7"/>',
@@ -236,9 +238,9 @@
     var n = count();
     return '<div class="topo">' +
       (L.faixa && L.faixa.length ? '<div class="tick" aria-hidden="true"><div>' + [1, 2, 3, 4].map(function () { return L.faixa.map(function (t) { return '<span>' + esc(t) + '</span><span>✦</span>'; }).join(''); }).join('') + '</div></div>' : '') +
-      '<div class="info wrap"><a href="' + wa('Olá! Vim pelo catálogo.') + '" target="_blank" rel="noopener">' + ic('chat') + 'WhatsApp</a>' +
-        (L.telefone ? '<span class="num">' + esc(L.telefone) + '</span>' : '') + (L.email ? '<span class="hide-s">' + esc(L.email) + '</span>' : '') +
-        (L.instagram ? '<a class="r" href="https://instagram.com/' + encodeURIComponent(L.instagram) + '" target="_blank" rel="noopener">' + ic('ig') + '@' + esc(L.instagram) + '</a>' : '') + '</div>' +
+      '<div class="info"><div class="wrap"><a href="' + wa('Olá! Vim pelo catálogo.') + '" target="_blank" rel="noopener">' + ic('chat') + 'Atendimento pelo WhatsApp' + (L.telefone ? ' <b class="num">' + esc(L.telefone) + '</b>' : '') + '</a>' +
+        (L.email ? '<a class="hide-s" href="mailto:' + esc(L.email) + '">' + ic('mail') + esc(L.email) + '</a>' : '') +
+        '<span class="r">' + redes('Siga a loja') + '</span></div></div>' +
       '<header class="nav wrap"><a class="logo" href="#"><span class="ring"><span class="in">' + (L.logo ? '<img src="' + esc(url(L.logo)) + '" alt="">' : esc(initials(L.nome))) + '</span></span><b>' + esc(L.nome) + '</b></a>' +
       '<nav class="cats" aria-label="Categorias">' + CATS.map(function (c) { return '<a href="#c-' + esc(c.id) + '">' + esc(c.nome) + '</a>'; }).join('') + '</nav>' +
       '<label class="search">' + ic('search') + '<input id="q" type="search" placeholder="Buscar" autocomplete="off" aria-label="Buscar produtos"></label>' +
@@ -381,13 +383,31 @@
     return '<div class="wrap mapa"><iframe src="https://www.google.com/maps?q=' + q + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: ' + esc(L.endereco) + '"></iframe>' +
       '<a class="cta ghost" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener">' + ic('pin') + 'Como chegar</a></div>';
   }
+  // Redes da loja lado a lado (Instagram e WhatsApp sempre juntos).
+  function redes(rot) {
+    return '<span class="socs" aria-label="' + esc(rot) + '">' + (L.instagram ? '<a class="soc" href="https://instagram.com/' + encodeURIComponent(L.instagram) + '" target="_blank" rel="noopener" aria-label="Instagram @' + esc(L.instagram) + '">' + ic('ig') + '</a>' : '') +
+      '<a class="soc" href="' + wa('Olá! Vim pelo catálogo.') + '" target="_blank" rel="noopener" aria-label="WhatsApp">' + ic('chat') + '</a>' +
+      (L.email ? '<a class="soc" href="mailto:' + esc(L.email) + '" aria-label="E-mail">' + ic('mail') + '</a>' : '') + '</span>';
+  }
+  var PAGIC = { 'pix': 'pix', 'cartão de crédito': 'card', 'cartão de débito': 'card', 'link de pagamento': 'link', 'dinheiro': 'cash', 'boleto': 'barcode' };
+  // Formas de pagamento e parcelamento no rodapé.
+  function pagamentos() {
+    var ps = L.pagamentos || []; if (!ps.length && !(L.parcelas > 1) && !L.descontoPix) return '';
+    return '<div class="wrap pays"><div><h4>Formas de pagamento</h4><div class="pchips">' + ps.map(function (x) { return '<span class="pchip">' + ic(PAGIC[String(x).toLowerCase()] || 'card') + esc(x) + '</span>'; }).join('') + '</div></div>' +
+      '<div class="pinfo">' + (L.parcelas > 1 ? '<span>' + ic('card') + '<b>Até ' + L.parcelas + 'x sem juros</b> no cartão</span>' : '') +
+        (L.descontoPix ? '<span>' + ic('pix') + '<b>' + L.descontoPix + '% de desconto</b> no Pix</span>' : '') +
+        '<span>' + ic('seguro') + 'Compra combinada e confirmada pelo WhatsApp</span></div></div>';
+  }
   function footer() {
     var parc = L.parceiro || {}, lk = L.links || {}, hasH = L.horarios && Object.keys(L.horarios).length;
-    var made = parc.nome || parc.logo ? '<a class="madeby"' + (parc.link ? ' href="' + esc(url(parc.link)) + '" target="_blank" rel="noopener"' : '') + '>Feito por ' + (parc.logo ? '<img src="' + esc(url(parc.logo)) + '" alt="' + esc(parc.nome || '') + '">' : '<b>' + esc(parc.nome) + '</b>') + '</a>' : '<span></span>';
+    var pIg = parc.rodapeIg && /^[A-Za-z0-9._]{1,30}$/.test(parc.instagram || '') ? parc.instagram : '', pZap = parc.rodapeZap ? String(parc.whatsapp || parc.suporte || '').replace(/\D/g, '') : '';
+    var made = parc.nome || parc.logo ? '<span class="madeby"><a' + (parc.link ? ' href="' + esc(url(parc.link)) + '" target="_blank" rel="noopener"' : '') + '>Feito por ' + (parc.logo ? '<img src="' + esc(url(parc.logo)) + '" alt="' + esc(parc.nome || '') + '">' : '<b>' + esc(parc.nome) + '</b>') + '</a>' +
+      (pIg ? '<a class="soc sm" href="https://instagram.com/' + encodeURIComponent(pIg) + '" target="_blank" rel="noopener" aria-label="Instagram de ' + esc(parc.nome || 'quem fez') + '">' + ic('ig') + '</a>' : '') +
+      (pZap.length >= 10 ? '<a class="soc sm" href="https://wa.me/' + (pZap.length <= 11 ? '55' : '') + pZap + '?text=' + encodeURIComponent('Olá! Vi o catálogo da ' + L.nome + ' e quero um catálogo assim.') + '" target="_blank" rel="noopener" aria-label="WhatsApp de ' + esc(parc.nome || 'quem fez') + '">' + ic('chat') + '</a>' : '') + '</span>' : '<span></span>';
     return '<footer class="foot-c"><div class="wrap cols4">' +
       '<div class="about">' + (L.logo ? '<img class="flogo" src="' + esc(url(L.logo)) + '" alt="' + esc(L.nome) + '">' : '<b class="fname">' + esc(L.nome) + '</b>') +
         '<p>' + esc(L.sobre || L.slogan || '') + '</p>' +
-        (L.instagram ? '<a class="ln" href="https://instagram.com/' + encodeURIComponent(L.instagram) + '" target="_blank" rel="noopener">' + ic('ig') + '@' + esc(L.instagram) + '</a>' : '') +
+        redes('Redes da loja') +
         (L.tema === 'claro' || L.tema === 'escuro' ? '' : '<button type="button" class="ln themeb" data-tema-f>Tema ' + ic(isDark() ? 'sun' : 'moon') + '</button>') + '</div>' +
       '<div><h4>Categorias</h4>' + CATS.map(function (c) { return '<a class="ln" href="#c-' + esc(c.id) + '">' + esc(c.nome) + '</a>'; }).join('') + '</div>' +
       '<div><h4>Contato</h4><a class="ln" href="' + wa('Olá! Vim pelo catálogo.') + '" target="_blank" rel="noopener">' + ic('chat') + '<span class="num">' + esc(L.telefone || 'WhatsApp') + '</span></a>' +
@@ -397,7 +417,7 @@
       '<div><h4>' + ic('clock') + 'Atendimento</h4>' + (hasH ? '<div class="hrs">' + hoursRows() + '</div>' : '') +
         (L.freteGratisAcima ? '<span class="ln">' + ic('envio') + 'Frete grátis para todo o Brasil acima de ' + brl(L.freteGratisAcima) + '</span>' : '') +
         '<span class="ln">' + ic('chat') + 'Respondemos em poucos minutos pelo WhatsApp</span><small class="fin">Compra finalizada pelo WhatsApp.</small></div>' +
-      '</div>' + mapa() + '<div class="bottom"><div class="wrap">' + made + '<nav>' +
+      '</div>' + pagamentos() + mapa() + '<div class="bottom"><div class="wrap">' + made + '<nav>' +
         (L.cookies ? '<button type="button" class="lk" data-cookies-reabrir>Cookies e privacidade</button>' : '') +
         (lk.termos ? '<a href="' + esc(url(lk.termos)) + '" target="_blank" rel="noopener">Termos de uso</a>' : '') +
         (lk.privacidade || L.politica ? '<a href="' + esc(url(lk.privacidade || L.politica)) + '" target="_blank" rel="noopener">Política de privacidade</a>' : '') +

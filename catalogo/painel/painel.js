@@ -933,7 +933,9 @@
       // 5. Publicar
       sec('Link da loja', '<div class="copy"><input readonly id="lnkLoja2" value="' + esc(lojaUrl()) + '" aria-label="Link da loja"><button type="button" class="btn ghost" data-copy="lnkLoja2">Copiar</button><a class="btn ghost" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + 'Abrir</a></div>') +
       sec('Privacidade (LGPD)', chk('k_cook', 'Mostrar o aviso de cookies', L.cookies !== false) + '<div class="g2">' + fld('k_termos', 'Link dos termos de uso', lk.termos, ' type="url"') + fld('k_priv', 'Link da política de privacidade', lk.privacidade, ' type="url"') + '</div>') +
-      sec('White label', '<div class="g3">' + fld('w_nome', 'Nome do parceiro', pc.nome, ' maxlength="40"') + fldFoto('w_logo', 'Logo do parceiro', pc.logo, 'logo') + fld('w_link', 'Site do parceiro', pc.link, ' type="url"') + '</div>' + fld('w_sup', 'WhatsApp de suporte do parceiro (aparece no painel do lojista)', pc.suporte, ' inputmode="tel"'), 'Quem aparece em “Feito por” no rodapé da loja e no painel. Sem nome, fica Nour.')
+      sec('White label', '<div class="g3">' + fld('w_nome', 'Nome do parceiro', pc.nome, ' maxlength="40"') + fldFoto('w_logo', 'Logo do parceiro', pc.logo, 'logo') + fld('w_link', 'Site do parceiro', pc.link, ' type="url"') + '</div>' + fld('w_sup', 'WhatsApp de suporte do parceiro (aparece no painel do lojista)', pc.suporte, ' inputmode="tel"') +
+        '<div class="g2">' + fld('w_ig', 'Instagram do parceiro (sem @)', pc.instagram, ' maxlength="30"') + fld('w_zap', 'WhatsApp do parceiro no rodapé (vazio = o de suporte)', pc.whatsapp, ' inputmode="tel"') + '</div>' +
+        '<div class="checks">' + chk('w_rig', 'Mostrar o Instagram do parceiro no rodapé da loja', pc.rodapeIg) + chk('w_rzap', 'Mostrar o WhatsApp do parceiro no rodapé da loja', pc.rodapeZap) + '</div>', 'Quem aparece em “Feito por” no rodapé da loja e no painel. Sem nome, fica Nour.')
     ];
     return '<div class="head"><div><h1>Editar loja</h1><p class="sub">Siga as etapas. A prévia ao lado mostra como fica antes de salvar.</p></div><a class="btn ghost" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + 'Ver loja</a></div>' +
       '<div class="ed2"><form id="floja" class="stack" novalidate>' + wzBar() +
@@ -993,7 +995,7 @@
       entrega: ENTREGAS.filter(function (e) { return val('e_' + e[0]); }),
       pagamentos: PAGS.filter(function (p, i) { return val('pg' + i); }),
       cookies: val('k_cook'), links: { termos: url(val('k_termos')), privacidade: url(val('k_priv')) },
-      parceiro: { nome: val('w_nome'), logo: url(val('w_logo')), link: url(val('w_link')), suporte: val('w_sup').replace(/\D/g, '') }
+      parceiro: { nome: val('w_nome'), logo: url(val('w_logo')), link: url(val('w_link')), suporte: val('w_sup').replace(/\D/g, ''), instagram: val('w_ig').replace(/^@/, '').replace(/[^A-Za-z0-9._]/g, '').slice(0, 30), whatsapp: val('w_zap').replace(/\D/g, ''), rodapeIg: !!val('w_rig'), rodapeZap: !!val('w_rzap') }
     });
     return L;
   }
