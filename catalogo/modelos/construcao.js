@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Mande a lista pelo WhatsApp e receba cimento, tinta e ferramentas na obra.",
     "botao": "Pedir orçamento",
     "categoria": "basico",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -162,7 +163,7 @@ window.CATEGORIAS = [
     "chamada": "A base firme de toda obra",
     "desenho": "racao",
     "cor": "#9AA1A9",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/29519165/pexels-photo-29519165.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "tintas",
@@ -170,7 +171,7 @@ window.CATEGORIAS = [
     "chamada": "Acabamento bonito que dura",
     "desenho": "tinta",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/1669754/pexels-photo-1669754.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "ferramentas",
@@ -178,7 +179,7 @@ window.CATEGORIAS = [
     "chamada": "Trabalho rápido e bem feito",
     "desenho": "ferramenta",
     "cor": "#B32F45",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/5357150/pexels-photo-5357150.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "eletrica",
@@ -186,7 +187,7 @@ window.CATEGORIAS = [
     "chamada": "Instalação segura do início ao fim",
     "desenho": "caixa",
     "cor": "#F2C14E",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/29301874/pexels-photo-29301874.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -231,7 +232,11 @@ window.PRODUTOS = [
         "variacao": "Cinza · 50 kg"
       }
     ],
-    "composicao": "Saco 50 kg, cimento Portland composto CP II"
+    "composicao": "Saco 50 kg, cimento Portland composto CP II",
+    "fotos": [
+      "https://images.pexels.com/photos/29519165/pexels-photo-29519165.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/16468074/pexels-photo-16468074.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -267,7 +272,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Saco 20 kg, argamassa colante tipo AC II"
+    "composicao": "Saco 20 kg, argamassa colante tipo AC II",
+    "fotos": [
+      "https://images.pexels.com/photos/29181494/pexels-photo-29181494.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5691640/pexels-photo-5691640.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -324,7 +333,11 @@ window.PRODUTOS = [
         "variacao": "Branco · 18 L"
       }
     ],
-    "composicao": "Lata 18 L, tinta acrílica fosca, rende até 380 m² por demão"
+    "composicao": "Lata 18 L, tinta acrílica fosca, rende até 380 m² por demão",
+    "fotos": [
+      "https://images.pexels.com/photos/6474309/pexels-photo-6474309.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/1669754/pexels-photo-1669754.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -364,7 +377,11 @@ window.PRODUTOS = [
         "variacao": "Branco · 25 kg"
       }
     ],
-    "composicao": "Lata 25 kg, massa PVA para áreas internas"
+    "composicao": "Lata 25 kg, massa PVA para áreas internas",
+    "fotos": [
+      "https://images.pexels.com/photos/5691603/pexels-photo-5691603.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5691613/pexels-photo-5691613.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -399,7 +416,11 @@ window.PRODUTOS = [
         "variacao": "Azul"
       }
     ],
-    "composicao": "650 W, mandril 1/2 pol, garantia de 12 meses"
+    "composicao": "650 W, mandril 1/2 pol, garantia de 12 meses",
+    "fotos": [
+      "https://images.pexels.com/photos/30413424/pexels-photo-30413424.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8821538/pexels-photo-8821538.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -439,7 +460,11 @@ window.PRODUTOS = [
         "variacao": "Vermelho"
       }
     ],
-    "composicao": "Hastes em aço cromo-vanádio, cabo bimaterial"
+    "composicao": "Hastes em aço cromo-vanádio, cabo bimaterial",
+    "fotos": [
+      "https://images.pexels.com/photos/914913/pexels-photo-914913.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5357150/pexels-photo-5357150.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -482,7 +507,11 @@ window.PRODUTOS = [
         "variacao": "Azul"
       }
     ],
-    "composicao": "Rolo 100 m, cobre flexível com isolação PVC 750 V"
+    "composicao": "Rolo 100 m, cobre flexível com isolação PVC 750 V",
+    "fotos": [
+      "https://images.pexels.com/photos/4480541/pexels-photo-4480541.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/12266914/pexels-photo-12266914.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -524,6 +553,10 @@ window.PRODUTOS = [
         "variacao": "Branco"
       }
     ],
-    "composicao": "Barra 6 m, PVC rígido série normal 100 mm"
+    "composicao": "Barra 6 m, PVC rígido série normal 100 mm",
+    "fotos": [
+      "https://images.pexels.com/photos/29301874/pexels-photo-29301874.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/29226620/pexels-photo-29226620.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

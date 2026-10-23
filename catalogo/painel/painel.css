@@ -69,7 +69,7 @@ legend small{font-weight:400;color:var(--muted)}
 .nav2{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
 .modelos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;max-height:52vh;overflow:auto;padding:2px}
 .mod{border:2px solid var(--line);border-radius:16px;background:var(--card);padding:0 0 10px;text-align:left;overflow:hidden;display:flex;flex-direction:column;gap:2px}
-.mod .top{display:block;height:44px;margin-bottom:6px}
+.mod .top{display:block;height:72px;margin-bottom:6px;position:relative;overflow:hidden;border-radius:10px}.mod .top img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mod b,.mod small{padding:0 10px}
 .mod small{color:var(--muted);font-size:.76rem}
 .mod[aria-pressed="true"]{border-color:var(--p1);box-shadow:0 0 0 3px color-mix(in srgb,var(--p1) 25%,transparent)}

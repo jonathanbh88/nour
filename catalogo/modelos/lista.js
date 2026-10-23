@@ -17,7 +17,8 @@ window.MODELOS = [
       "Calças e saias",
       "Casacos",
       "Acessórios"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/4947543/pexels-photo-4947543.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "moda-masculina",
@@ -36,7 +37,8 @@ window.MODELOS = [
       "Bermudas",
       "Moletons",
       "Acessórios"
-    ]
+    ],
+    "foto": "https://images.unsplash.com/photo-1495385645691-cdb15d6899b3?auto=format&fit=crop&w=600&h=400&q=70"
   },
   {
     "id": "moda-infantil",
@@ -54,7 +56,8 @@ window.MODELOS = [
       "Menino",
       "Bebê",
       "Calçados"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/13758357/pexels-photo-13758357.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "calcados",
@@ -72,7 +75,8 @@ window.MODELOS = [
       "Corrida",
       "Sandálias",
       "Sapatos sociais"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/30824499/pexels-photo-30824499.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "acessorios",
@@ -90,7 +94,8 @@ window.MODELOS = [
       "Colares",
       "Bolsas",
       "Óculos de sol"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/7679654/pexels-photo-7679654.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "joias-relogios",
@@ -108,7 +113,8 @@ window.MODELOS = [
       "Anéis",
       "Colares",
       "Relógios"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/20858959/pexels-photo-20858959.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "otica",
@@ -126,7 +132,8 @@ window.MODELOS = [
       "Armações de grau",
       "Lentes de contato",
       "Acessórios"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/5766564/pexels-photo-5766564.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "cosmeticos",
@@ -144,7 +151,8 @@ window.MODELOS = [
       "Maquiagem",
       "Skincare",
       "Kits presente"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/30999189/pexels-photo-30999189.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "suplementos",
@@ -163,7 +171,8 @@ window.MODELOS = [
       "Creatina",
       "Aminoácidos",
       "Vitaminas"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/5327555/pexels-photo-5327555.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "celulares",
@@ -181,7 +190,8 @@ window.MODELOS = [
       "Carregadores",
       "Fones",
       "Películas"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/374117/pexels-photo-374117.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "moveis",
@@ -199,7 +209,8 @@ window.MODELOS = [
       "Quarto",
       "Cozinha",
       "Escritório"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/20390760/pexels-photo-20390760.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "papelaria",
@@ -217,7 +228,8 @@ window.MODELOS = [
       "Escrita",
       "Presentes",
       "Personalizados"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/5088008/pexels-photo-5088008.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "variedades",
@@ -235,7 +247,8 @@ window.MODELOS = [
       "Cozinha",
       "Presentes",
       "Brinquedos"
-    ]
+    ],
+    "foto": "https://images.unsplash.com/photo-1591023960577-c0f250391afb?auto=format&fit=crop&w=600&h=400&q=70"
   },
   {
     "id": "pet-shop",
@@ -253,7 +266,8 @@ window.MODELOS = [
       "Petiscos",
       "Brinquedos",
       "Higiene"
-    ]
+    ],
+    "foto": "https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=600&h=400&q=70"
   },
   {
     "id": "floricultura",
@@ -271,7 +285,8 @@ window.MODELOS = [
       "Arranjos",
       "Cestas",
       "Plantas"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/947914/pexels-photo-947914.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "mercadinho",
@@ -289,7 +304,8 @@ window.MODELOS = [
       "Carnes e frios",
       "Mercearia",
       "Limpeza"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/35206311/pexels-photo-35206311.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "adega",
@@ -307,7 +323,8 @@ window.MODELOS = [
       "Vinhos",
       "Destilados",
       "Tabacaria"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/15945661/pexels-photo-15945661.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "agua-gas",
@@ -324,7 +341,8 @@ window.MODELOS = [
       "Gás de cozinha",
       "Água mineral",
       "Acessórios"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/12203654/pexels-photo-12203654.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "construcao",
@@ -342,7 +360,8 @@ window.MODELOS = [
       "Tintas",
       "Ferramentas",
       "Elétrica e hidráulica"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   },
   {
     "id": "autopecas",
@@ -360,6 +379,7 @@ window.MODELOS = [
       "Óleo e filtros",
       "Baterias",
       "Pneus"
-    ]
+    ],
+    "foto": "https://images.pexels.com/photos/8986070/pexels-photo-8986070.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=400"
   }
 ];

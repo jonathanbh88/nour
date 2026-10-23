@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Suplementos com nota fiscal para complementar sua alimentação. Peça pelo WhatsApp.",
     "botao": "Montar meu pedido",
     "categoria": "proteinas",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/5327555/pexels-photo-5327555.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/5327555/pexels-photo-5327555.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -167,7 +168,7 @@ window.CATEGORIAS = [
     "chamada": "Proteína prática para o dia a dia",
     "desenho": "pote",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/5078582/pexels-photo-5078582.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "hipercaloricos",
@@ -175,7 +176,7 @@ window.CATEGORIAS = [
     "chamada": "Mais calorias com praticidade",
     "desenho": "racao",
     "cor": "#2F6B4F",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/5946722/pexels-photo-5946722.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "creatina",
@@ -183,7 +184,7 @@ window.CATEGORIAS = [
     "chamada": "Apoio para treinos intensos",
     "desenho": "racao",
     "cor": "#1D1F23",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/10994727/pexels-photo-10994727.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "aminoacidos",
@@ -191,7 +192,7 @@ window.CATEGORIAS = [
     "chamada": "Complemento para sua rotina",
     "desenho": "garrafa",
     "cor": "#E0607E",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/8844557/pexels-photo-8844557.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "vitaminas",
@@ -199,7 +200,7 @@ window.CATEGORIAS = [
     "chamada": "Nutrientes para o seu dia",
     "desenho": "garrafa",
     "cor": "#5B3B8C",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/17820719/pexels-photo-17820719.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -250,7 +251,11 @@ window.PRODUTOS = [
         "variacao": "Chocolate · 900 g"
       }
     ],
-    "composicao": "Pote 900 g, whey protein isolado"
+    "composicao": "Pote 900 g, whey protein isolado",
+    "fotos": [
+      "https://images.pexels.com/photos/4378525/pexels-photo-4378525.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5078582/pexels-photo-5078582.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -296,7 +301,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Pote 300 g, creatina monohidratada"
+    "composicao": "Pote 300 g, creatina monohidratada",
+    "fotos": [
+      "https://images.pexels.com/photos/10994727/pexels-photo-10994727.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5078594/pexels-photo-5078594.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -343,7 +352,11 @@ window.PRODUTOS = [
         "variacao": "Chocolate · 3 kg"
       }
     ],
-    "composicao": "Pacote 3 kg, carboidratos e proteínas"
+    "composicao": "Pacote 3 kg, carboidratos e proteínas",
+    "fotos": [
+      "https://images.pexels.com/photos/6341422/pexels-photo-6341422.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5946722/pexels-photo-5946722.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -386,7 +399,11 @@ window.PRODUTOS = [
         "variacao": "Natural · 300 g"
       }
     ],
-    "composicao": "Pote 300 g, L-glutamina em pó"
+    "composicao": "Pote 300 g, L-glutamina em pó",
+    "fotos": [
+      "https://images.pexels.com/photos/10994727/pexels-photo-10994727.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8844557/pexels-photo-8844557.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -433,7 +450,11 @@ window.PRODUTOS = [
         "variacao": "Limão · 300 g"
       }
     ],
-    "composicao": "Pote 300 g, colágeno hidrolisado"
+    "composicao": "Pote 300 g, colágeno hidrolisado",
+    "fotos": [
+      "https://images.pexels.com/photos/13787561/pexels-photo-13787561.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/27305404/pexels-photo-27305404.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -475,7 +496,11 @@ window.PRODUTOS = [
         "variacao": "Chocolate · 900 g"
       }
     ],
-    "composicao": "Pote 900 g, whey protein concentrado"
+    "composicao": "Pote 900 g, whey protein concentrado",
+    "fotos": [
+      "https://images.pexels.com/photos/4378601/pexels-photo-4378601.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5946722/pexels-photo-5946722.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -510,7 +535,11 @@ window.PRODUTOS = [
         "variacao": "Limão · 120 caps"
       }
     ],
-    "composicao": "Pote 300 g, BCAA 2:1:1 sabor limão"
+    "composicao": "Pote 300 g, BCAA 2:1:1 sabor limão",
+    "fotos": [
+      "https://images.pexels.com/photos/6303519/pexels-photo-6303519.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8844557/pexels-photo-8844557.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -552,6 +581,10 @@ window.PRODUTOS = [
         "variacao": "Natural · 60 caps"
       }
     ],
-    "composicao": "Frasco com 60 cápsulas"
+    "composicao": "Frasco com 60 cápsulas",
+    "fotos": [
+      "https://images.pexels.com/photos/17820735/pexels-photo-17820735.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/7615413/pexels-photo-7615413.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

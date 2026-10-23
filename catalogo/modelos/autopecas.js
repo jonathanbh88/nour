@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Freios, óleo, baterias e pneus com instalação na nossa oficina e garantia.",
     "botao": "Fazer orçamento",
     "categoria": "freios",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/8986070/pexels-photo-8986070.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/8986070/pexels-photo-8986070.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -167,7 +168,7 @@ window.CATEGORIAS = [
     "chamada": "Frenagem firme e sem ruído",
     "desenho": "caixa",
     "cor": "#D62828",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/4022543/pexels-photo-4022543.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "oleo",
@@ -175,7 +176,7 @@ window.CATEGORIAS = [
     "chamada": "Motor protegido, troca em minutos",
     "desenho": "garrafa",
     "cor": "#C9A227",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "baterias",
@@ -183,7 +184,7 @@ window.CATEGORIAS = [
     "chamada": "Partida garantida toda manhã",
     "desenho": "caixa",
     "cor": "#1D1F23",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/4374843/pexels-photo-4374843.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "pneus",
@@ -191,7 +192,7 @@ window.CATEGORIAS = [
     "chamada": "Mais aderência na chuva e no seco",
     "desenho": "pneu",
     "cor": "#3A3F46",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/16451819/pexels-photo-16451819.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -243,7 +244,11 @@ window.PRODUTOS = [
         "variacao": "Cinza · Gol/Voyage"
       }
     ],
-    "composicao": "Jogo para eixo dianteiro, composto semimetálico"
+    "composicao": "Jogo para eixo dianteiro, composto semimetálico",
+    "fotos": [
+      "https://images.pexels.com/photos/4022543/pexels-photo-4022543.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8986040/pexels-photo-8986040.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -290,7 +295,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Par de discos em ferro fundido, ventilados ou sólidos conforme o modelo"
+    "composicao": "Par de discos em ferro fundido, ventilados ou sólidos conforme o modelo",
+    "fotos": [
+      "https://images.pexels.com/photos/4022543/pexels-photo-4022543.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/16439608/pexels-photo-16439608.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -325,7 +334,11 @@ window.PRODUTOS = [
         "variacao": "Dourado · 1 L"
       }
     ],
-    "composicao": "Frasco 1 L, lubrificante sintético SAE 5W30 API SP"
+    "composicao": "Frasco 1 L, lubrificante sintético SAE 5W30 API SP",
+    "fotos": [
+      "https://images.pexels.com/photos/13065697/pexels-photo-13065697.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/13065700/pexels-photo-13065700.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -365,7 +378,11 @@ window.PRODUTOS = [
         "variacao": "Azul · Gol/Voyage"
       }
     ],
-    "composicao": "Filtro blindado com elemento em celulose"
+    "composicao": "Filtro blindado com elemento em celulose",
+    "fotos": [
+      "https://images.pexels.com/photos/14240069/pexels-photo-14240069.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/4315570/pexels-photo-4315570.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -398,7 +415,11 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "composicao": "Bateria chumbo-ácida selada 12 V 60 Ah"
+    "composicao": "Bateria chumbo-ácida selada 12 V 60 Ah",
+    "fotos": [
+      "https://images.pexels.com/photos/4374843/pexels-photo-4374843.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/32282233/pexels-photo-32282233.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -432,7 +453,11 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "composicao": "Bateria selada 12 V 5 Ah, tecnologia AGM"
+    "composicao": "Bateria selada 12 V 5 Ah, tecnologia AGM",
+    "fotos": [
+      "https://images.pexels.com/photos/11890963/pexels-photo-11890963.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/11890953/pexels-photo-11890953.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -467,7 +492,11 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "composicao": "Pneu radial 175/70 R14, índice de carga 84"
+    "composicao": "Pneu radial 175/70 R14, índice de carga 84",
+    "fotos": [
+      "https://images.pexels.com/photos/20303832/pexels-photo-20303832.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/441103/pexels-photo-441103.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -501,6 +530,10 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "composicao": "Pneu diagonal aro 18, uso com câmara"
+    "composicao": "Pneu diagonal aro 18, uso com câmara",
+    "fotos": [
+      "https://images.pexels.com/photos/14700339/pexels-photo-14700339.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5803318/pexels-photo-5803318.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

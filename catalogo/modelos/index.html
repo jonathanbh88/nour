@@ -19,13 +19,14 @@ p.sub{color:var(--muted);margin:0 0 26px;max-width:62ch}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
 a.m{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;color:inherit;text-decoration:none;transition:transform .2s,box-shadow .2s}
 a.m:hover{transform:translateY(-3px);box-shadow:0 14px 28px -14px rgba(0,0,0,.35)}
-.top{height:92px;display:flex;align-items:flex-end;padding:12px 14px;color:#fff;font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;font-weight:700}
+.top{position:relative;overflow:hidden;height:92px;display:flex;align-items:flex-end;padding:12px 14px;color:#fff;font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;font-weight:700}
 .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
 .bd b{font-size:1.05rem}
 .bd small{color:var(--muted)}
 .sw{display:flex;gap:5px}
 .sw i{width:16px;height:16px;border-radius:50%;border:1px solid var(--line)}
 .go{font-weight:700;font-size:.9rem;margin-top:4px}
+.top.foto{height:160px}.top img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.top.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent 60%)}.top span{position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -38,7 +39,7 @@ a.m:hover{transform:translateY(-3px);box-shadow:0 14px 28px -14px rgba(0,0,0,.35
 <script>
 document.getElementById('g').innerHTML = window.MODELOS.map(function (m) {
   var c = m.cores;
-  return '<a class="m" href="../index.html?modelo=' + m.id + '"><div class="top" style="background:linear-gradient(120deg,' + c.p1 + ',' + c.p2 + ')">' + m.loja + '</div>' +
+  return '<a class="m" href="../index.html?modelo=' + m.id + '"><div class="top' + (m.foto ? ' foto' : '') + '" style="background:linear-gradient(120deg,' + c.p1 + ',' + c.p2 + ')">' + (m.foto ? '<img src="' + m.foto + '" alt="" loading="lazy" decoding="async">' : '') + '<span>' + m.loja + '</span></div>' +
     '<div class="bd"><b>' + m.titulo + '</b><small>' + m.cats.join(' · ') + '</small><span class="sw"><i style="background:' + c.p1 + '"></i><i style="background:' + c.p2 + '"></i><i style="background:' + c.p3 + '"></i></span>' +
     '<span class="go" style="color:' + c.p1 + '">Ver modelo →</span></div></a>';
 }).join('');

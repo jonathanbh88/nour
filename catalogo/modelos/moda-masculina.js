@@ -194,7 +194,7 @@ window.CATEGORIAS = [
     "chamada": "Toque macio e caimento certo",
     "desenho": "camiseta",
     "cor": "#2F6B4F",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/26601197/pexels-photo-26601197.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "regatas",
@@ -202,7 +202,7 @@ window.CATEGORIAS = [
     "chamada": "Frescor para os dias de calor",
     "desenho": "regata",
     "cor": "#F2F2EE",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/4910125/pexels-photo-4910125.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "bermudas",
@@ -210,7 +210,7 @@ window.CATEGORIAS = [
     "chamada": "Da areia ao rolê sem trocar",
     "desenho": "short",
     "cor": "#1D2B4F",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/4554337/pexels-photo-4554337.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "moletons",
@@ -218,7 +218,7 @@ window.CATEGORIAS = [
     "chamada": "Aconchego para o fim de tarde",
     "desenho": "moletom",
     "cor": "#6B4128",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/2500497/pexels-photo-2500497.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "acessorios",
@@ -226,7 +226,7 @@ window.CATEGORIAS = [
     "chamada": "Proteção e estilo no sol",
     "desenho": "bone",
     "cor": "#D8C3A5",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/18998399/pexels-photo-18998399.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -293,7 +293,11 @@ window.PRODUTOS = [
         "variacao": "Marinho · P"
       }
     ],
-    "composicao": "Algodão penteado 100%, fio 30.1"
+    "composicao": "Algodão penteado 100%, fio 30.1",
+    "fotos": [
+      "https://images.pexels.com/photos/991509/pexels-photo-991509.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/24779116/pexels-photo-24779116.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -343,7 +347,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Algodão 98%, elastano 2%"
+    "composicao": "Algodão 98%, elastano 2%",
+    "fotos": [
+      "https://images.pexels.com/photos/4554337/pexels-photo-4554337.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8182300/pexels-photo-8182300.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -397,7 +405,11 @@ window.PRODUTOS = [
         "variacao": "Branco · P"
       }
     ],
-    "composicao": "Algodão 100%"
+    "composicao": "Algodão 100%",
+    "fotos": [
+      "https://images.pexels.com/photos/4910125/pexels-photo-4910125.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/15048236/pexels-photo-15048236.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -453,7 +465,11 @@ window.PRODUTOS = [
         "variacao": "Marrom · P"
       }
     ],
-    "composicao": "Algodão 50%, poliéster 50%, interior felpado"
+    "composicao": "Algodão 50%, poliéster 50%, interior felpado",
+    "fotos": [
+      "https://images.pexels.com/photos/907863/pexels-photo-907863.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/2500497/pexels-photo-2500497.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -501,7 +517,10 @@ window.PRODUTOS = [
         "variacao": "Verde · P"
       }
     ],
-    "composicao": "Algodão 100%, malha encorpada"
+    "composicao": "Algodão 100%, malha encorpada",
+    "fotos": [
+      "https://images.pexels.com/photos/5037357/pexels-photo-5037357.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -549,7 +568,11 @@ window.PRODUTOS = [
         "variacao": "Marinho · P"
       }
     ],
-    "composicao": "Poliamida 100% tactel, forro em tela"
+    "composicao": "Poliamida 100% tactel, forro em tela",
+    "fotos": [
+      "https://images.pexels.com/photos/6737861/pexels-photo-6737861.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8567521/pexels-photo-8567521.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -595,7 +618,11 @@ window.PRODUTOS = [
         "variacao": "Bege"
       }
     ],
-    "composicao": "Sarja de algodão, fecho regulável"
+    "composicao": "Sarja de algodão, fecho regulável",
+    "fotos": [
+      "https://images.pexels.com/photos/18998399/pexels-photo-18998399.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/9558709/pexels-photo-9558709.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -652,6 +679,10 @@ window.PRODUTOS = [
         "variacao": "Vermelho · P"
       }
     ],
-    "composicao": "Poliéster 100% com tecnologia dry fit"
+    "composicao": "Poliéster 100% com tecnologia dry fit",
+    "fotos": [
+      "https://images.pexels.com/photos/5037354/pexels-photo-5037354.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5039659/pexels-photo-5039659.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

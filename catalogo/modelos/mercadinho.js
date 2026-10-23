@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Frutas, verduras, carnes e mercearia com entrega rápida. Monte sua lista pelo WhatsApp.",
     "botao": "Fazer meu pedido",
     "categoria": "hortifruti",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/35206311/pexels-photo-35206311.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/35206311/pexels-photo-35206311.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -162,7 +163,7 @@ window.CATEGORIAS = [
     "chamada": "Escolhido a dedo todo dia",
     "desenho": "flor",
     "cor": "#2F6B4F",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1745367228695-a1c7a12df13f?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "carnes",
@@ -170,7 +171,7 @@ window.CATEGORIAS = [
     "chamada": "Cortadas na hora do seu pedido",
     "desenho": "caixa",
     "cor": "#8C2F1B",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/12884549/pexels-photo-12884549.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "mercearia",
@@ -178,7 +179,7 @@ window.CATEGORIAS = [
     "chamada": "O básico da despensa em dia",
     "desenho": "racao",
     "cor": "#F08C00",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/7421198/pexels-photo-7421198.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "limpeza",
@@ -186,7 +187,7 @@ window.CATEGORIAS = [
     "chamada": "Casa cheirosa com menos esforço",
     "desenho": "garrafa",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/5218014/pexels-photo-5218014.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -224,7 +225,10 @@ window.PRODUTOS = [
         "variacao": "Verde"
       }
     ],
-    "composicao": "Cesta com cerca de 3 kg de frutas variadas da estação"
+    "composicao": "Cesta com cerca de 3 kg de frutas variadas da estação",
+    "fotos": [
+      "https://images.pexels.com/photos/235294/pexels-photo-235294.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -267,7 +271,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Kit com 5 itens: alfaces, rúcula, couve e cheiro-verde"
+    "composicao": "Kit com 5 itens: alfaces, rúcula, couve e cheiro-verde",
+    "fotos": [
+      "https://images.pexels.com/photos/102123/pexels-photo-102123.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/10850844/pexels-photo-10850844.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -309,7 +317,11 @@ window.PRODUTOS = [
         "variacao": "Carne · 1 kg"
       }
     ],
-    "composicao": "Peça bovina resfriada, preço por kg"
+    "composicao": "Peça bovina resfriada, preço por kg",
+    "fotos": [
+      "https://images.pexels.com/photos/618775/pexels-photo-618775.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5892851/pexels-photo-5892851.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -351,7 +363,11 @@ window.PRODUTOS = [
         "variacao": "Frango · 1 kg"
       }
     ],
-    "composicao": "Frango inteiro resfriado, peça de 2 a 2,5 kg"
+    "composicao": "Frango inteiro resfriado, peça de 2 a 2,5 kg",
+    "fotos": [
+      "https://images.pexels.com/photos/10842249/pexels-photo-10842249.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5769384/pexels-photo-5769384.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -384,7 +400,11 @@ window.PRODUTOS = [
         "variacao": "Branco · 5 kg"
       }
     ],
-    "composicao": "Pacote 5 kg, arroz branco agulhinha tipo 1"
+    "composicao": "Pacote 5 kg, arroz branco agulhinha tipo 1",
+    "fotos": [
+      "https://images.pexels.com/photos/8108145/pexels-photo-8108145.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8956718/pexels-photo-8956718.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -419,7 +439,11 @@ window.PRODUTOS = [
         "variacao": "Marrom · 500 g"
       }
     ],
-    "composicao": "Pacote a vácuo 500 g, café tradicional"
+    "composicao": "Pacote a vácuo 500 g, café tradicional",
+    "fotos": [
+      "https://images.pexels.com/photos/4301516/pexels-photo-4301516.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/30899952/pexels-photo-30899952.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -454,7 +478,11 @@ window.PRODUTOS = [
         "variacao": "Azul"
       }
     ],
-    "composicao": "Kit com 4 itens: detergente, desinfetante, água sanitária e multiuso"
+    "composicao": "Kit com 4 itens: detergente, desinfetante, água sanitária e multiuso",
+    "fotos": [
+      "https://images.pexels.com/photos/5218014/pexels-photo-5218014.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/28576626/pexels-photo-28576626.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -496,6 +524,10 @@ window.PRODUTOS = [
         "variacao": "Azul · 3 L"
       }
     ],
-    "composicao": "Frasco 3 L, lava-roupas líquido"
+    "composicao": "Frasco 3 L, lava-roupas líquido",
+    "fotos": [
+      "https://images.pexels.com/photos/5591578/pexels-photo-5591578.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5591956/pexels-photo-5591956.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

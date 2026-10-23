@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Cadernos, estojos e canetas em cores lindas, com opção personalizada.",
     "botao": "Montar meu kit",
     "categoria": "cadernos",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/5088008/pexels-photo-5088008.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/5088008/pexels-photo-5088008.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -167,7 +168,7 @@ window.CATEGORIAS = [
     "chamada": "Organização com estilo o ano todo",
     "desenho": "caderno",
     "cor": "#C2185B",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/7718812/pexels-photo-7718812.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "escrita",
@@ -175,7 +176,7 @@ window.CATEGORIAS = [
     "chamada": "Anotações mais bonitas e claras",
     "desenho": "caderno",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/27496670/pexels-photo-27496670.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "presentes",
@@ -183,7 +184,7 @@ window.CATEGORIAS = [
     "chamada": "Mimos prontos para presentear",
     "desenho": "caixa",
     "cor": "#7B1FA2",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/4397882/pexels-photo-4397882.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "personalizados",
@@ -191,7 +192,7 @@ window.CATEGORIAS = [
     "chamada": "Feitos com o seu nome",
     "desenho": "caderno",
     "cor": "#F2C14E",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/6312196/pexels-photo-6312196.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -247,7 +248,11 @@ window.PRODUTOS = [
         "variacao": "Rosa"
       }
     ],
-    "composicao": "Capa dura, 200 folhas 75 g/m², espiral"
+    "composicao": "Capa dura, 200 folhas 75 g/m², espiral",
+    "fotos": [
+      "https://images.pexels.com/photos/7718812/pexels-photo-7718812.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5088017/pexels-photo-5088017.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -294,7 +299,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Capa dura, miolo 90 g/m², fechamento com elástico"
+    "composicao": "Capa dura, miolo 90 g/m², fechamento com elástico",
+    "fotos": [
+      "https://images.pexels.com/photos/5240008/pexels-photo-5240008.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/4110453/pexels-photo-4110453.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -329,7 +338,11 @@ window.PRODUTOS = [
         "variacao": "Lilás"
       }
     ],
-    "composicao": "Kit com 6 marca-textos, ponta chanfrada"
+    "composicao": "Kit com 6 marca-textos, ponta chanfrada",
+    "fotos": [
+      "https://images.pexels.com/photos/6192519/pexels-photo-6192519.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/632470/pexels-photo-632470.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -376,7 +389,10 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "composicao": "Poliéster resistente, 3 compartimentos com zíper"
+    "composicao": "Poliéster resistente, 3 compartimentos com zíper",
+    "fotos": [
+      "https://images.pexels.com/photos/3731255/pexels-photo-3731255.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -410,7 +426,11 @@ window.PRODUTOS = [
         "variacao": "Branco"
       }
     ],
-    "composicao": "Cerâmica branca 325 ml, sublimação"
+    "composicao": "Cerâmica branca 325 ml, sublimação",
+    "fotos": [
+      "https://images.pexels.com/photos/11075707/pexels-photo-11075707.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/4065905/pexels-photo-4065905.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -458,7 +478,11 @@ window.PRODUTOS = [
         "variacao": "Dourado"
       }
     ],
-    "composicao": "Metal com banho dourado ou prateado"
+    "composicao": "Metal com banho dourado ou prateado",
+    "fotos": [
+      "https://images.pexels.com/photos/15862192/pexels-photo-15862192.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/15679981/pexels-photo-15679981.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -493,7 +517,11 @@ window.PRODUTOS = [
         "variacao": "Rosa"
       }
     ],
-    "composicao": "Caderno, 3 canetas, marca-texto, adesivos e caixa"
+    "composicao": "Caderno, 3 canetas, marca-texto, adesivos e caixa",
+    "fotos": [
+      "https://images.pexels.com/photos/6119143/pexels-photo-6119143.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/1303080/pexels-photo-1303080.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -540,6 +568,9 @@ window.PRODUTOS = [
         "variacao": "Verde"
       }
     ],
-    "composicao": "Tecido texturizado, interior em microfibra"
+    "composicao": "Tecido texturizado, interior em microfibra",
+    "fotos": [
+      "https://images.pexels.com/photos/59143/pexels-photo-59143.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

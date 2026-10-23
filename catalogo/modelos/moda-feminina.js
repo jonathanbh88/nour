@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Peças versáteis com caimento que valoriza. Reposição semanal e peças limitadas.",
     "botao": "Ver coleção",
     "categoria": "vestidos",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/4947543/pexels-photo-4947543.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/4947543/pexels-photo-4947543.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -204,7 +205,7 @@ window.CATEGORIAS = [
     "chamada": "Básicos que salvam qualquer manhã",
     "desenho": "blusa",
     "cor": "#2F6B4F",
-    "foto": "https://images.unsplash.com/photo-1542595608-735a52535022?auto=format&fit=crop&w=600&h=600&q=70"
+    "foto": "https://images.pexels.com/photos/5418925/pexels-photo-5418925.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "vestidos",
@@ -220,7 +221,7 @@ window.CATEGORIAS = [
     "chamada": "Cintura marcada e caimento leve",
     "desenho": "calca",
     "cor": "#1D1F23",
-    "foto": "https://images.unsplash.com/photo-1558072844-b2e8b546d415?auto=format&fit=crop&w=600&h=600&q=70"
+    "foto": "https://images.pexels.com/photos/11501661/pexels-photo-11501661.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "casacos",
@@ -228,7 +229,7 @@ window.CATEGORIAS = [
     "chamada": "Alfaiataria que eleva o visual",
     "desenho": "casaco",
     "cor": "#C9AE8C",
-    "foto": "https://images.unsplash.com/photo-1552760647-0a848d97bff3?auto=format&fit=crop&w=600&h=600&q=70"
+    "foto": "https://images.pexels.com/photos/14330776/pexels-photo-14330776.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "acessorios",
@@ -305,7 +306,10 @@ window.PRODUTOS = [
         "variacao": "Verde · PP"
       }
     ],
-    "composicao": "Viscose 95%, elastano 5%"
+    "composicao": "Viscose 95%, elastano 5%",
+    "fotos": [
+      "https://images.pexels.com/photos/6786614/pexels-photo-6786614.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -366,7 +370,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Poliéster 100%, forro interno"
+    "composicao": "Poliéster 100%, forro interno",
+    "fotos": [
+      "https://images.pexels.com/photos/7241893/pexels-photo-7241893.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/3145711/pexels-photo-3145711.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -417,7 +425,11 @@ window.PRODUTOS = [
         "variacao": "Preto · PP"
       }
     ],
-    "composicao": "Poliéster 96%, elastano 4%"
+    "composicao": "Poliéster 96%, elastano 4%",
+    "fotos": [
+      "https://images.pexels.com/photos/18692872/pexels-photo-18692872.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/7393774/pexels-photo-7393774.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -476,7 +488,11 @@ window.PRODUTOS = [
         "variacao": "Vinho · PP"
       }
     ],
-    "composicao": "Algodão 100%"
+    "composicao": "Algodão 100%",
+    "fotos": [
+      "https://images.unsplash.com/photo-1566670710247-b02209b2b7ce?auto=format&fit=crop&w=1000&h=1250&q=70",
+      "https://images.unsplash.com/photo-1554741995-7e71ded4ae1c?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p5",
@@ -535,7 +551,10 @@ window.PRODUTOS = [
         "variacao": "Bege · PP"
       }
     ],
-    "composicao": "Linho 55%, viscose 45%"
+    "composicao": "Linho 55%, viscose 45%",
+    "fotos": [
+      "https://images.pexels.com/photos/18192196/pexels-photo-18192196.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -594,7 +613,10 @@ window.PRODUTOS = [
         "variacao": "Bege · PP"
       }
     ],
-    "composicao": "Poliéster 70%, viscose 30%, forro em poliéster"
+    "composicao": "Poliéster 70%, viscose 30%, forro em poliéster",
+    "fotos": [
+      "https://images.unsplash.com/photo-1552760647-0a848d97bff3?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p7",
@@ -644,7 +666,11 @@ window.PRODUTOS = [
         "variacao": "Rosa · PP"
       }
     ],
-    "composicao": "Poliéster 100%, cós com elástico"
+    "composicao": "Poliéster 100%, cós com elástico",
+    "fotos": [
+      "https://images.pexels.com/photos/1007019/pexels-photo-1007019.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/9178855/pexels-photo-9178855.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -684,6 +710,10 @@ window.PRODUTOS = [
         "variacao": "Vinho"
       }
     ],
-    "composicao": "Material sintético matelassê, alça em corrente metálica"
+    "composicao": "Material sintético matelassê, alça em corrente metálica",
+    "fotos": [
+      "https://images.pexels.com/photos/20591024/pexels-photo-20591024.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/16346895/pexels-photo-16346895.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

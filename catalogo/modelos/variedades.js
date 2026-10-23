@@ -168,7 +168,7 @@ window.CATEGORIAS = [
     "chamada": "Mais espaço e menos bagunça",
     "desenho": "caixa",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1585664428450-1665a336eb19?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "cozinha",
@@ -176,7 +176,7 @@ window.CATEGORIAS = [
     "chamada": "Praticidade do preparo à mesa",
     "desenho": "pote",
     "cor": "#E63946",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1745426431516-7fcf72dc6415?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "presentes",
@@ -184,7 +184,7 @@ window.CATEGORIAS = [
     "chamada": "Mimos que cabem no bolso",
     "desenho": "caixa",
     "cor": "#7B1FA2",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1511886277144-49a67943f819?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "brinquedos",
@@ -192,7 +192,7 @@ window.CATEGORIAS = [
     "chamada": "Diversão longe das telas",
     "desenho": "bola",
     "cor": "#F2C14E",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/35579565/pexels-photo-35579565.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -230,7 +230,10 @@ window.PRODUTOS = [
         "variacao": "Transparente"
       }
     ],
-    "composicao": "Kit 5 potes, tampa com vedação em silicone"
+    "composicao": "Kit 5 potes, tampa com vedação em silicone",
+    "fotos": [
+      "https://images.unsplash.com/photo-1569442129998-556ade6c057c?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p2",
@@ -269,7 +272,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Plástico resistente, peças encaixáveis"
+    "composicao": "Plástico resistente, peças encaixáveis",
+    "fotos": [
+      "https://images.pexels.com/photos/17301204/pexels-photo-17301204.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/6333856/pexels-photo-6333856.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -321,7 +328,11 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "composicao": "Aço inox, parede dupla, 1 L"
+    "composicao": "Aço inox, parede dupla, 1 L",
+    "fotos": [
+      "https://images.pexels.com/photos/3737799/pexels-photo-3737799.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/9160541/pexels-photo-9160541.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -363,7 +374,11 @@ window.PRODUTOS = [
         "variacao": "Branco"
       }
     ],
-    "composicao": "LED, haste articulada, cabo USB"
+    "composicao": "LED, haste articulada, cabo USB",
+    "fotos": [
+      "https://images.pexels.com/photos/34991783/pexels-photo-34991783.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/7193653/pexels-photo-7193653.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -406,7 +421,11 @@ window.PRODUTOS = [
         "variacao": "Lilás"
       }
     ],
-    "composicao": "Difusor 100 ml com varetas e vela, caixa presente"
+    "composicao": "Difusor 100 ml com varetas e vela, caixa presente",
+    "fotos": [
+      "https://images.unsplash.com/photo-1511886277144-49a67943f819?auto=format&fit=crop&w=1000&h=1250&q=70",
+      "https://images.unsplash.com/photo-1539002848952-aeb10e58c2ef?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p6",
@@ -440,7 +459,11 @@ window.PRODUTOS = [
         "variacao": "Branco"
       }
     ],
-    "composicao": "Tamanho oficial nº 5, PVC costurado"
+    "composicao": "Tamanho oficial nº 5, PVC costurado",
+    "fotos": [
+      "https://images.pexels.com/photos/16493254/pexels-photo-16493254.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/15157518/pexels-photo-15157518.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -482,7 +505,11 @@ window.PRODUTOS = [
         "variacao": "Azul"
       }
     ],
-    "composicao": "500 peças em papelão rígido, 48 x 33 cm montado"
+    "composicao": "500 peças em papelão rígido, 48 x 33 cm montado",
+    "fotos": [
+      "https://images.pexels.com/photos/8386116/pexels-photo-8386116.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/23158268/pexels-photo-23158268.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -525,6 +552,9 @@ window.PRODUTOS = [
         "variacao": "Bege"
       }
     ],
-    "composicao": "Fibra trançada, 30 x 30 cm"
+    "composicao": "Fibra trançada, 30 x 30 cm",
+    "fotos": [
+      "https://images.unsplash.com/photo-1496660988113-291c5f308503?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   }
 ];

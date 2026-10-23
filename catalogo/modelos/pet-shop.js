@@ -163,7 +163,7 @@ window.CATEGORIAS = [
     "chamada": "Nutrição para cada fase do pet",
     "desenho": "racao",
     "cor": "#EA580C",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1591946559594-8c6d3b7391eb?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "petiscos",
@@ -171,7 +171,7 @@ window.CATEGORIAS = [
     "chamada": "Recompensa na hora do adestramento",
     "desenho": "racao",
     "cor": "#8C2F1B",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1592468257342-8375cb556a69?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "brinquedos",
@@ -179,7 +179,7 @@ window.CATEGORIAS = [
     "chamada": "Menos tédio, mais brincadeira",
     "desenho": "bola",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.unsplash.com/photo-1477884143921-51d0a574ee09?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "higiene",
@@ -187,7 +187,7 @@ window.CATEGORIAS = [
     "chamada": "Pet limpo e casa cheirosa",
     "desenho": "garrafa",
     "cor": "#92D0B7",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/6131158/pexels-photo-6131158.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -243,7 +243,11 @@ window.PRODUTOS = [
         "variacao": "Frango · 1 kg"
       }
     ],
-    "composicao": "Saco 15 kg, sabores frango ou carne"
+    "composicao": "Saco 15 kg, sabores frango ou carne",
+    "fotos": [
+      "https://images.unsplash.com/photo-1591946559594-8c6d3b7391eb?auto=format&fit=crop&w=1000&h=1250&q=70",
+      "https://images.unsplash.com/photo-1567664148167-0899e482142d?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p2",
@@ -293,7 +297,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Saco 10,1 kg, sabores frango ou carne"
+    "composicao": "Saco 10,1 kg, sabores frango ou carne",
+    "fotos": [
+      "https://images.unsplash.com/photo-1548366086-7f1b76106622?auto=format&fit=crop&w=1000&h=1250&q=70",
+      "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p3",
@@ -332,7 +340,10 @@ window.PRODUTOS = [
         "variacao": "Carne · 65 g"
       }
     ],
-    "composicao": "Pacote 500 g, sabores carne ou frango"
+    "composicao": "Pacote 500 g, sabores carne ou frango",
+    "fotos": [
+      "https://images.unsplash.com/photo-1592468257342-8375cb556a69?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p4",
@@ -375,7 +386,10 @@ window.PRODUTOS = [
         "variacao": "Natural"
       }
     ],
-    "composicao": "Couro bovino natural, tamanho 4 a 5 polegadas"
+    "composicao": "Couro bovino natural, tamanho 4 a 5 polegadas",
+    "fotos": [
+      "https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p5",
@@ -421,7 +435,10 @@ window.PRODUTOS = [
         "variacao": "Vermelho"
       }
     ],
-    "composicao": "Borracha atóxica maciça, 6 cm de diâmetro"
+    "composicao": "Borracha atóxica maciça, 6 cm de diâmetro",
+    "fotos": [
+      "https://images.unsplash.com/photo-1591946614720-90a587da4a36?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p6",
@@ -456,7 +473,11 @@ window.PRODUTOS = [
         "variacao": "Bege"
       }
     ],
-    "composicao": "Sisal natural, base em MDF revestida, 50 cm"
+    "composicao": "Sisal natural, base em MDF revestida, 50 cm",
+    "fotos": [
+      "https://images.unsplash.com/photo-1569146078232-07ab26678542?auto=format&fit=crop&w=1000&h=1250&q=70",
+      "https://images.unsplash.com/photo-1503756506745-833f21a1d537?auto=format&fit=crop&w=1000&h=1250&q=70"
+    ]
   },
   {
     "id": "p7",
@@ -498,7 +519,10 @@ window.PRODUTOS = [
         "variacao": "Menta · 500 ml"
       }
     ],
-    "composicao": "Frasco 500 ml, pH neutro"
+    "composicao": "Frasco 500 ml, pH neutro",
+    "fotos": [
+      "https://images.pexels.com/photos/6131158/pexels-photo-6131158.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -541,6 +565,9 @@ window.PRODUTOS = [
         "variacao": "Branco"
       }
     ],
-    "composicao": "Pacote com 30 unidades, 60 x 60 cm"
+    "composicao": "Pacote com 30 unidades, 60 x 60 cm",
+    "fotos": [
+      "https://images.pexels.com/photos/5255614/pexels-photo-5255614.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];

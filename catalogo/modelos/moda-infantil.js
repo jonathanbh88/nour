@@ -75,7 +75,8 @@ window.LOJA = {
     "texto": "Algodão macio, cores alegres e tamanhos de 2 a 10 anos. Ajuda com tamanho no WhatsApp.",
     "botao": "Ver coleção",
     "categoria": "menina",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/13758357/pexels-photo-13758357.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/13758357/pexels-photo-13758357.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -198,7 +199,7 @@ window.CATEGORIAS = [
     "chamada": "Vestidos e conjuntos cheios de cor",
     "desenho": "vestido",
     "cor": "#E58FAE",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/17839400/pexels-photo-17839400.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "menino",
@@ -206,7 +207,7 @@ window.CATEGORIAS = [
     "chamada": "Conjuntos prontos para a aventura",
     "desenho": "camiseta",
     "cor": "#2457C5",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/1374509/pexels-photo-1374509.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "bebe",
@@ -214,7 +215,7 @@ window.CATEGORIAS = [
     "chamada": "Macio e prático na hora da troca",
     "desenho": "moletom",
     "cor": "#92D0B7",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/32410088/pexels-photo-32410088.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "calcados",
@@ -222,7 +223,7 @@ window.CATEGORIAS = [
     "chamada": "Passos firmes do 18 ao 34",
     "desenho": "tenis",
     "cor": "#F2C14E",
-    "foto": ""
+    "foto": "https://images.pexels.com/photos/1909014/pexels-photo-1909014.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -276,7 +277,11 @@ window.PRODUTOS = [
         "variacao": "Rosa · 2"
       }
     ],
-    "composicao": "Algodão 100%"
+    "composicao": "Algodão 100%",
+    "fotos": [
+      "https://images.pexels.com/photos/15579750/pexels-photo-15579750.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/6334397/pexels-photo-6334397.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p2",
@@ -336,7 +341,11 @@ window.PRODUTOS = [
       }
     ],
     "selo": "NOVO",
-    "composicao": "Algodão 100%, cós com elástico"
+    "composicao": "Algodão 100%, cós com elástico",
+    "fotos": [
+      "https://images.pexels.com/photos/1374509/pexels-photo-1374509.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/9729656/pexels-photo-9729656.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -393,7 +402,11 @@ window.PRODUTOS = [
         "variacao": "Menta · 2"
       }
     ],
-    "composicao": "Poliéster 100% plush, botões de pressão"
+    "composicao": "Poliéster 100% plush, botões de pressão",
+    "fotos": [
+      "https://images.pexels.com/photos/3875232/pexels-photo-3875232.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/19224567/pexels-photo-19224567.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p4",
@@ -444,7 +457,10 @@ window.PRODUTOS = [
         "variacao": "Rosa · 22"
       }
     ],
-    "composicao": "Cabedal sintético, velcro, solado de borracha com LED"
+    "composicao": "Cabedal sintético, velcro, solado de borracha com LED",
+    "fotos": [
+      "https://images.pexels.com/photos/1909014/pexels-photo-1909014.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p5",
@@ -493,7 +509,10 @@ window.PRODUTOS = [
         "variacao": "Rosa · 2"
       }
     ],
-    "composicao": "Body em algodão com elastano, saia em tule"
+    "composicao": "Body em algodão com elastano, saia em tule",
+    "fotos": [
+      "https://images.pexels.com/photos/2351856/pexels-photo-2351856.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p6",
@@ -545,7 +564,10 @@ window.PRODUTOS = [
         "variacao": "Cinza · 2"
       }
     ],
-    "composicao": "Algodão 50%, poliéster 50%"
+    "composicao": "Algodão 50%, poliéster 50%",
+    "fotos": [
+      "https://images.pexels.com/photos/9729656/pexels-photo-9729656.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p7",
@@ -595,7 +617,10 @@ window.PRODUTOS = [
         "variacao": "Amarelo · 2"
       }
     ],
-    "composicao": "Algodão 50%, poliéster 50%, interior felpado"
+    "composicao": "Algodão 50%, poliéster 50%, interior felpado",
+    "fotos": [
+      "https://images.pexels.com/photos/8496496/pexels-photo-8496496.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p8",
@@ -652,6 +677,10 @@ window.PRODUTOS = [
         "variacao": "Branco · 2"
       }
     ],
-    "composicao": "Algodão 100%"
+    "composicao": "Algodão 100%",
+    "fotos": [
+      "https://images.pexels.com/photos/4440566/pexels-photo-4440566.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/581087/pexels-photo-581087.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   }
 ];
