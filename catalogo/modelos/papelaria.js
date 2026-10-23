@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Papel & Cor",
-  "slogan": "Cadernos, presentes e personalizados feitos com carinho.",
+  "slogan": "Papelaria bonita e personalizada para estudar, trabalhar e presentear.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Cadernos, presentes e personalizados feitos com carinho. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Papel & Cor reúne cadernos, canetas e presentes escolhidos com carinho, muitos deles personalizados com o seu nome. Pelo WhatsApp você monta o pedido, aprova a arte antes da produção e combina a entrega.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,16 +64,16 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Personalizamos com seu nome",
-    "Embalagem para presente grátis",
+    "Personalizamos com o seu nome",
+    "Embalagem para presente sem custo",
     "Desconto no Pix à vista"
   ],
   "banners": [],
   "banner": {
     "selo": "Volta às aulas",
-    "titulo": "Papelaria que dá gosto de usar",
-    "texto": "Cadernos, estojos e presentes personalizados.",
-    "botao": "Comprar agora",
+    "titulo": "Material que dá vontade de estudar",
+    "texto": "Cadernos, estojos e canetas em cores lindas, com opção personalizada.",
+    "botao": "Montar meu kit",
     "categoria": "cadernos",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Encontre o que combina com você",
+    "Do caderno ao presente, tudo com cor e capricho"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +164,34 @@ window.CATEGORIAS = [
   {
     "id": "cadernos",
     "nome": "Cadernos",
-    "chamada": "Capa dura e personalizados",
+    "chamada": "Organização com estilo o ano todo",
     "desenho": "caderno",
-    "cor": "#C2185B"
+    "cor": "#C2185B",
+    "foto": ""
   },
   {
     "id": "escrita",
     "nome": "Escrita",
-    "chamada": "Canetas e marca-texto",
+    "chamada": "Anotações mais bonitas e claras",
     "desenho": "caderno",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   },
   {
     "id": "presentes",
     "nome": "Presentes",
-    "chamada": "Para toda ocasião",
+    "chamada": "Mimos prontos para presentear",
     "desenho": "caixa",
-    "cor": "#7B1FA2"
+    "cor": "#7B1FA2",
+    "foto": ""
   },
   {
     "id": "personalizados",
     "nome": "Personalizados",
-    "chamada": "Com o seu nome",
+    "chamada": "Feitos com o seu nome",
     "desenho": "caderno",
-    "cor": "#F2C14E"
+    "cor": "#F2C14E",
+    "foto": ""
   }
 ];
 
@@ -202,7 +206,7 @@ window.PRODUTOS = [
     "de": 49.9,
     "desenho": "caderno",
     "destaque": true,
-    "desc": "Caderno capa dura 10 matérias da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Dez matérias para o ano letivo inteiro em um só caderno. Capa dura resistente, folhas de boa gramatura que não marcam do outro lado e divisórias coloridas. Pode ser personalizado com nome na capa.",
     "cores": [
       [
         "Rosa",
@@ -242,7 +246,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Rosa"
       }
-    ]
+    ],
+    "composicao": "Capa dura, 200 folhas 75 g/m², espiral"
   },
   {
     "id": "p2",
@@ -253,7 +258,7 @@ window.PRODUTOS = [
     "preco": 59.9,
     "desenho": "caderno",
     "destaque": true,
-    "desc": "Planner anual da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Planeje o ano com calma: visão mensal, páginas semanais e espaço para metas e anotações. Capa resistente e elástico para manter tudo fechado na bolsa. Ótimo presente para quem ama organização.",
     "cores": [
       [
         "Verde",
@@ -288,7 +293,8 @@ window.PRODUTOS = [
         "variacao": "Verde"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Capa dura, miolo 90 g/m², fechamento com elástico"
   },
   {
     "id": "p3",
@@ -300,7 +306,7 @@ window.PRODUTOS = [
     "de": 34.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Kit marca-texto pastel da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Destaque o que importa sem pesar no visual: marca-textos em tons pastel com ponta chanfrada para traço fino ou grosso. Tinta de secagem rápida que não borra a maioria das canetas. Combina com o planner anual.",
     "cores": [
       [
         "Lilás",
@@ -322,7 +328,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Lilás"
       }
-    ]
+    ],
+    "composicao": "Kit com 6 marca-textos, ponta chanfrada"
   },
   {
     "id": "p4",
@@ -333,7 +340,7 @@ window.PRODUTOS = [
     "preco": 34.9,
     "desenho": "bolsa",
     "destaque": true,
-    "desc": "Estojo grande da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Cabe tudo: canetas, lápis, marca-textos e régua organizados em compartimentos. Zíper firme e tecido fácil de limpar. Pode levar o nome bordado ou estampado para não se perder na escola.",
     "cores": [
       [
         "Preto",
@@ -368,7 +375,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Preto"
       }
-    ]
+    ],
+    "composicao": "Poliéster resistente, 3 compartimentos com zíper"
   },
   {
     "id": "p5",
@@ -379,7 +387,7 @@ window.PRODUTOS = [
     "preco": 39.9,
     "desenho": "pote",
     "destaque": true,
-    "desc": "Caneca personalizada da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "A caneca que vira presente cheio de significado: estampamos nome, frase ou foto com impressão que não desbota. Pode ir ao micro-ondas e à lava-louças. Você aprova a arte pelo WhatsApp antes de produzir.",
     "cores": [
       [
         "Branco",
@@ -401,7 +409,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Branco"
       }
-    ]
+    ],
+    "composicao": "Cerâmica branca 325 ml, sublimação"
   },
   {
     "id": "p6",
@@ -413,7 +422,7 @@ window.PRODUTOS = [
     "de": 24.9,
     "desenho": "anel",
     "destaque": false,
-    "desc": "Chaveiro com nome da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Pequeno e charmoso, o chaveiro com nome é ótimo para lembrancinha, presente de amigo secreto ou para identificar a mochila. Acabamento em metal com banho dourado ou prateado. Fazemos em quantidade para eventos.",
     "cores": [
       [
         "Dourado",
@@ -448,7 +457,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Dourado"
       }
-    ]
+    ],
+    "composicao": "Metal com banho dourado ou prateado"
   },
   {
     "id": "p7",
@@ -460,7 +470,7 @@ window.PRODUTOS = [
     "de": 109.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Kit presente papelaria da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Presente pronto e caprichado: caderno, canetas, marca-texto e adesivos em embalagem decorada. Basta escolher a cor e, se quiser, incluir um cartão com sua mensagem. Ideal para aniversários e professores.",
     "cores": [
       [
         "Rosa",
@@ -482,7 +492,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Rosa"
       }
-    ]
+    ],
+    "composicao": "Caderno, 3 canetas, marca-texto, adesivos e caixa"
   },
   {
     "id": "p8",
@@ -493,7 +504,7 @@ window.PRODUTOS = [
     "preco": 49.9,
     "desenho": "caderno",
     "destaque": false,
-    "desc": "Capa para Kindle da Papel & Cor. Troque este texto pela descrição do produto.",
+    "desc": "Proteja seu leitor digital com estilo: capa com fechamento magnético, interior macio que evita riscos e encaixe firme. Leve e fina, cabe em qualquer bolsa. Confirme o modelo do seu aparelho antes de pedir.",
     "cores": [
       [
         "Verde",
@@ -528,6 +539,7 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Verde"
       }
-    ]
+    ],
+    "composicao": "Tecido texturizado, interior em microfibra"
   }
 ];

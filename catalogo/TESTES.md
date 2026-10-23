@@ -167,9 +167,35 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [x] Links `javascript:` em foto, logo, banner, grupo ou parceiro são descartados; cores inválidas voltam para a padrão (testado no navegador).
 - [ ] Testar: abrir o painel dentro de um iframe em outro site — deve ser bloqueado.
 
+## 13. Fotos (envio com compressão)
+
+- [ ] Produto: "Adicionar fotos" aceita várias de uma vez (até 5); mostra "Comprimindo e enviando 1 de N…".
+- [ ] Foto grande do celular (3 a 10 MB) sobe em poucos segundos e vira WebP leve (cerca de 100 a 300 KB) + miniatura.
+- [ ] "capa" troca a foto principal; o "x" tira a foto; "Adicionar link" aceita só https.
+- [ ] Foto por cor: o quadradinho ao lado da cor envia a foto; na loja, escolher a cor troca a foto principal.
+- [ ] Logo, foto da categoria, banners e logo do parceiro têm "Enviar foto" e mostram o tamanho ideal.
+- [ ] Arquivo que não é foto mostra aviso e não sobe.
+- [ ] Plano: Produtos mostra "Plano Básico · X de 100 produtos"; no limite, "Novo produto" avisa para falar com o suporte.
+- [ ] Fotos enviadas e não usadas são apagadas sozinhas depois de 1 hora (ao entrar no painel).
+
+## 14. Google e compartilhamento (SEO)
+
+- [ ] O endereço da loja é /loja/nome-da-loja/ (o antigo ?loja= redireciona).
+- [ ] Colar o link no WhatsApp mostra título, descrição e foto da loja.
+- [ ] Link de produto (/loja/nome/p/123/) abre direto no produto, com título e foto do produto na prévia.
+- [ ] /sitemap.xml lista lojas e produtos (lojas de demonstração ficam fora).
+- [ ] Ferramenta "Teste de pesquisa aprimorada" do Google reconhece Loja e Produto (preço, estoque, avaliações).
+
+## 15. Mapa, frete grátis, estilos e datas
+
+- [ ] Com endereço e "Mostrar o mapa" ligado, o rodapé mostra o mapa e o botão "Como chegar"; desligado, não mostra.
+- [ ] Frete grátis acima de X: a sacola mostra a barra, o resumo diz "Grátis", a mensagem do WhatsApp diz "Frete grátis (compra acima de X)" e o pedido fica marcado como frete grátis.
+- [ ] Estilo Padrão, Minimalista e Moderno mudam o visual da loja.
+- [ ] Tema Natal e Black Friday trocam cores, selo do banner e a 1ª frase da faixa; desligar volta ao normal.
+- [ ] Modelos prontos com fotos reais e textos de venda (ver a galeria de modelos).
+
 ## Fora deste teste (próximas fases)
 
-- Envio de foto direto do celular (hoje é por link https).
 - Pagamento online (Mercado Pago) e frete calculado (Melhor Envio).
 - E-mail marketing disparado pelo painel (a lista de clientes já está pronta para isso).
 - Ligação com o login do Bio Site/Agenda (hoje o painel usa código de acesso próprio).

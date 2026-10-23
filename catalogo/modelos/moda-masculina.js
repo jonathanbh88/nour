@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Maré Surf",
-  "slogan": "Seu estilo, suas ondas. Camisetas, bermudas e conjuntos para o verão inteiro.",
+  "slogan": "Seu estilo, suas ondas. Camisetas, bermudas e moletons para o ano todo.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Seu estilo, suas ondas. Camisetas, bermudas e conjuntos para o verão inteiro. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Maré Surf traz roupas com espírito de praia para quem vive o litoral ou só quer esse estilo no dia a dia. Tire dúvidas de tamanho e peça fotos das peças pelo WhatsApp, com atendimento rápido e direto.",
   "horarios": {
     "0": [],
     "1": [
@@ -66,16 +66,17 @@ window.LOJA = {
   "faixa": [
     "Novidades toda semana",
     "Enviamos para todo o Brasil",
-    "Desconto no Pix à vista"
+    "Desconto especial no Pix"
   ],
   "banners": [],
   "banner": {
     "selo": "Verão 2026",
-    "titulo": "Moda surf",
-    "texto": "Camisetas, bermudas e conjuntos para quem vive na praia.",
-    "botao": "Comprar agora",
+    "titulo": "Estilo surf do mar para a cidade",
+    "texto": "Camisetas, bermudas e moletons para quem vive a praia. Peças em quantidade limitada.",
+    "botao": "Ver coleção",
     "categoria": "camisetas",
-    "imagem": ""
+    "imagem": "https://images.unsplash.com/photo-1495385645691-cdb15d6899b3?auto=format&fit=crop&w=1920&h=800&q=70",
+    "imagemCelular": "https://images.unsplash.com/photo-1495385645691-cdb15d6899b3?auto=format&fit=crop&w=900&h=1200&q=70"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Escolha o seu estilo",
+    "Peças leves para o sol e quentinhas para o fim de tarde"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -190,37 +191,42 @@ window.CATEGORIAS = [
   {
     "id": "camisetas",
     "nome": "Camisetas",
-    "chamada": "Algodão premium",
+    "chamada": "Toque macio e caimento certo",
     "desenho": "camiseta",
-    "cor": "#2F6B4F"
+    "cor": "#2F6B4F",
+    "foto": ""
   },
   {
     "id": "regatas",
     "nome": "Regatas",
-    "chamada": "Leves e frescas",
+    "chamada": "Frescor para os dias de calor",
     "desenho": "regata",
-    "cor": "#F2F2EE"
+    "cor": "#F2F2EE",
+    "foto": ""
   },
   {
     "id": "bermudas",
     "nome": "Bermudas",
-    "chamada": "Jeans e tactel",
+    "chamada": "Da areia ao rolê sem trocar",
     "desenho": "short",
-    "cor": "#1D2B4F"
+    "cor": "#1D2B4F",
+    "foto": ""
   },
   {
     "id": "moletons",
     "nome": "Moletons",
-    "chamada": "Para as noites frias",
+    "chamada": "Aconchego para o fim de tarde",
     "desenho": "moletom",
-    "cor": "#6B4128"
+    "cor": "#6B4128",
+    "foto": ""
   },
   {
     "id": "acessorios",
     "nome": "Acessórios",
-    "chamada": "Bonés e mais",
+    "chamada": "Proteção e estilo no sol",
     "desenho": "bone",
-    "cor": "#D8C3A5"
+    "cor": "#D8C3A5",
+    "foto": ""
   }
 ];
 
@@ -235,7 +241,7 @@ window.PRODUTOS = [
     "de": 99.9,
     "desenho": "camiseta",
     "destaque": true,
-    "desc": "Camiseta básica premium da Maré. Troque este texto pela descrição do produto.",
+    "desc": "A camiseta básica que vira a favorita da gaveta. Algodão penteado de toque macio, gola reforçada que não deforma e caimento reto que valoriza sem apertar. Combina com bermuda, jeans e por baixo da camisa aberta.",
     "cores": [
       [
         "Marinho",
@@ -286,7 +292,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Marinho · P"
       }
-    ]
+    ],
+    "composicao": "Algodão penteado 100%, fio 30.1"
   },
   {
     "id": "p2",
@@ -298,7 +305,7 @@ window.PRODUTOS = [
     "de": 159.9,
     "desenho": "short",
     "destaque": true,
-    "desc": "Bermuda jeans destroyed da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Bermuda jeans com detalhes destroyed para um visual despojado. Jeans com elastano que acompanha os movimentos e bolsos funcionais. Fica ótima com camiseta básica e tênis.",
     "cores": [
       [
         "Azul",
@@ -335,7 +342,8 @@ window.PRODUTOS = [
         "variacao": "Azul · P"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Algodão 98%, elastano 2%"
   },
   {
     "id": "p3",
@@ -346,7 +354,7 @@ window.PRODUTOS = [
     "preco": 60,
     "desenho": "regata",
     "destaque": true,
-    "desc": "Regata estampa ondas da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Regata leve com estampa de ondas, feita para os dias de sol forte. Tecido respirável e cavas confortáveis, que deixam o corpo ventilado. Ideal para praia, academia e passeios de verão.",
     "cores": [
       [
         "Branco",
@@ -388,7 +396,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Branco · P"
       }
-    ]
+    ],
+    "composicao": "Algodão 100%"
   },
   {
     "id": "p4",
@@ -400,7 +409,7 @@ window.PRODUTOS = [
     "de": 229.9,
     "desenho": "moletom",
     "destaque": true,
-    "desc": "Moletom canguru surf da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Moletom canguru com tema surf para os fins de tarde na praia e as noites mais frescas. Felpado por dentro, com capuz forrado e bolso frontal. Aquece sem pesar e combina com bermuda ou calça.",
     "cores": [
       [
         "Marrom",
@@ -443,7 +452,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Marrom · P"
       }
-    ]
+    ],
+    "composicao": "Algodão 50%, poliéster 50%, interior felpado"
   },
   {
     "id": "p5",
@@ -455,7 +465,7 @@ window.PRODUTOS = [
     "de": 109.9,
     "desenho": "camiseta",
     "destaque": true,
-    "desc": "Camiseta oversized da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Camiseta oversized com ombro caído e corpo mais amplo para um visual atual e confortável. Malha encorpada que mantém a forma e não fica transparente. Combina com bermuda, calça cargo ou jeans.",
     "cores": [
       [
         "Verde",
@@ -490,7 +500,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Verde · P"
       }
-    ]
+    ],
+    "composicao": "Algodão 100%, malha encorpada"
   },
   {
     "id": "p6",
@@ -502,7 +513,7 @@ window.PRODUTOS = [
     "de": 99.9,
     "desenho": "short",
     "destaque": false,
-    "desc": "Bermuda tactel estampada da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Bermuda de tactel estampada que seca rápido e vai da água para a areia. Cós com elástico e cordão para ajuste, bolsos laterais e forro interno. Leve para levar na mochila da viagem.",
     "cores": [
       [
         "Marinho",
@@ -537,7 +548,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Marinho · P"
       }
-    ]
+    ],
+    "composicao": "Poliamida 100% tactel, forro em tela"
   },
   {
     "id": "p7",
@@ -548,7 +560,7 @@ window.PRODUTOS = [
     "preco": 69.9,
     "desenho": "bone",
     "destaque": false,
-    "desc": "Boné aba curva da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Boné de aba curva que protege do sol e completa o visual praiano. Fecho ajustável na parte de trás e tecido firme que mantém o formato. Combina com camisetas e regatas da coleção.",
     "cores": [
       [
         "Bege",
@@ -582,7 +594,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Bege"
       }
-    ]
+    ],
+    "composicao": "Sarja de algodão, fecho regulável"
   },
   {
     "id": "p8",
@@ -594,7 +607,7 @@ window.PRODUTOS = [
     "de": 279.9,
     "desenho": "camiseta",
     "destaque": false,
-    "desc": "Conjunto dry fit da Maré. Troque este texto pela descrição do produto.",
+    "desc": "Conjunto dry fit de camiseta e bermuda para treinos, corridas e esportes de praia. O tecido seca rápido e ajuda a manter o corpo seco durante a atividade. Leve, com caimento que acompanha os movimentos.",
     "cores": [
       [
         "Vermelho",
@@ -638,6 +651,7 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Vermelho · P"
       }
-    ]
+    ],
+    "composicao": "Poliéster 100% com tecnologia dry fit"
   }
 ];

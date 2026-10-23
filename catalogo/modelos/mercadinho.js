@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Mercadinho Exemplo",
-  "slogan": "Hortifrúti, carnes, frios e limpeza com entrega no bairro.",
+  "slogan": "Hortifrúti fresquinho, carne de qualidade e mercearia com entrega no bairro.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Hortifrúti, carnes, frios e limpeza com entrega no bairro. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "Somos o mercadinho da vizinhança: frutas e verduras chegam todo dia e as carnes são cortadas na hora. Monte sua lista pelo WhatsApp e receba as compras em casa, com o cuidado de quem conhece você.",
   "horarios": {
     "0": [],
     "1": [
@@ -65,15 +65,15 @@ window.LOJA = {
   "tema": "auto",
   "faixa": [
     "Entrega no bairro em até 1 hora",
-    "Hortifrúti fresquinho todo dia",
+    "Hortifrúti chega todo dia",
     "Desconto no Pix à vista"
   ],
   "banners": [],
   "banner": {
     "selo": "Ofertas do dia",
-    "titulo": "Fresquinho todo dia",
-    "texto": "Hortifrúti, carnes e mercearia com entrega rápida.",
-    "botao": "Comprar agora",
+    "titulo": "Feira fresca sem sair de casa",
+    "texto": "Frutas, verduras, carnes e mercearia com entrega rápida. Monte sua lista pelo WhatsApp.",
+    "botao": "Fazer meu pedido",
     "categoria": "hortifruti",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Sua feira completa",
+    "Escolha por seção e receba tudo em um só pedido"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -159,30 +159,34 @@ window.CATEGORIAS = [
   {
     "id": "hortifruti",
     "nome": "Hortifrúti",
-    "chamada": "Colhido hoje",
+    "chamada": "Escolhido a dedo todo dia",
     "desenho": "flor",
-    "cor": "#2F6B4F"
+    "cor": "#2F6B4F",
+    "foto": ""
   },
   {
     "id": "carnes",
     "nome": "Carnes e frios",
-    "chamada": "Cortes selecionados",
+    "chamada": "Cortadas na hora do seu pedido",
     "desenho": "caixa",
-    "cor": "#8C2F1B"
+    "cor": "#8C2F1B",
+    "foto": ""
   },
   {
     "id": "mercearia",
     "nome": "Mercearia",
-    "chamada": "Do básico ao especial",
+    "chamada": "O básico da despensa em dia",
     "desenho": "racao",
-    "cor": "#F08C00"
+    "cor": "#F08C00",
+    "foto": ""
   },
   {
     "id": "limpeza",
     "nome": "Limpeza",
-    "chamada": "Casa limpinha",
+    "chamada": "Casa cheirosa com menos esforço",
     "desenho": "garrafa",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   }
 ];
 
@@ -197,7 +201,7 @@ window.PRODUTOS = [
     "de": 49.9,
     "desenho": "bolsa",
     "destaque": true,
-    "desc": "Cesta de frutas da estação da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Cesta com frutas da estação escolhidas uma a uma, no ponto certo para a semana. A seleção muda conforme a época, com o que está mais saboroso e com melhor preço. Boa para lanche da família e também como presente.",
     "cores": [
       [
         "Verde",
@@ -219,7 +223,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Verde"
       }
-    ]
+    ],
+    "composicao": "Cesta com cerca de 3 kg de frutas variadas da estação"
   },
   {
     "id": "p2",
@@ -230,7 +235,7 @@ window.PRODUTOS = [
     "preco": 24.9,
     "desenho": "flor",
     "destaque": true,
-    "desc": "Kit verduras orgânicas da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Kit de verduras orgânicas para a salada da semana. Folhas frescas de produtores da região, lavadas e embaladas com cuidado. Pensado para quem quer comer melhor sem perder tempo na feira.",
     "cores": [
       [
         "Verde",
@@ -261,7 +266,8 @@ window.PRODUTOS = [
         "variacao": "Verde"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Kit com 5 itens: alfaces, rúcula, couve e cheiro-verde"
   },
   {
     "id": "p3",
@@ -272,7 +278,7 @@ window.PRODUTOS = [
     "preco": 79.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Picanha da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Picanha macia com capa de gordura na medida, ideal para o churrasco. Peça inteira ou fatiada em bifes, do jeito que você pedir pelo WhatsApp. Vai bem na brasa, na chapa ou no forno.",
     "cores": [
       [
         "Carne",
@@ -302,7 +308,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Carne · 1 kg"
       }
-    ]
+    ],
+    "composicao": "Peça bovina resfriada, preço por kg"
   },
   {
     "id": "p4",
@@ -313,7 +320,7 @@ window.PRODUTOS = [
     "preco": 19.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Frango inteiro da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Frango inteiro resfriado, prático para assar no forno ou na churrasqueira. Rende bem para a família e pode ser cortado em partes se você preferir. Uma opção econômica para o almoço de domingo.",
     "cores": [
       [
         "Frango",
@@ -343,7 +350,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Frango · 1 kg"
       }
-    ]
+    ],
+    "composicao": "Frango inteiro resfriado, peça de 2 a 2,5 kg"
   },
   {
     "id": "p5",
@@ -355,7 +363,7 @@ window.PRODUTOS = [
     "de": 34.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Arroz tipo 1 da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Arroz tipo 1 de grãos inteiros e soltinhos depois de cozidos. Rende bem e não empapa, perfeito para o prato do dia a dia. Pacote de 5 kg que garante a despensa por um bom tempo.",
     "cores": [
       [
         "Branco",
@@ -375,7 +383,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Branco · 5 kg"
       }
-    ]
+    ],
+    "composicao": "Pacote 5 kg, arroz branco agulhinha tipo 1"
   },
   {
     "id": "p6",
@@ -387,7 +396,7 @@ window.PRODUTOS = [
     "de": 24.9,
     "desenho": "racao",
     "destaque": false,
-    "desc": "Café torrado e moído da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Café torrado e moído de sabor encorpado e aroma marcante. Moagem média que funciona bem no coador de pano, de papel e na cafeteira elétrica. Para começar o dia ou receber visita com um cafezinho fresco.",
     "cores": [
       [
         "Marrom",
@@ -409,7 +418,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Marrom · 500 g"
       }
-    ]
+    ],
+    "composicao": "Pacote a vácuo 500 g, café tradicional"
   },
   {
     "id": "p7",
@@ -421,7 +431,7 @@ window.PRODUTOS = [
     "de": 59.9,
     "desenho": "garrafa",
     "destaque": false,
-    "desc": "Kit limpeza da casa da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Kit com o essencial para deixar a casa limpa e cheirosa. Reúne detergente, desinfetante, água sanitária e multiuso, cada um para uma tarefa. Prático para abastecer o mês ou para quem está montando casa nova.",
     "cores": [
       [
         "Azul",
@@ -443,7 +453,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Azul"
       }
-    ]
+    ],
+    "composicao": "Kit com 4 itens: detergente, desinfetante, água sanitária e multiuso"
   },
   {
     "id": "p8",
@@ -454,7 +465,7 @@ window.PRODUTOS = [
     "preco": 29.9,
     "desenho": "garrafa",
     "destaque": false,
-    "desc": "Sabão líquido da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Sabão líquido que dissolve fácil e limpa bem na máquina ou no tanque. Fórmula pensada para tirar sujeira do dia a dia e deixar as roupas perfumadas. Rende mais lavagens que o sabão em pó tradicional.",
     "cores": [
       [
         "Azul",
@@ -484,6 +495,7 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Azul · 3 L"
       }
-    ]
+    ],
+    "composicao": "Frasco 3 L, lava-roupas líquido"
   }
 ];

@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Auto Peças Exemplo",
-  "slogan": "Peças, óleo, baterias e pneus com instalação na nossa oficina.",
+  "slogan": "Peças de confiança e instalação na hora. Seu carro ou moto pronto para rodar.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Peças, óleo, baterias e pneus com instalação na nossa oficina. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "Somos uma auto peças com oficina própria: você compra a peça e já sai com ela instalada. Mande o modelo e o ano do veículo pelo WhatsApp que a gente confere a peça certa e passa o orçamento.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,16 +64,16 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Instalação na hora",
+    "Instalação na hora na oficina",
     "Garantia em todas as peças",
     "Desconto no Pix à vista"
   ],
   "banners": [],
   "banner": {
     "selo": "Revisão em dia",
-    "titulo": "Peças com instalação na hora",
-    "texto": "Óleo, freios, baterias e pneus com garantia.",
-    "botao": "Comprar agora",
+    "titulo": "Comprou, instalou, saiu rodando",
+    "texto": "Freios, óleo, baterias e pneus com instalação na nossa oficina e garantia.",
+    "botao": "Fazer orçamento",
     "categoria": "freios",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Do que seu veículo precisa?",
+    "Envie modelo e ano pelo WhatsApp e confirmamos a peça certa"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +164,34 @@ window.CATEGORIAS = [
   {
     "id": "freios",
     "nome": "Freios",
-    "chamada": "Pastilhas e discos",
+    "chamada": "Frenagem firme e sem ruído",
     "desenho": "caixa",
-    "cor": "#D62828"
+    "cor": "#D62828",
+    "foto": ""
   },
   {
     "id": "oleo",
     "nome": "Óleo e filtros",
-    "chamada": "Troca na hora",
+    "chamada": "Motor protegido, troca em minutos",
     "desenho": "garrafa",
-    "cor": "#C9A227"
+    "cor": "#C9A227",
+    "foto": ""
   },
   {
     "id": "baterias",
     "nome": "Baterias",
-    "chamada": "Teste grátis",
+    "chamada": "Partida garantida toda manhã",
     "desenho": "caixa",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": ""
   },
   {
     "id": "pneus",
     "nome": "Pneus",
-    "chamada": "Com alinhamento",
+    "chamada": "Mais aderência na chuva e no seco",
     "desenho": "pneu",
-    "cor": "#3A3F46"
+    "cor": "#3A3F46",
+    "foto": ""
   }
 ];
 
@@ -202,7 +206,7 @@ window.PRODUTOS = [
     "de": 159.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Pastilha de freio dianteira da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Pastilhas dianteiras para uma frenagem firme e progressiva. Composto que reduz ruído e poeira nas rodas, com boa durabilidade no uso urbano. Instalamos na hora e conferimos o estado dos discos sem custo extra.",
     "cores": [
       [
         "Cinza",
@@ -238,7 +242,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Cinza · Gol/Voyage"
       }
-    ]
+    ],
+    "composicao": "Jogo para eixo dianteiro, composto semimetálico"
   },
   {
     "id": "p2",
@@ -249,7 +254,7 @@ window.PRODUTOS = [
     "preco": 289.9,
     "desenho": "pneu",
     "destaque": true,
-    "desc": "Disco de freio (par) da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Par de discos de freio para recuperar a eficiência da frenagem e acabar com a trepidação no pedal. Fabricados em ferro fundido com acabamento que protege contra corrosão. Recomendamos trocar junto com as pastilhas.",
     "cores": [
       [
         "Cinza",
@@ -284,7 +289,8 @@ window.PRODUTOS = [
         "variacao": "Cinza · Gol/Voyage"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Par de discos em ferro fundido, ventilados ou sólidos conforme o modelo"
   },
   {
     "id": "p3",
@@ -296,7 +302,7 @@ window.PRODUTOS = [
     "de": 59.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Óleo sintético 5W30 da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Óleo sintético 5W30 que protege o motor desde a partida a frio. Mantém a viscosidade estável em altas temperaturas e auxilia na economia de combustível. Confira no manual se é o indicado para o seu veículo.",
     "cores": [
       [
         "Dourado",
@@ -318,7 +324,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Dourado · 1 L"
       }
-    ]
+    ],
+    "composicao": "Frasco 1 L, lubrificante sintético SAE 5W30 API SP"
   },
   {
     "id": "p4",
@@ -329,7 +336,7 @@ window.PRODUTOS = [
     "preco": 29.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Filtro de óleo da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Filtro de óleo que retém impurezas e mantém o lubrificante limpo por mais tempo. Deve ser trocado junto com o óleo para manter a proteção do motor. Informe o modelo do carro e separamos o filtro compatível.",
     "cores": [
       [
         "Azul",
@@ -357,7 +364,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Azul · Gol/Voyage"
       }
-    ]
+    ],
+    "composicao": "Filtro blindado com elemento em celulose"
   },
   {
     "id": "p5",
@@ -369,7 +377,7 @@ window.PRODUTOS = [
     "de": 529.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Bateria 60 Ah da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Bateria 60 Ah para carros de passeio, com partida forte mesmo em dias frios. Selada e livre de manutenção, vem com garantia do fabricante. Fazemos o teste do sistema elétrico e a instalação na hora.",
     "cores": [
       [
         "Preto",
@@ -389,7 +397,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Preto"
       }
-    ]
+    ],
+    "composicao": "Bateria chumbo-ácida selada 12 V 60 Ah"
   },
   {
     "id": "p6",
@@ -400,7 +409,7 @@ window.PRODUTOS = [
     "preco": 189.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Bateria moto 5 Ah da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Bateria 5 Ah para motos de baixa e média cilindrada, pronta para uso. Selada, não precisa completar água e aguenta bem o uso diário. Trocamos na oficina e descartamos a bateria velha de forma correta.",
     "cores": [
       [
         "Preto",
@@ -422,7 +431,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Preto"
       }
-    ]
+    ],
+    "composicao": "Bateria selada 12 V 5 Ah, tecnologia AGM"
   },
   {
     "id": "p7",
@@ -434,7 +444,7 @@ window.PRODUTOS = [
     "de": 379.9,
     "desenho": "pneu",
     "destaque": false,
-    "desc": "Pneu aro 14 175/70 da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Pneu aro 14 na medida 175/70, uma das mais usadas em carros compactos. Banda de rodagem pensada para boa aderência em piso molhado e rodagem silenciosa. Montagem e balanceamento feitos na hora na oficina.",
     "cores": [
       [
         "Preto",
@@ -456,7 +466,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Preto"
       }
-    ]
+    ],
+    "composicao": "Pneu radial 175/70 R14, índice de carga 84"
   },
   {
     "id": "p8",
@@ -467,7 +478,7 @@ window.PRODUTOS = [
     "preco": 219.9,
     "desenho": "pneu",
     "destaque": false,
-    "desc": "Pneu moto aro 18 da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Pneu traseiro aro 18 para motos de uso urbano e estrada. Desenho da banda que ajuda a escoar água e dá firmeza nas curvas. Montamos na hora e conferimos a calibragem antes de você sair.",
     "cores": [
       [
         "Preto",
@@ -489,6 +500,7 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Preto"
       }
-    ]
+    ],
+    "composicao": "Pneu diagonal aro 18, uso com câmara"
   }
 ];

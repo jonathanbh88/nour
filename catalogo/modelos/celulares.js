@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Conecta Celulares",
-  "slogan": "Capinhas, películas, carregadores e fones. Assistência técnica na hora.",
+  "slogan": "Acessórios para o seu celular com garantia e película aplicada na hora.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Capinhas, películas, carregadores e fones. Assistência técnica na hora. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Conecta Celulares reúne capinhas, carregadores, fones e películas para os principais modelos. Mande o modelo do seu aparelho no WhatsApp e a gente confirma a compatibilidade antes de fechar o pedido.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,18 +64,19 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Película aplicada na hora",
-    "Garantia em todos os produtos",
-    "Desconto no Pix à vista"
+    "Película aplicada na hora na loja",
+    "Garantia em todos os acessórios",
+    "Desconto especial no Pix à vista"
   ],
   "banners": [],
   "banner": {
-    "selo": "Acessórios",
-    "titulo": "Tudo para o seu celular",
-    "texto": "Capinhas, carregadores turbo e fones com garantia.",
-    "botao": "Comprar agora",
+    "selo": "Proteção e energia",
+    "titulo": "Seu celular protegido e sempre carregado",
+    "texto": "Capinhas, carregadores turbo e fones com garantia. Confira o modelo pelo WhatsApp.",
+    "botao": "Escolher acessórios",
     "categoria": "capinhas",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/374117/pexels-photo-374117.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/374117/pexels-photo-374117.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Encontre o acessório certo",
+    "Proteção, carga e som para o seu aparelho"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +165,34 @@ window.CATEGORIAS = [
   {
     "id": "capinhas",
     "nome": "Capinhas",
-    "chamada": "Para todos os modelos",
+    "chamada": "Proteção sem perder o estilo",
     "desenho": "celular",
-    "cor": "#5B3B8C"
+    "cor": "#5B3B8C",
+    "foto": "https://images.pexels.com/photos/374117/pexels-photo-374117.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "carregadores",
     "nome": "Carregadores",
-    "chamada": "Turbo e originais",
+    "chamada": "Carga rápida para o dia a dia",
     "desenho": "caixa",
-    "cor": "#F2F2EE"
+    "cor": "#F2F2EE",
+    "foto": "https://images.pexels.com/photos/4097206/pexels-photo-4097206.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "fones",
     "nome": "Fones",
-    "chamada": "Com e sem fio",
+    "chamada": "Som bom em qualquer lugar",
     "desenho": "fone",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": "https://images.pexels.com/photos/7417547/pexels-photo-7417547.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "peliculas",
     "nome": "Películas",
-    "chamada": "Aplicamos na hora",
+    "chamada": "Tela protegida contra riscos",
     "desenho": "celular",
-    "cor": "#9AA1A9"
+    "cor": "#9AA1A9",
+    "foto": "https://images.pexels.com/photos/8947766/pexels-photo-8947766.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -202,7 +207,7 @@ window.PRODUTOS = [
     "de": 69.9,
     "desenho": "celular",
     "destaque": true,
-    "desc": "Capinha anti-impacto da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Capinha anti-impacto pensada para proteger o celular nas quedas do dia a dia. Tem cantos reforçados, borda elevada sobre a câmera e a tela e botões com bom toque. Informe o modelo do seu aparelho no WhatsApp para garantir o encaixe.",
     "cores": [
       [
         "Preto",
@@ -248,6 +253,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Preto · iPhone 15"
       }
+    ],
+    "composicao": "TPU flexível com cantos reforçados",
+    "fotos": [
+      "https://images.pexels.com/photos/18403791/pexels-photo-18403791.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/7742554/pexels-photo-7742554.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -259,7 +269,7 @@ window.PRODUTOS = [
     "preco": 59.9,
     "desenho": "celular",
     "destaque": true,
-    "desc": "Capinha de silicone aveludada da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Capinha de silicone com toque aveludado, que dá firmeza na mão e não escorrega. O interior em microfibra ajuda a evitar riscos na traseira do aparelho. Combina com a película de vidro 3D para uma proteção completa.",
     "cores": [
       [
         "Rosa",
@@ -305,7 +315,12 @@ window.PRODUTOS = [
         "variacao": "Rosa · iPhone 15"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Silicone com interior em microfibra",
+    "fotos": [
+      "https://images.pexels.com/photos/9558940/pexels-photo-9558940.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/7742552/pexels-photo-7742552.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -317,7 +332,7 @@ window.PRODUTOS = [
     "de": 119.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Carregador turbo 25 W da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Carregador turbo de 25 W para recarregar o celular em menos tempo nos aparelhos compatíveis com carga rápida. Tem saída USB-C e proteção contra sobrecarga e superaquecimento. Ideal para usar junto com o cabo USB-C reforçado de 2 m.",
     "cores": [
       [
         "Branco",
@@ -339,6 +354,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Branco · USB-C"
       }
+    ],
+    "composicao": "Fonte 25 W, saída USB-C, bivolt",
+    "fotos": [
+      "https://images.pexels.com/photos/4097206/pexels-photo-4097206.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/3921630/pexels-photo-3921630.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -350,7 +370,7 @@ window.PRODUTOS = [
     "preco": 39.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Cabo USB-C reforçado 2 m da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Cabo USB-C de 2 m com revestimento reforçado, que dá alcance para usar o celular carregando no sofá ou na cama. As pontas têm proteção extra contra dobras, onde os cabos comuns costumam quebrar. Funciona com carregadores turbo compatíveis.",
     "cores": [
       [
         "Branco",
@@ -377,6 +397,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Branco"
       }
+    ],
+    "composicao": "Cabo USB-C 2 m com revestimento trançado",
+    "fotos": [
+      "https://images.pexels.com/photos/3921711/pexels-photo-3921711.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/4195332/pexels-photo-4195332.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -389,7 +414,7 @@ window.PRODUTOS = [
     "de": 199.9,
     "desenho": "fone",
     "destaque": true,
-    "desc": "Fone bluetooth com estojo da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Fone bluetooth sem fio com estojo de carregamento, para ouvir música e atender ligações sem cabo enrolando. O estojo recarrega os fones várias vezes ao longo do dia e cabe no bolso. Uma boa opção de presente para quem vive no celular.",
     "cores": [
       [
         "Branco",
@@ -416,6 +441,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Branco"
       }
+    ],
+    "composicao": "Bluetooth, estojo com bateria recarregável",
+    "fotos": [
+      "https://images.pexels.com/photos/7417547/pexels-photo-7417547.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8380433/pexels-photo-8380433.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -427,7 +457,7 @@ window.PRODUTOS = [
     "preco": 29.9,
     "desenho": "fone",
     "destaque": false,
-    "desc": "Fone com fio P2 da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Fone com fio e conector P2, simples e prático para quem não quer se preocupar com bateria. Tem microfone para chamadas e cabo leve que não pesa no ouvido. Bom para deixar na mochila como reserva.",
     "cores": [
       [
         "Preto",
@@ -457,6 +487,11 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Preto"
       }
+    ],
+    "composicao": "Conector P2 3,5 mm, cabo 1,2 m com microfone",
+    "fotos": [
+      "https://images.pexels.com/photos/6251/pexels-photo-6251.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/9781032/pexels-photo-9781032.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -469,7 +504,7 @@ window.PRODUTOS = [
     "de": 39.9,
     "desenho": "celular",
     "destaque": false,
-    "desc": "Película de vidro 3D da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Película de vidro 3D que cobre a tela inteira, inclusive as bordas curvas, e ajuda a proteger contra riscos e pequenos impactos. Mantém o toque sensível e a imagem nítida. Aplicamos na hora na loja, sem bolhas.",
     "cores": [
       [
         "Transparente",
@@ -503,6 +538,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Transparente · iPhone 15"
       }
+    ],
+    "composicao": "Vidro temperado 9H com bordas 3D",
+    "fotos": [
+      "https://images.pexels.com/photos/30909364/pexels-photo-30909364.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8947766/pexels-photo-8947766.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -514,7 +554,7 @@ window.PRODUTOS = [
     "preco": 49.9,
     "desenho": "celular",
     "destaque": false,
-    "desc": "Película de privacidade da Conecta. Troque este texto pela descrição do produto.",
+    "desc": "Película de privacidade que escurece a tela para quem olha de lado, deixando suas mensagens e senhas longe de olhares curiosos. Para quem está de frente, a imagem segue nítida. Ideal para usar no ônibus, no metrô e no trabalho.",
     "cores": [
       [
         "Preto",
@@ -543,6 +583,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Preto · iPhone 15"
       }
+    ],
+    "composicao": "Vidro temperado com filtro de privacidade",
+    "fotos": [
+      "https://images.pexels.com/photos/27522927/pexels-photo-27522927.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/8947493/pexels-photo-8947493.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   }
 ];

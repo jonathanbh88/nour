@@ -107,7 +107,7 @@
     var hl = [];
     C.forEach(function (c) { c.itens.forEach(function (it) { if (it.destaque && !it.esgotado) hl.push(it); }); });
     var hlHTML = hl.map(function (it, i) {
-      return '<article class="hl"><div class="pic g' + (i % 4 + 1) + '">' + (it.selo ? '<span class="tagp">' + esc(it.selo) + '</span>' : '') + (it.foto ? '<img src="' + esc(it.foto) + '" alt="">' : sil(it.icone)) + '</div>' +
+      return '<article class="hl"><div class="pic g' + (i % 4 + 1) + '">' + (it.selo ? '<span class="tagp">' + esc(it.selo) + '</span>' : '') + (it.foto ? '<img src="' + esc(it.foto) + '" alt="" loading="lazy" decoding="async">' : sil(it.icone)) + '</div>' +
         '<div class="meta"><b>' + esc(it.nome) + '</b><div class="price num">' + (fromPrice(it) ? '<span class="from">a partir de </span>' : '') + brl(it.preco) + '</div>' +
         '<button type="button" class="want" data-quick="' + esc(it.id) + '">Adicionar</button></div></article>';
     }).join('');
@@ -119,7 +119,7 @@
           '<span class="txt"><b>' + esc(it.nome) + '</b>' + (it.desc ? '<p>' + esc(it.desc) + '</p>' : '') +
           '<span class="row">' + (off ? '<span class="soldout">Esgotado hoje</span>' : '<span class="price num">' + (fromPrice(it) ? '<span class="from">a partir de </span>' : '') + brl(it.preco) + '</span>') +
           (it.selo && !off ? '<span class="sel">' + esc(it.selo) + '</span>' : '') + '<span class="qtag num" data-qt="' + esc(it.id) + '" hidden></span></span></span>' +
-          '<span class="pic g' + (i % 4 + 1) + '">' + (it.foto ? '<img src="' + esc(it.foto) + '" alt="">' : sil(it.icone)) + (off ? '' : '<span class="plus">' + ic('plus') + '</span>') + '</span></button>';
+          '<span class="pic g' + (i % 4 + 1) + '">' + (it.foto ? '<img src="' + esc(it.foto) + '" alt="" loading="lazy" decoding="async">' : sil(it.icone)) + (off ? '' : '<span class="plus">' + ic('plus') + '</span>') + '</span></button>';
       }).join('');
       return '<section class="sec cat" id="cat-' + esc(c.id) + '" data-cat="' + esc(c.id) + '"><div class="sec-head"><h2 class="h">' + esc(c.nome) + '</h2>' + (c.nota ? '<p class="subt">' + esc(c.nota) + '</p>' : '') + '</div><div class="list">' + items + '</div></section>';
     }).join('');
@@ -172,7 +172,7 @@
     var gi = C.indexOf(CATOF[id]) + CATOF[id].itens.indexOf(it);
     var d = $('#dItem');
     d.innerHTML = '<div class="sheet" role="document"><button type="button" class="x" data-close aria-label="Fechar">' + ic('x') + '</button><div class="scroll">' +
-      '<div class="pic bigpic g' + (gi % 4 + 1) + '">' + (it.foto ? '<img src="' + esc(it.foto) + '" alt="">' : sil(it.icone)) + '</div>' +
+      '<div class="pic bigpic g' + (gi % 4 + 1) + '">' + (it.foto ? '<img src="' + esc(it.foto) + '" alt="" loading="lazy" decoding="async">' : sil(it.icone)) + '</div>' +
       '<div class="body"><h2>' + esc(it.nome) + '</h2>' + (it.desc ? '<p class="d">' + esc(it.desc) + '</p>' : '') + '<div class="p num">' + brl(it.preco) + '</div>' +
       groups.map(function (g, i) {
         var many = g.tipo !== 'um';

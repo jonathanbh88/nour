@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Pequenos Exemplo",
-  "slogan": "Roupas confortáveis para brincar o dia inteiro. Menina e menino.",
+  "slogan": "Roupas macias e alegres para brincar o dia inteiro, de menina e menino.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Roupas confortáveis para brincar o dia inteiro. Menina e menino. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "Na Pequenos, cada peça é escolhida pensando no conforto de quem brinca e na praticidade de quem veste. Pelo WhatsApp ajudamos a escolher o tamanho certo pela idade e altura, com atendimento rápido e carinhoso.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,16 +64,16 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Moda menina e menino",
+    "Moda menina, menino e bebê",
     "Frete grátis acima de R$ 199",
     "Primeira troca grátis"
   ],
   "banners": [],
   "banner": {
     "selo": "Coleção nova",
-    "titulo": "Para brincar o dia todo",
-    "texto": "Algodão macio, cores alegres e tamanhos de 2 a 10 anos.",
-    "botao": "Comprar agora",
+    "titulo": "Conforto para brincar o dia todo",
+    "texto": "Algodão macio, cores alegres e tamanhos de 2 a 10 anos. Ajuda com tamanho no WhatsApp.",
+    "botao": "Ver coleção",
     "categoria": "menina",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Para cada fase, um look",
+    "Peças macias que acompanham a rotina das crianças"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -195,30 +195,34 @@ window.CATEGORIAS = [
   {
     "id": "menina",
     "nome": "Menina",
-    "chamada": "Vestidos e conjuntos",
+    "chamada": "Vestidos e conjuntos cheios de cor",
     "desenho": "vestido",
-    "cor": "#E58FAE"
+    "cor": "#E58FAE",
+    "foto": ""
   },
   {
     "id": "menino",
     "nome": "Menino",
-    "chamada": "Conjuntos e bermudas",
+    "chamada": "Conjuntos prontos para a aventura",
     "desenho": "camiseta",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   },
   {
     "id": "bebe",
     "nome": "Bebê",
-    "chamada": "Macio para a pele",
+    "chamada": "Macio e prático na hora da troca",
     "desenho": "moletom",
-    "cor": "#92D0B7"
+    "cor": "#92D0B7",
+    "foto": ""
   },
   {
     "id": "calcados",
     "nome": "Calçados",
-    "chamada": "Do 18 ao 34",
+    "chamada": "Passos firmes do 18 ao 34",
     "desenho": "tenis",
-    "cor": "#F2C14E"
+    "cor": "#F2C14E",
+    "foto": ""
   }
 ];
 
@@ -233,7 +237,7 @@ window.PRODUTOS = [
     "de": 99.9,
     "desenho": "vestido",
     "destaque": true,
-    "desc": "Vestido floral de algodão da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Vestido floral leve e fresquinho para os dias de sol e as festinhas. O algodão é macio na pele e a modelagem soltinha deixa a criança brincar à vontade. Combina com sandália ou tênis.",
     "cores": [
       [
         "Rosa",
@@ -271,7 +275,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Rosa · 2"
       }
-    ]
+    ],
+    "composicao": "Algodão 100%"
   },
   {
     "id": "p2",
@@ -282,7 +287,7 @@ window.PRODUTOS = [
     "preco": 89.9,
     "desenho": "camiseta",
     "destaque": true,
-    "desc": "Conjunto camiseta e bermuda da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Conjunto de camiseta e bermuda pronto para brincar, sem precisar pensar na combinação. Algodão macio, cós com elástico confortável e costuras reforçadas que aguentam a rotina. Ótima opção de presente.",
     "cores": [
       [
         "Azul",
@@ -330,7 +335,8 @@ window.PRODUTOS = [
         "variacao": "Azul · 2"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Algodão 100%, cós com elástico"
   },
   {
     "id": "p3",
@@ -342,7 +348,7 @@ window.PRODUTOS = [
     "de": 89.9,
     "desenho": "moletom",
     "destaque": true,
-    "desc": "Macacão plush da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Macacão plush quentinho e macio, perfeito para os dias frios e as noites de sono. Abertura com botões de pressão facilita a troca de fralda. Um mimo certeiro para chá de bebê.",
     "cores": [
       [
         "Menta",
@@ -386,7 +392,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Menta · 2"
       }
-    ]
+    ],
+    "composicao": "Poliéster 100% plush, botões de pressão"
   },
   {
     "id": "p4",
@@ -398,7 +405,7 @@ window.PRODUTOS = [
     "de": 149.9,
     "desenho": "tenis",
     "destaque": true,
-    "desc": "Tênis com luz da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Tênis com luz que acende a cada passo e deixa a brincadeira ainda mais divertida. Fechamento em velcro para calçar sem ajuda e solado de borracha com boa aderência. As luzes funcionam com bateria interna.",
     "cores": [
       [
         "Rosa",
@@ -436,7 +443,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Rosa · 22"
       }
-    ]
+    ],
+    "composicao": "Cabedal sintético, velcro, solado de borracha com LED"
   },
   {
     "id": "p5",
@@ -447,7 +455,7 @@ window.PRODUTOS = [
     "preco": 99.9,
     "desenho": "saia",
     "destaque": true,
-    "desc": "Saia tule com body da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Conjunto de body com saia de tule que deixa qualquer festinha mais especial. O body de algodão é macio e a saia tem camadas leves com cós elástico confortável. Lindo para aniversários e fotos.",
     "cores": [
       [
         "Rosa",
@@ -484,7 +492,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Rosa · 2"
       }
-    ]
+    ],
+    "composicao": "Body em algodão com elastano, saia em tule"
   },
   {
     "id": "p6",
@@ -496,7 +505,7 @@ window.PRODUTOS = [
     "de": 59.9,
     "desenho": "short",
     "destaque": false,
-    "desc": "Bermuda moletom da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Bermuda de moletom confortável para brincar, passear e ficar em casa. Cós com elástico e cordão para ajuste e tecido que não perde a forma depois das lavagens. Combina com qualquer camiseta.",
     "cores": [
       [
         "Cinza",
@@ -535,7 +544,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Cinza · 2"
       }
-    ]
+    ],
+    "composicao": "Algodão 50%, poliéster 50%"
   },
   {
     "id": "p7",
@@ -546,7 +556,7 @@ window.PRODUTOS = [
     "preco": 79.9,
     "desenho": "moletom",
     "destaque": false,
-    "desc": "Moletom com capuz da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Moletom com capuz quentinho e fácil de vestir para os dias mais frescos. Felpado por dentro, com punhos que seguram bem e bolso canguru. Prático para a escola e os passeios.",
     "cores": [
       [
         "Amarelo",
@@ -584,7 +594,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Amarelo · 2"
       }
-    ]
+    ],
+    "composicao": "Algodão 50%, poliéster 50%, interior felpado"
   },
   {
     "id": "p8",
@@ -596,7 +607,7 @@ window.PRODUTOS = [
     "de": 49.9,
     "desenho": "camiseta",
     "destaque": false,
-    "desc": "Camiseta estampada da Pequenos. Troque este texto pela descrição do produto.",
+    "desc": "Camiseta estampada de algodão, leve e alegre para o dia a dia. Gola com acabamento macio que não incomoda e estampa resistente às lavagens. Combina com bermuda, calça ou short.",
     "cores": [
       [
         "Branco",
@@ -640,6 +651,7 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Branco · 2"
       }
-    ]
+    ],
+    "composicao": "Algodão 100%"
   }
 ];

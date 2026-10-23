@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Ateliê Exemplo",
-  "slogan": "Moda feminina com caimento de verdade. Peças novas toda semana.",
+  "slogan": "Moda feminina com caimento de verdade e peças novas toda semana.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Moda feminina com caimento de verdade. Peças novas toda semana. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "O Ateliê seleciona peças com tecido de qualidade e caimento que valoriza o corpo real. Pelo WhatsApp você tira dúvidas de tamanho, pede fotos extras e recebe sugestões de combinação com atendimento atencioso.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,16 +64,16 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Novas peças toda semana",
-    "Frete grátis para todo o Brasil acima de R$ 299",
-    "Desconto no Pix à vista"
+    "Novidades toda semana",
+    "Frete grátis acima de R$ 299",
+    "Desconto especial no Pix"
   ],
   "banners": [],
   "banner": {
     "selo": "Lançamentos",
-    "titulo": "Nova coleção da estação",
-    "texto": "Elegância para todos os momentos, do trabalho ao fim de semana.",
-    "botao": "Comprar agora",
+    "titulo": "Do trabalho ao fim de semana",
+    "texto": "Peças versáteis com caimento que valoriza. Reposição semanal e peças limitadas.",
+    "botao": "Ver coleção",
     "categoria": "vestidos",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Monte o seu look",
+    "Peças que combinam entre si e funcionam o ano todo"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -201,37 +201,42 @@ window.CATEGORIAS = [
   {
     "id": "blusas",
     "nome": "Blusas",
-    "chamada": "Leves para o dia a dia",
+    "chamada": "Básicos que salvam qualquer manhã",
     "desenho": "blusa",
-    "cor": "#2F6B4F"
+    "cor": "#2F6B4F",
+    "foto": "https://images.unsplash.com/photo-1542595608-735a52535022?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "vestidos",
     "nome": "Vestidos",
-    "chamada": "Para todas as ocasiões",
+    "chamada": "Um vestido, muitos compromissos",
     "desenho": "vestido",
-    "cor": "#9AA1A9"
+    "cor": "#9AA1A9",
+    "foto": "https://images.pexels.com/photos/7241893/pexels-photo-7241893.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "calcas-saias",
     "nome": "Calças e saias",
-    "chamada": "Cintura alta e caimento perfeito",
+    "chamada": "Cintura marcada e caimento leve",
     "desenho": "calca",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": "https://images.unsplash.com/photo-1558072844-b2e8b546d415?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "casacos",
     "nome": "Casacos",
-    "chamada": "Alfaiataria que dura",
+    "chamada": "Alfaiataria que eleva o visual",
     "desenho": "casaco",
-    "cor": "#C9AE8C"
+    "cor": "#C9AE8C",
+    "foto": "https://images.unsplash.com/photo-1552760647-0a848d97bff3?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "acessorios",
     "nome": "Acessórios",
-    "chamada": "O toque final do look",
+    "chamada": "O detalhe que finaliza o look",
     "desenho": "bolsa",
-    "cor": "#6E1F33"
+    "cor": "#6E1F33",
+    "foto": "https://images.pexels.com/photos/20591024/pexels-photo-20591024.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -246,7 +251,7 @@ window.PRODUTOS = [
     "de": 119.9,
     "desenho": "blusa",
     "destaque": true,
-    "desc": "Blusa básica manga curta da Linha Essencial. Troque este texto pela descrição do produto.",
+    "desc": "A blusa básica que você vai querer em todas as cores. Malha macia com elastano, que não marca e mantém a forma depois de várias lavagens. Fica ótima por dentro da calça ou com blazer por cima.",
     "cores": [
       [
         "Verde",
@@ -299,7 +304,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Verde · PP"
       }
-    ]
+    ],
+    "composicao": "Viscose 95%, elastano 5%"
   },
   {
     "id": "p2",
@@ -311,7 +317,7 @@ window.PRODUTOS = [
     "de": 139.9,
     "desenho": "vestido",
     "destaque": true,
-    "desc": "Vestido tigrado ombro único da Linha Festa. Troque este texto pela descrição do produto.",
+    "desc": "Vestido de ombro único com estampa tigrada que chama atenção na medida certa. O tecido tem caimento fluido e o recorte assimétrico valoriza colo e ombros. Perfeito para festas, jantares e aniversários.",
     "cores": [
       [
         "Cinza",
@@ -359,7 +365,8 @@ window.PRODUTOS = [
         "variacao": "Cinza · PP"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Poliéster 100%, forro interno"
   },
   {
     "id": "p3",
@@ -371,7 +378,7 @@ window.PRODUTOS = [
     "de": 109.9,
     "desenho": "calca",
     "destaque": true,
-    "desc": "Calça larga preta da Linha Essencial. Troque este texto pela descrição do produto.",
+    "desc": "Calça larga de cintura alta que alonga a silhueta e deixa o corpo livre. Tecido com caimento pesado, que não amassa fácil e vai bem do escritório ao passeio. Combina com blusas básicas, cropped e camisas.",
     "cores": [
       [
         "Preto",
@@ -409,7 +416,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Preto · PP"
       }
-    ]
+    ],
+    "composicao": "Poliéster 96%, elastano 4%"
   },
   {
     "id": "p4",
@@ -421,7 +429,7 @@ window.PRODUTOS = [
     "de": 199.9,
     "desenho": "blusa",
     "destaque": true,
-    "desc": "Blusa listrada com bolso da Linha Casual. Troque este texto pela descrição do produto.",
+    "desc": "Blusa listrada com bolso frontal, um clássico com ar despojado. Algodão macio e respirável, com modelagem soltinha que fica confortável o dia inteiro. Linda com jeans, saia midi ou calça de alfaiataria.",
     "cores": [
       [
         "Vinho",
@@ -467,7 +475,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Vinho · PP"
       }
-    ]
+    ],
+    "composicao": "Algodão 100%"
   },
   {
     "id": "p5",
@@ -478,7 +487,7 @@ window.PRODUTOS = [
     "preco": 189.9,
     "desenho": "vestido",
     "destaque": true,
-    "desc": "Vestido midi de linho da Linha Festa. Troque este texto pela descrição do produto.",
+    "desc": "Vestido midi de linho, fresco e elegante para os dias quentes. O tecido natural deixa a pele respirar e o comprimento midi funciona do trabalho ao almoço de domingo. Combine com sandália rasteira ou mule.",
     "cores": [
       [
         "Bege",
@@ -525,7 +534,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Bege · PP"
       }
-    ]
+    ],
+    "composicao": "Linho 55%, viscose 45%"
   },
   {
     "id": "p6",
@@ -537,7 +547,7 @@ window.PRODUTOS = [
     "de": 299.9,
     "desenho": "casaco",
     "destaque": false,
-    "desc": "Casaco de alfaiataria da Linha Inverno. Troque este texto pela descrição do produto.",
+    "desc": "Casaco de alfaiataria com ombros estruturados e corte reto que deixa qualquer look mais sofisticado. Forrado, aquece sem pesar e vai por cima de vestido, calça ou jeans. Um investimento que acompanha muitos invernos.",
     "cores": [
       [
         "Bege",
@@ -583,7 +593,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Bege · PP"
       }
-    ]
+    ],
+    "composicao": "Poliéster 70%, viscose 30%, forro em poliéster"
   },
   {
     "id": "p7",
@@ -594,7 +605,7 @@ window.PRODUTOS = [
     "preco": 119.9,
     "desenho": "saia",
     "destaque": false,
-    "desc": "Saia midi plissada da Linha Casual. Troque este texto pela descrição do produto.",
+    "desc": "Saia midi plissada que se movimenta a cada passo e valoriza a cintura. O elástico no cós dá conforto e o plissado é permanente, sem precisar passar. Fica linda com tênis, sandália ou bota.",
     "cores": [
       [
         "Rosa",
@@ -632,7 +643,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Rosa · PP"
       }
-    ]
+    ],
+    "composicao": "Poliéster 100%, cós com elástico"
   },
   {
     "id": "p8",
@@ -644,7 +656,7 @@ window.PRODUTOS = [
     "de": 169.9,
     "desenho": "bolsa",
     "destaque": false,
-    "desc": "Bolsa tiracolo matelassê da Acessórios. Troque este texto pela descrição do produto.",
+    "desc": "Bolsa tiracolo matelassê que finaliza o look com charme. Tem espaço para o essencial, alça em corrente ajustável e fecho seguro. Combina com produções do dia a dia e da noite.",
     "cores": [
       [
         "Vinho",
@@ -671,6 +683,7 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Vinho"
       }
-    ]
+    ],
+    "composicao": "Material sintético matelassê, alça em corrente metálica"
   }
 ];

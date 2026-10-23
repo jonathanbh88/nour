@@ -29,14 +29,16 @@
     star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>', brush: '<path d="M14 4l6 6-9 9H5v-6z"/>',
     key: '<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3"/>', tag: '<path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', chat: '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.3A8.4 8.4 0 1 1 21 11.5z"/>', ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>',
-    x: '<path d="M6 6l12 12M18 6L6 18"/>', plus: '<path d="M12 5v14M5 12h14"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'
+    x: '<path d="M6 6l12 12M18 6L6 18"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>', plus: '<path d="M12 5v14M5 12h14"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'
   };
   function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + I[n] + '</svg>'; }
 
   /* ---------- acesso ---------- */
   var ERROS = { acesso_negado: 'Loja ou código de acesso incorreto.', dados_invalidos: 'Algum campo está fora do formato.', produto_inexistente: 'Esse produto não existe mais.',
     nome_invalido: 'Preencha o nome.', status_invalido: 'Status inválido.', acao_invalida: 'Ação inválida.',
-    cupom_repetido: 'Já existe um cupom com esse código.', cupom_codigo_invalido: 'Use de 3 a 20 letras ou números no código do cupom.', pedido_inexistente: 'Esse pedido não existe mais.', quantidade_invalida: 'Quantidade inválida.' };
+    cupom_repetido: 'Já existe um cupom com esse código.', cupom_codigo_invalido: 'Use de 3 a 20 letras ou números no código do cupom.', pedido_inexistente: 'Esse pedido não existe mais.', quantidade_invalida: 'Quantidade inválida.',
+    limite_plano: 'Seu plano chegou ao limite de produtos. Fale com o suporte para passar ao plano Mais.', limite_fotos: 'Seu plano chegou ao limite de fotos. Apague fotos sem uso ou passe ao plano Mais.',
+    tamanho: 'A foto ficou grande demais mesmo comprimida. Tente outra.', tipo: 'Esse arquivo não é uma foto (use JPG, PNG, WebP ou foto do celular).', falha_envio: 'Não deu para enviar a foto. Tente de novo.' };
   function msgErro(e) { var m = String(e && e.message || ''); if (m.indexOf('sem_estoque') === 0) return 'Sem estoque dessa opção de ' + (m.split(':')[1] || 'produto') + '.'; return ERROS[m] || (e && e.status === 0 ? 'Sem conexão. Confira a internet.' : 'Não deu certo: ' + m); }
   function guardar() {
     var v = JSON.stringify({ slug: S.slug, token: S.token });
@@ -49,7 +51,7 @@
     S.slug = slug; S.token = token; S.lembrar = lembrar;
     app.innerHTML = '<div class="loading">Abrindo o painel…</div>';
     return window.nourRpc('catalogo_painel', { p_slug: slug, p_token: token }).then(function (d) {
-      S.d = d; guardar(); aplicarCor();
+      S.d = d; guardar(); aplicarCor(); lerPlano(); limparFotos();
       if (!d.onboarding || !d.onboarding.feito) return onboarding(1);
       render();
     }).catch(function (e) { esquecer(); login(msgErro(e)); });
@@ -61,6 +63,91 @@
       return d;
     }).catch(function (e) { toast(msgErro(e)); throw e; });
   }
+  /* ---------- plano e fotos ---------- */
+  var PLANOS = { basico: 'Básico', mais: 'Mais' };
+  function lerPlano() {
+    window.nourRpc('catalogo_plano', { p_slug: S.slug, p_token: S.token }).then(function (pl) { S.plano = pl; if (S.tab === 'produtos' && !dlg.open) render(); }, function () {});
+  }
+  function planoTxt() {
+    var pl = S.plano; if (!pl || !pl.limites) return '';
+    var lim = pl.limites.produtos, n = S.d.produtos.length;
+    return '<p class="plano' + (n >= lim ? ' cheio' : '') + '">Plano <b>' + esc(PLANOS[pl.plano] || pl.plano) + '</b> · ' + n + ' de ' + lim + ' produtos' + (n >= lim ? ' · limite atingido; fale com o suporte para passar ao plano Mais' : '') + '</p>';
+  }
+  // Uma vez por entrada: apaga do armazenamento as fotos enviadas há mais de 1 hora que não ficaram em lugar nenhum.
+  function limparFotos() {
+    var fd = new FormData(); fd.append('loja', S.slug); fd.append('codigo', S.token); fd.append('acao', 'limpar');
+    fetch(window.NOUR_API.url + '/functions/v1/catalogo-foto', { method: 'POST', headers: { apikey: window.NOUR_API.chave }, body: fd }).catch(function () {});
+  }
+  // Compressão automática: toda foto é reduzida no próprio aparelho antes de subir (WebP; JPEG ou PNG se o navegador não gerar WebP).
+  // Cada foto vira 2 arquivos: grande (página do produto, banner) e miniatura (vitrine, listas).
+  var TAM = { produto: [1400, 480], banner: [1920, 960], 'banner-cel': [1200, 600], logo: [600, 200], categoria: [900, 400] };
+  // Tamanho e proporção recomendados para quem vai tirar ou preparar a foto.
+  var IDEAL = { produto: '1000 × 1250 px · retrato 4:5', banner: '1920 × 800 px · paisagem', 'banner-cel': '900 × 1200 px · retrato 3:4', logo: '500 × 500 px · quadrado, de preferência com fundo transparente (PNG)', categoria: '600 × 600 px · quadrada' };
+  function abrirImg(file) {
+    if (window.createImageBitmap) return createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return createImageBitmap(file); }).catch(function () { return viaTag(file); });
+    return viaTag(file);
+  }
+  function viaTag(file) {
+    return new Promise(function (ok, erro) {
+      var u = URL.createObjectURL(file), im = new Image();
+      im.onload = function () { ok(im); }; im.onerror = function () { erro(new Error('tipo')); }; im.src = u;
+    });
+  }
+  function gerar(img, max, q, alfa) {
+    var w = img.width, h = img.height, k = Math.min(1, max / Math.max(w, h));
+    var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+    var x = c.getContext('2d'); if (!alfa) { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); }
+    x.imageSmoothingQuality = 'high'; x.drawImage(img, 0, 0, c.width, c.height);
+    function blob(t, qq) { return new Promise(function (ok) { c.toBlob(ok, t, qq); }); }
+    return blob('image/webp', q).then(function (b) {
+      if (b && b.type === 'image/webp') return b;
+      return blob(alfa ? 'image/png' : 'image/jpeg', q);
+    }).then(function (b) {
+      if (!b) throw new Error('tipo');
+      if (b.size > 380 * 1024 && max > 400) return gerar(img, Math.round(max * 0.8), Math.max(0.6, q - 0.08), alfa);
+      return b;
+    });
+  }
+  function comprimir(file, tipo) {
+    if (!/^image\//.test(file.type || 'image/')) return Promise.reject(new Error('tipo'));
+    if (file.size > 40 * 1024 * 1024) return Promise.reject(new Error('tamanho'));
+    var t = TAM[tipo] || TAM.produto, alfa = tipo === 'logo';
+    return abrirImg(file).then(function (img) {
+      return Promise.all([gerar(img, t[0], 0.8, alfa), gerar(img, t[1], 0.76, alfa)]);
+    });
+  }
+  function enviarFoto(file, tipo) {
+    return comprimir(file, tipo).then(function (bs) {
+      var ext = bs[0].type === 'image/webp' ? 'webp' : bs[0].type === 'image/png' ? 'png' : 'jpg';
+      if (bs[1].type !== bs[0].type) throw new Error('tipo');
+      var fd = new FormData(); fd.append('loja', S.slug); fd.append('codigo', S.token);
+      fd.append('g', bs[0], 'foto.' + ext); fd.append('p', bs[1], 'foto-p.' + ext);
+      return fetch(window.NOUR_API.url + '/functions/v1/catalogo-foto', { method: 'POST', headers: { apikey: window.NOUR_API.chave }, body: fd });
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok || !d.url) throw new Error(d.error || 'falha_envio'); return d.url; });
+    });
+  }
+  // Envia uma ou mais fotos em sequência mostrando o andamento; devolve os links na mesma ordem.
+  function enviarVarias(files, tipo, onde) {
+    var urls = [], i = 0;
+    function prox() {
+      if (i >= files.length) return Promise.resolve(urls);
+      if (onde) onde.textContent = 'Comprimindo e enviando ' + (i + 1) + ' de ' + files.length + '…';
+      return enviarFoto(files[i++], tipo).then(function (u) { urls.push(u); return prox(); });
+    }
+    return prox().then(function (u) { if (onde) onde.textContent = ''; return u; }, function (e) { if (onde) onde.textContent = ''; toast(msgErro(e)); if (urls.length) return urls; throw e; });
+  }
+  // Miniatura gerada no envio (só para fotos do nosso armazenamento).
+  function mini(u) { return /\/object\/public\/catalogo\/[^?#]+\.(webp|jpg|png)$/.test(u) && !/-p\.(webp|jpg|png)$/.test(u) ? u.replace(/\.(webp|jpg|png)$/, '-p.$1') : u; }
+  // Campo de imagem: link + botão para enviar do aparelho + prévia.
+  function fldFoto(id, rot, v, tipo) {
+    v = v || '';
+    return '<div class="field ffoto"><span>' + rot + '</span><div class="fup"><span class="pv" id="pv_' + id + '">' + (url(v) ? '<img src="' + esc(mini(url(v))) + '" alt="">' : '') + '</span>' +
+      '<input id="' + id + '" type="url" inputmode="url" placeholder="https://… ou envie do aparelho" value="' + esc(v) + '" aria-label="' + esc(rot) + '">' +
+      '<label class="btn ghost sm">Enviar foto<input type="file" accept="image/*" data-up-campo="' + id + '" data-up-tipo="' + (tipo || 'produto') + '" hidden></label></div>' +
+      '<small class="ideal">Ideal: ' + IDEAL[tipo || 'produto'] + '</small><small class="upst" aria-live="polite"></small></div>';
+  }
+
   // White label: com o endereço da loja, a entrada já mostra a marca do parceiro e as cores da loja.
   var marca = null;
   function marcaHtml(m) {
@@ -94,11 +181,11 @@
     var pc = (S.d.loja && S.d.loja.parceiro) || {};
     document.title = (S.d.nome || 'Loja') + ' · Painel' + (pc.nome ? ' · ' + pc.nome : '');
   }
-  function lojaUrl() { return new URL('../?loja=' + encodeURIComponent(S.slug), location.href).href; }
+  function lojaUrl() { return new URL('/loja/' + encodeURIComponent(S.slug) + '/', location.href).href; }
 
   /* ---------- estrutura ---------- */
   var TABS = [['inicio', 'Início', 'home'], ['produtos', 'Produtos e estoque', 'box'], ['pedidos', 'Pedidos', 'bag'], ['cupons', 'Cupons', 'tag'], ['analytics', 'Analytics', 'eye'],
-    ['relatorios', 'Relatórios', 'chart'], ['clientes', 'Clientes', 'users'], ['avaliacoes', 'Avaliações', 'star'], ['loja', 'Aparência e loja', 'brush'], ['acesso', 'Acesso', 'key']];
+    ['relatorios', 'Relatórios', 'chart'], ['clientes', 'Clientes', 'users'], ['avaliacoes', 'Avaliações', 'star'], ['loja', 'Editar loja', 'brush'], ['acesso', 'Acesso', 'key']];
   function render() {
     var d = S.d, novos = d.pedidos.filter(function (p) { return p.status === 'novo'; }).length;
     var init = String(d.nome || 'L').split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
@@ -175,7 +262,7 @@
       return (!S.cat || p.categoria === S.cat) && (!q || (p.nome + ' ' + p.sku + ' ' + p.marca).toLowerCase().indexOf(q) > -1);
     });
     var catNome = {}; d.categorias.forEach(function (c) { catNome[c.chave] = c.nome; });
-    return '<div class="head"><div><h1>Produtos e estoque</h1><p class="sub">' + d.produtos.length + ' produtos · ' + num(d.produtos.reduce(function (s, p) { return s + totalEst(p); }, 0)) + ' unidades em estoque</p></div>' +
+    return '<div class="head"><div><h1>Produtos e estoque</h1><p class="sub">' + d.produtos.length + ' produtos · ' + num(d.produtos.reduce(function (s, p) { return s + totalEst(p); }, 0)) + ' unidades em estoque</p>' + planoTxt() + '</div>' +
       '<button type="button" class="btn" data-novo-prod>' + ic('plus') + 'Novo produto</button></div>' +
       '<div class="card"><h2>Categorias</h2><div class="chips">' + d.categorias.map(function (c) { return '<button type="button" class="chip" data-edit-cat="' + c.id + '"><i style="background:' + esc(cor(c.cor, '#ccc')) + '"></i>' + esc(c.nome) + '</button>'; }).join('') +
       '<button type="button" class="chip add" data-nova-cat>' + ic('plus') + 'Nova categoria</button></div></div>' +
@@ -183,7 +270,7 @@
       '<select id="pcat" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option>' + d.categorias.map(function (c) { return '<option value="' + esc(c.chave) + '"' + (S.cat === c.chave ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') + '</select></div>' +
       (ps.length ? '<div class="tbl"><table><thead><tr><th>Produto</th><th>Categoria</th><th class="r">Preço</th><th class="r">Estoque</th><th>Na loja</th><th></th></tr></thead><tbody>' + ps.map(function (p) {
         var t = totalEst(p), c0 = (p.cores[0] || [])[1];
-        return '<tr><td><span class="pr">' + (p.fotos && url(p.fotos[0]) ? '<img src="' + esc(url(p.fotos[0])) + '" alt="">' : '<i style="background:' + esc(cor(c0, 'var(--soft)')) + '"></i>') + '<span><b>' + esc(p.nome) + '</b><small class="mono">' + esc(p.sku || 'sem código') + '</small></span></span></td>' +
+        return '<tr><td><span class="pr">' + (p.fotos && url(p.fotos[0]) ? '<img src="' + esc(mini(url(p.fotos[0]))) + '" alt="" loading="lazy">' : '<i style="background:' + esc(cor(c0, 'var(--soft)')) + '"></i>') + '<span><b>' + esc(p.nome) + '</b><small class="mono">' + esc(p.sku || 'sem código') + '</small></span></span></td>' +
           '<td>' + esc(catNome[p.categoria] || '—') + '</td><td class="r num">' + (p.preco_de ? '<s>' + brl(p.preco_de) + '</s> ' : '') + brl(p.preco) + '</td>' +
           '<td class="r">' + (t === 0 ? '<span class="pill bad">Esgotado</span>' : t <= 3 ? '<span class="pill warn">' + t + '</span>' : '<span class="num">' + t + '</span>') + '</td>' +
           '<td><label class="sw"><input type="checkbox" data-ativo="' + p.id + '"' + (p.ativo ? ' checked' : '') + '><span>' + (p.ativo ? 'Visível' : 'Oculto') + '</span></label></td>' +
@@ -209,8 +296,7 @@
     $$('[data-est]', dlg).forEach(function (el) { ed.estoque[el.getAttribute('data-est')] = Math.max(0, parseInt(el.value, 10) || 0); });
     ['nome', 'sku', 'marca', 'categoria', 'preco', 'preco_de', 'desenho', 'descricao', 'composicao', 'selo'].forEach(function (k) { var el = document.getElementById('e_' + k); if (el) ed[k] = el.value; });
     ['destaque', 'oferta', 'ativo'].forEach(function (k) { var el = document.getElementById('e_' + k); if (el) ed[k] = el.checked; });
-    ed.fotos = $$('[data-foto-i]', dlg).map(function (el) { return el.value.trim(); }).filter(Boolean);
-    ed.cores = $$('[data-cor-i]', dlg).map(function (row) { return [$('.cn', row).value.trim(), $('.ch', row).value]; });
+    ed.cores = $$('[data-cor-i]', dlg).map(function (row) { var f = row.getAttribute('data-foto') || ''; return f ? [$('.cn', row).value.trim(), $('.ch', row).value, f] : [$('.cn', row).value.trim(), $('.ch', row).value]; });
     ed.tamanhos = (document.getElementById('e_tams') || { value: '' }).value.split(',').map(function (t) { return t.trim(); }).filter(function (t, i, a) { return t && a.indexOf(t) === i; });
     // Renomear uma cor leva o estoque junto.
     ed.cores.forEach(function (c, i) {
@@ -224,6 +310,15 @@
     return '<table class="grade"><thead><tr><th></th>' + ed.tamanhos.map(function (t) { return '<th>' + esc(t || 'Único') + '</th>'; }).join('') + '</tr></thead><tbody>' +
       ed.cores.map(function (co) { return '<tr><th>' + esc(co[0] || 'Única') + '</th>' + ed.tamanhos.map(function (t) { var k = co[0] + '|' + t; return '<td><input type="number" min="0" max="99999" inputmode="numeric" data-est="' + esc(k) + '" value="' + (+ed.estoque[k] || 0) + '" aria-label="Estoque ' + esc((co[0] || '') + ' ' + (t || '')) + '"></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>';
   }
+  function fotosHtml() {
+    return '<div class="fotos">' + ed.fotos.map(function (f, i) {
+      return '<figure><img src="' + esc(mini(url(f))) + '" alt="Foto ' + (i + 1) + '">' + (i ? '<button type="button" class="ft" data-capa="' + i + '" title="Usar como capa">capa</button>' : '<span class="ft on">capa</span>') +
+        '<button type="button" class="x sm" data-rmfoto="' + i + '" aria-label="Tirar foto ' + (i + 1) + '">' + ic('x') + '</button></figure>';
+    }).join('') + (ed.fotos.length < 5 ? '<label class="addfoto">' + ic('cam') + '<span>Adicionar fotos</span><input type="file" accept="image/*" multiple data-up-fotos hidden></label>' : '') + '</div>' +
+      '<small class="upst" id="efst" aria-live="polite"></small>' +
+      (ed.fotos.length < 5 ? '<div class="fup"><input id="e_flink" type="url" inputmode="url" placeholder="ou cole um link https da foto" aria-label="Link da foto"><button type="button" class="btn ghost sm" data-addlink>Adicionar link</button></div>' : '');
+  }
+  function drawFotos() { var el = document.getElementById('efotos'); if (el) el.innerHTML = fotosHtml(); }
   // Só a tabela da grade é redesenhada ao mudar cores ou tamanhos, para não perder o clique em "Salvar".
   function drawGrade() { var g = document.getElementById('egrade'); if (g) g.innerHTML = gradeHtml(); }
   function drawEditor() {
@@ -240,8 +335,8 @@
       '<div class="checks"><label class="check"><input type="checkbox" id="e_ativo"' + (ed.ativo ? ' checked' : '') + '> Visível na loja</label><label class="check"><input type="checkbox" id="e_destaque"' + (ed.destaque ? ' checked' : '') + '> Mais vendidos</label><label class="check"><input type="checkbox" id="e_oferta"' + (ed.oferta ? ' checked' : '') + '> Na vitrine de ofertas</label></div>' +
       '<label class="field"><span>Descrição</span><textarea id="e_descricao" rows="3" maxlength="2000">' + esc(ed.descricao) + '</textarea></label>' +
       '<label class="field"><span>Composição</span><input id="e_composicao" maxlength="200" value="' + esc(ed.composicao) + '"></label>' +
-      '<fieldset><legend>Fotos <small>link https da imagem; a 2ª aparece ao passar o mouse</small></legend>' + (ed.fotos.length ? ed.fotos : ['']).concat(ed.fotos.length && ed.fotos.length < 8 ? [''] : []).map(function (f, i) { return '<input data-foto-i type="url" inputmode="url" placeholder="https://…" value="' + esc(f) + '" aria-label="Foto ' + (i + 1) + '">'; }).join('') + '</fieldset>' +
-      '<fieldset><legend>Cores <small>deixe vazio se o produto tem uma cor só</small></legend><div id="ecores">' + ed.cores.map(function (co, i) { return '<div class="corrow" data-cor-i><input class="cn" maxlength="30" placeholder="Nome da cor" value="' + esc(co[0]) + '" aria-label="Nome da cor ' + (i + 1) + '"><input class="ch" type="color" value="' + esc(cor(co[1], '#1D1F23')) + '" aria-label="Cor ' + (i + 1) + '"><button type="button" class="x sm" data-rmcor="' + i + '" aria-label="Remover cor">' + ic('x') + '</button></div>'; }).join('') + '</div>' +
+      '<fieldset><legend>Fotos <small>até 5; a 1ª é a capa e a 2ª aparece ao passar o mouse. Ideal: 1000 × 1250 px (retrato 4:5), fundo limpo. Comprimidas automaticamente.</small></legend><div id="efotos">' + fotosHtml() + '</div></fieldset>' +
+      '<fieldset><legend>Cores <small>deixe vazio se o produto tem uma cor só</small></legend><div id="ecores">' + ed.cores.map(function (co, i) { return '<div class="corrow" data-cor-i data-foto="' + esc(url(co[2]) || '') + '"><label class="corfoto" title="Foto desta cor (opcional) · ideal 1000 × 1250 px">' + (url(co[2]) ? '<img src="' + esc(mini(url(co[2]))) + '" alt="">' : ic('cam')) + '<input type="file" accept="image/*" data-up-cor="' + i + '" hidden aria-label="Foto da cor ' + (i + 1) + '"></label>' + (url(co[2]) ? '<button type="button" class="link sm" data-rmcorfoto="' + i + '">tirar foto</button>' : '') + '<input class="cn" maxlength="30" placeholder="Nome da cor" value="' + esc(co[0]) + '" aria-label="Nome da cor ' + (i + 1) + '"><input class="ch" type="color" value="' + esc(cor(co[1], '#1D1F23')) + '" aria-label="Cor ' + (i + 1) + '"><button type="button" class="x sm" data-rmcor="' + i + '" aria-label="Remover cor">' + ic('x') + '</button></div>'; }).join('') + '</div>' +
       '<button type="button" class="btn ghost sm" data-addcor>' + ic('plus') + 'Adicionar cor</button></fieldset>' +
       '<label class="field"><span>Tamanhos, separados por vírgula</span><input id="e_tams" value="' + esc(ed.tamanhos.join(', ')) + '" placeholder="PP, P, M, G, GG"></label>' +
       '<fieldset><legend>Estoque por variação <button type="button" class="link" data-regrade>atualizar grade</button></legend><div class="tbl" id="egrade">' + gradeHtml() + '</div></fieldset>' +
@@ -255,7 +350,7 @@
       '<label class="field"><span>Chamada (frase curta no card)</span><input id="c_chamada" maxlength="80" value="' + esc(c.chamada) + '" placeholder="Ex.: Para todas as ocasiões"></label>' +
       '<div class="g2"><label class="field"><span>Desenho</span><select id="c_desenho">' + DESENHOS.map(function (x) { return '<option' + (c.desenho === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>' +
       '<label class="field"><span>Cor do desenho</span><input id="c_cor" type="color" value="' + esc(cor(c.cor, '#8C2A5B')) + '"></label></div>' +
-      '<label class="field"><span>Foto (opcional, link https)</span><input id="c_foto" type="url" value="' + esc(c.foto) + '"></label></div>' +
+      fldFoto('c_foto', 'Foto (opcional)', c.foto, 'categoria') + '</div>' +
       '<footer>' + (c.id ? '<button type="button" class="btn danger ghost" data-delcat="' + c.id + '">Excluir</button>' : '') + '<span class="sp"></span><button type="button" class="btn ghost" data-fechar>Cancelar</button><button type="submit" class="btn">Salvar</button></footer></form>';
     dlg.showModal();
   }
@@ -555,40 +650,105 @@
       '<div class="prev" id="kprev" style="background:linear-gradient(120deg,' + esc(cor(c.p1, '#8C2A5B')) + ',' + esc(cor(c.p2, '#D0567F')) + ')"><b>Prévia do banner</b><span style="background:' + esc(cor(c.p3, '#F6D365')) + '">SELO</span></div>';
   }
   function fld(id, rot, v, extra) { return '<label class="field"><span>' + rot + '</span><input id="' + id + '" value="' + esc(v == null ? '' : v) + '"' + (extra || '') + '></label>'; }
+  function radio(nome) { var el = document.querySelector('input[name="' + nome + '"]:checked'); return el ? el.value : ''; }
   function chk(id, rot, v) { return '<label class="check"><input type="checkbox" id="' + id + '"' + (v ? ' checked' : '') + '> ' + rot + '</label>'; }
   var DIAS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
   var ENTREGAS = [['correios', 'Envio pelos Correios', 'Frete combinado pelo CEP'], ['retirada', 'Retirar na loja', 'Sem custo'], ['motoboy', 'Motoboy na cidade', 'Combinado no WhatsApp']];
   var PAGS = ['Pix', 'Cartão de crédito', 'Cartão de débito', 'Link de pagamento', 'Dinheiro', 'Boleto'];
+  // Editor da loja no mesmo formato do Bio Site: etapas numeradas, prévia ao vivo no celular e um botão de salvar.
+  var WZN = ['Negócio', 'Visual', 'Vitrine', 'Vendas e entrega', 'Publicar'];
+  var ESTILOS = [['padrao', 'Padrão', 'Colorido, com degradê e fonte elegante'], ['minimalista', 'Minimalista', 'Fundo claro, linhas finas, sem enfeites'], ['moderno', 'Moderno', 'Escuro, títulos fortes, cara de loja de tecnologia']];
+  var DATAS = [['', 'Nenhuma', 'Cores normais da loja'], ['natal', 'Natal', 'Vermelho e verde, selo “Especial de Natal”. Use de dezembro até 6 de janeiro'], ['blackfriday', 'Black Friday', 'Preto e amarelo, selo “Black Friday”. Use em novembro']];
+  // Minimaquete de cada estilo, só com blocos (igual aos cartões do Bio Site).
+  function miniEstilo(k) {
+    var c = { padrao: ['linear-gradient(120deg,var(--p1),var(--p2))', '#fff', 'var(--p3)'], minimalista: ['#F4F2F6', '#fff', '#1E1630'], moderno: ['linear-gradient(135deg,#0F0B14,var(--p1))', '#1D1724', 'var(--p3)'],
+      natal: ['linear-gradient(120deg,#B3122E,#0F6B3A)', '#fff', '#F2C14E'], blackfriday: ['#111', '#2B2B2B', '#FFD400'], '': ['linear-gradient(120deg,var(--p1),var(--p2))', '#fff', 'var(--p3)'] }[k];
+    return '<span class="modmini"><i class="mh" style="background:' + c[0] + '"><i style="background:' + c[2] + '"></i></i><i class="mc" style="background:' + c[1] + '"></i><i class="mc" style="background:' + c[1] + '"></i></span>';
+  }
+  function opcoes(nome, lista, atual) {
+    return '<div class="fontpick" role="radiogroup">' + lista.map(function (o) {
+      return '<label class="fontopt' + ((atual || '') === o[0] ? ' on' : '') + '"><input type="radio" name="' + nome + '" value="' + o[0] + '"' + ((atual || '') === o[0] ? ' checked' : '') + '>' + miniEstilo(o[0]) + '<span class="fn"><b>' + o[1] + '</b><small>' + o[2] + '</small></span></label>';
+    }).join('') + '</div>';
+  }
+  function sec(t, corpo, nota) { return '<section class="esec"><h3 class="esech">' + t + '</h3>' + (nota ? '<p class="note">' + nota + '</p>' : '') + corpo + '</section>'; }
   function loja() {
     var L = S.d.loja || {}, b = L.banner || {}, of = L.ofertas || {}, nv = L.novidades || {}, pc = L.parceiro || {}, lk = L.links || {}, H = L.horarios || {}, fx = (L.faixa || []).concat(['', '', '']), bs = (L.banners || []).concat([{}, {}, {}]).slice(0, 3);
     var ents = (L.entrega || []).map(function (e) { return e[0]; }), cats = S.d.categorias;
     var ofTit = ['Ofertas da semana', 'Promoção', 'Outlet', 'Queima de estoque', 'Liquidação', 'Black Friday'];
-    return '<div class="head"><div><h1>Aparência e loja</h1><p class="sub">Tudo o que aparece para o cliente. As mudanças valem assim que você salvar.</p></div><a class="btn ghost" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + 'Ver loja</a></div>' +
-      '<form id="floja" class="stack" novalidate>' +
-      '<section class="card"><h2>Identidade</h2><div class="g2">' + fld('k_nome', 'Nome da loja', S.d.nome, ' maxlength="80" required') + fld('k_logo', 'Logo (link https da imagem)', L.logo, ' type="url"') + '</div>' +
-        fld('k_slogan', 'Frase curta (slogan)', L.slogan, ' maxlength="140"') + '<label class="field"><span>Sobre a loja (rodapé)</span><textarea id="k_sobre" rows="2" maxlength="400">' + esc(L.sobre || '') + '</textarea></label></section>' +
-      '<section class="card"><h2>Cores da loja</h2>' + coresHtml(L.cores || {}) + '<label class="field"><span>Tema</span><select id="k_tema">' + [['auto', 'Automático (segue o celular do cliente)'], ['claro', 'Sempre claro'], ['escuro', 'Sempre escuro']].map(function (t) { return '<option value="' + t[0] + '"' + ((L.tema || 'auto') === t[0] ? ' selected' : '') + '>' + t[1] + '</option>'; }).join('') + '</select></label></section>' +
-      '<section class="card"><h2>Contato</h2><div class="g2">' + fld('k_zap', 'WhatsApp de pedidos (com DDD)', L.whatsapp ? String(L.whatsapp).replace(/^55/, '') : '', ' inputmode="tel" placeholder="62999999999" required') + fld('k_tel', 'Telefone exibido', L.telefone) +
-        fld('k_fixo', 'Telefone fixo (opcional)', L.fixo) + fld('k_email', 'E-mail', L.email, ' type="email"') + fld('k_ig', 'Instagram (sem @)', L.instagram) + fld('k_cidade', 'Cidade', L.cidade) + '</div>' + fld('k_end', 'Endereço', L.endereco) + '</section>' +
-      '<section class="card"><h2>Horário de atendimento</h2><div class="hrs">' + [1, 2, 3, 4, 5, 6, 0].map(function (d) { var h = (H[d] || [])[0]; return '<div><label class="check"><input type="checkbox" id="h_on' + d + '"' + (h ? ' checked' : '') + '> ' + DIAS[d] + '</label><input type="time" id="h_a' + d + '" value="' + esc(h ? h[0] : '09:00') + '" aria-label="Abre ' + DIAS[d] + '"><input type="time" id="h_b' + d + '" value="' + esc(h ? h[1] : '18:00') + '" aria-label="Fecha ' + DIAS[d] + '"></div>'; }).join('') + '</div></section>' +
-      '<section class="card"><h2>Faixa rotativa do topo</h2><p class="note">Até 3 frases curtas. Deixe todas vazias para esconder.</p>' + [0, 1, 2].map(function (i) { return '<input id="k_fx' + i + '" maxlength="70" value="' + esc(fx[i]) + '" aria-label="Frase ' + (i + 1) + '">'; }).join('') + '</section>' +
-      '<section class="card"><h2>Banner inicial</h2><p class="note">Com arte em imagem (1920 × 700 px), ela substitui o banner montado. Até 3 artes, trocando a cada 6 segundos.</p>' +
-        bs.map(function (x, i) { return '<div class="g3">' + fld('b_img' + i, 'Arte ' + (i + 1) + ' (computador)', x.imagem, ' type="url"') + fld('b_cel' + i, 'Versão celular (opcional)', x.imagemCelular, ' type="url"') +
-          '<label class="field"><span>Ao clicar, abre</span><select id="b_lnk' + i + '"><option value="#todos">Todos os produtos</option><option value="#ofertas"' + (x.link === '#ofertas' ? ' selected' : '') + '>Ofertas</option>' + cats.map(function (c) { return '<option value="#c-' + esc(c.chave) + '"' + (x.link === '#c-' + c.chave ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') + '</select></label></div>'; }).join('') +
-        '<h3>Banner montado (sem arte)</h3><div class="g2">' + fld('b_selo', 'Selo', b.selo, ' maxlength="30"') + fld('b_tit', 'Título', b.titulo, ' maxlength="60"') + '</div>' + fld('b_txt', 'Texto', b.texto, ' maxlength="140"') +
-        '<div class="g2">' + fld('b_bot', 'Texto do botão', b.botao || 'Comprar agora', ' maxlength="30"') + '<label class="field"><span>Botão abre a categoria</span><select id="b_cat"><option value="">Todos os produtos</option>' + cats.map(function (c) { return '<option value="' + esc(c.chave) + '"' + (b.categoria === c.chave ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') + '</select></label></div></section>' +
-      '<section class="card"><h2>Vitrines</h2><div class="g2">' + fld('k_ct1', 'Título das categorias', (L.categoriasTitulo || [])[0] || 'Compre por categoria', ' maxlength="50"') + fld('k_ct2', 'Subtítulo das categorias', (L.categoriasTitulo || [])[1], ' maxlength="80"') + '</div>' +
-        '<h3>Ofertas</h3>' + chk('o_on', 'Mostrar a vitrine de ofertas', of.ativo !== false) + '<div class="g3"><label class="field"><span>Título</span><input id="o_tit" list="ofTit" maxlength="40" value="' + esc(of.titulo || 'Ofertas da semana') + '"><datalist id="ofTit">' + ofTit.map(function (t) { return '<option value="' + t + '">'; }).join('') + '</datalist></label>' +
-        fld('o_selo', 'Selo', of.selo, ' maxlength="30"') + fld('o_txt', 'Texto', of.texto, ' maxlength="100"') + '</div>' +
-        '<h3>Receba as novidades</h3>' + chk('n_on', 'Mostrar o cadastro de novidades', nv.ativo !== false) + '<div class="g2">' + fld('n_tit', 'Título', nv.titulo || 'Receba as últimas novidades', ' maxlength="60"') + fld('n_txt', 'Texto', nv.texto, ' maxlength="120"') + '</div>' +
-        fld('n_grp', 'Link do grupo de promoções no WhatsApp', nv.grupoWhatsapp, ' type="url" placeholder="https://chat.whatsapp.com/…"') + chk('k_verif', 'Mostrar selo “Loja verificada” nas avaliações', L.lojaVerificada) + '</section>' +
-      '<section class="card"><h2>Vendas</h2><div class="g3">' + fld('v_pix', 'Desconto no Pix (%)', L.descontoPix || 0, ' type="number" min="0" max="50"') + fld('v_parc', 'Parcelas sem juros mostradas', L.parcelas || 0, ' type="number" min="0" max="24"') + fld('v_frete', 'Frete grátis acima de (R$, 0 = não)', L.freteGratisAcima || 0, ' type="number" min="0"') + '</div>' +
-        '<div class="g2">' + fld('v_rcor', 'Nome da variação 1', (L.rotulos || {}).cor || 'Cor', ' maxlength="20"') + fld('v_rtam', 'Nome da variação 2', (L.rotulos || {}).tamanho || 'Tamanho', ' maxlength="20"') + '</div>' +
-        '<h3>Formas de entrega</h3><div class="checks">' + ENTREGAS.map(function (e) { return chk('e_' + e[0], e[1], ents.indexOf(e[0]) > -1); }).join('') + '</div>' +
-        '<h3>Formas de pagamento</h3><div class="checks">' + PAGS.map(function (p, i) { return chk('pg' + i, p, (L.pagamentos || []).indexOf(p) > -1); }).join('') + '</div></section>' +
-      '<section class="card"><h2>Privacidade (LGPD)</h2>' + chk('k_cook', 'Mostrar o aviso de cookies', L.cookies !== false) + '<div class="g2">' + fld('k_termos', 'Link dos termos de uso', lk.termos, ' type="url"') + fld('k_priv', 'Link da política de privacidade', lk.privacidade, ' type="url"') + '</div></section>' +
-      '<section class="card"><h2>White label</h2><p class="note">Quem aparece em “Feito por” no rodapé da loja e no painel. Sem nome, fica Nour.</p><div class="g3">' + fld('w_nome', 'Nome do parceiro', pc.nome, ' maxlength="40"') + fld('w_logo', 'Logo do parceiro (link https)', pc.logo, ' type="url"') + fld('w_link', 'Site do parceiro', pc.link, ' type="url"') + '</div>' + fld('w_sup', 'WhatsApp de suporte do parceiro (aparece no painel do lojista)', pc.suporte, ' inputmode="tel"') + '</section>' +
-      '<div class="savebar"><span class="note" id="dirty"></span><button type="submit" class="btn">Salvar alterações</button></div></form>';
+    S.wz = S.wz || 0;
+    var etapas = [
+      // 1. Negócio
+      sec('Identidade', '<div class="g2">' + fld('k_nome', 'Nome da loja', S.d.nome, ' maxlength="80" required') + fldFoto('k_logo', 'Logo', L.logo, 'logo') + '</div>' +
+        fld('k_slogan', 'Frase curta (slogan)', L.slogan, ' maxlength="140"') + '<label class="field"><span>Sobre a loja (rodapé)</span><textarea id="k_sobre" rows="2" maxlength="400">' + esc(L.sobre || '') + '</textarea></label>') +
+      sec('Contato', '<div class="g2">' + fld('k_zap', 'WhatsApp de pedidos (com DDD)', L.whatsapp ? String(L.whatsapp).replace(/^55/, '') : '', ' inputmode="tel" placeholder="62999999999" required') + fld('k_tel', 'Telefone exibido', L.telefone) +
+        fld('k_fixo', 'Telefone fixo (opcional)', L.fixo) + fld('k_email', 'E-mail', L.email, ' type="email"') + fld('k_ig', 'Instagram (sem @)', L.instagram) + '</div>') +
+      sec('Endereço', '<div class="g2">' + fld('k_end', 'Endereço (rua, número, bairro)', L.endereco) + fld('k_cidade', 'Cidade · UF', L.cidade) + '</div>' + chk('k_mapa', 'Mostrar o mapa da loja no rodapé', L.mapa), 'Só se você atende em loja física. Sem endereço, o mapa não aparece.') +
+      sec('Horário de atendimento', '<div class="hrs">' + [1, 2, 3, 4, 5, 6, 0].map(function (d) { var h = (H[d] || [])[0]; return '<div><label class="check"><input type="checkbox" id="h_on' + d + '"' + (h ? ' checked' : '') + '> ' + DIAS[d] + '</label><input type="time" id="h_a' + d + '" value="' + esc(h ? h[0] : '09:00') + '" aria-label="Abre ' + DIAS[d] + '"><input type="time" id="h_b' + d + '" value="' + esc(h ? h[1] : '18:00') + '" aria-label="Fecha ' + DIAS[d] + '"></div>'; }).join('') + '</div>'),
+      // 2. Visual
+      sec('Modelo do site', opcoes('k_estilo', ESTILOS, L.estilo || 'padrao')) +
+      sec('Data especial', opcoes('k_saz', DATAS, L.sazonal || ''), 'Enquanto estiver ligada, troca as cores, o selo do banner e a primeira frase da faixa. Depois é só voltar para “Nenhuma”.') +
+      sec('Cores e tema', coresHtml(L.cores || {}) + '<label class="field"><span>Tema</span><select id="k_tema">' + [['auto', 'Automático (segue o celular do cliente)'], ['claro', 'Sempre claro'], ['escuro', 'Sempre escuro']].map(function (t) { return '<option value="' + t[0] + '"' + ((L.tema || 'auto') === t[0] ? ' selected' : '') + '>' + t[1] + '</option>'; }).join('') + '</select></label>') +
+      sec('Banner inicial', '<div class="g2">' + fld('b_selo', 'Selo', b.selo, ' maxlength="30"') + fld('b_tit', 'Título', b.titulo, ' maxlength="60"') + '</div>' + fld('b_txt', 'Texto', b.texto, ' maxlength="140"') +
+        '<div class="g2">' + fld('b_bot', 'Texto do botão', b.botao || 'Comprar agora', ' maxlength="30"') + '<label class="field"><span>Botão abre a categoria</span><select id="b_cat"><option value="">Todos os produtos</option>' + cats.map(function (c) { return '<option value="' + esc(c.chave) + '"' + (b.categoria === c.chave ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') + '</select></label></div>' +
+        '<div class="g2">' + fldFoto('b_fundo', 'Foto de fundo (computador)', b.imagem, 'banner') + fldFoto('b_fundocel', 'Foto de fundo (celular)', b.imagemCelular, 'banner-cel') + '</div>' +
+        '<details class="mais"><summary>Usar artes prontas em imagem (até 3, trocam sozinhas)</summary><p class="note">Com arte pronta (com texto já na imagem), ela substitui o banner acima.</p>' +
+        bs.map(function (x, i) { return '<div class="g3">' + fldFoto('b_img' + i, 'Arte ' + (i + 1) + ' (computador)', x.imagem, 'banner') + fldFoto('b_cel' + i, 'Versão celular', x.imagemCelular, 'banner-cel') +
+          '<label class="field"><span>Ao clicar, abre</span><select id="b_lnk' + i + '"><option value="#todos">Todos os produtos</option><option value="#ofertas"' + (x.link === '#ofertas' ? ' selected' : '') + '>Ofertas</option>' + cats.map(function (c) { return '<option value="#c-' + esc(c.chave) + '"' + (x.link === '#c-' + c.chave ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') + '</select></label></div>'; }).join('') + '</details>',
+        'Foto de fundo com o texto por cima. Sem foto, o banner usa as cores da loja.') +
+      sec('Faixa rotativa do topo', [0, 1, 2].map(function (i) { return '<input id="k_fx' + i + '" maxlength="70" value="' + esc(fx[i]) + '" aria-label="Frase ' + (i + 1) + '">'; }).join(''), 'Até 3 frases curtas. Deixe todas vazias para esconder.'),
+      // 3. Vitrine
+      sec('Categorias', '<div class="g2">' + fld('k_ct1', 'Título das categorias', (L.categoriasTitulo || [])[0] || 'Compre por categoria', ' maxlength="50"') + fld('k_ct2', 'Subtítulo das categorias', (L.categoriasTitulo || [])[1], ' maxlength="80"') + '</div>', 'Para criar e editar categorias, vá em Produtos.') +
+      sec('Ofertas', chk('o_on', 'Mostrar a vitrine de ofertas', of.ativo !== false) + '<div class="g3"><label class="field"><span>Título</span><input id="o_tit" list="ofTit" maxlength="40" value="' + esc(of.titulo || 'Ofertas da semana') + '"><datalist id="ofTit">' + ofTit.map(function (t) { return '<option value="' + t + '">'; }).join('') + '</datalist></label>' +
+        fld('o_selo', 'Selo', of.selo, ' maxlength="30"') + fld('o_txt', 'Texto', of.texto, ' maxlength="100"') + '</div>') +
+      sec('Novidades e grupo do WhatsApp', chk('n_on', 'Mostrar o cadastro de novidades', nv.ativo !== false) + '<div class="g2">' + fld('n_tit', 'Título', nv.titulo || 'Receba as últimas novidades', ' maxlength="60"') + fld('n_txt', 'Texto', nv.texto, ' maxlength="120"') + '</div>' +
+        fld('n_grp', 'Link do grupo de promoções no WhatsApp', nv.grupoWhatsapp, ' type="url" placeholder="https://chat.whatsapp.com/…"')) +
+      sec('Avaliações', chk('k_verif', 'Mostrar selo “Loja verificada” nas avaliações', L.lojaVerificada), 'As avaliações em si ficam na aba Avaliações.'),
+      // 4. Vendas e entrega
+      sec('Frete grátis', fld('v_frete', 'Frete grátis a partir de (R$)', L.freteGratisAcima || 0, ' type="number" min="0" step="1"'), 'Calculado sozinho: a sacola mostra quanto falta, o pedido sai com “Frete grátis” e a loja avisa no rodapé. Coloque 0 para não oferecer.') +
+      sec('Pagamento', '<div class="g2">' + fld('v_pix', 'Desconto no Pix (%)', L.descontoPix || 0, ' type="number" min="0" max="50"') + fld('v_parc', 'Parcelas sem juros mostradas', L.parcelas || 0, ' type="number" min="0" max="24"') + '</div>' +
+        '<div class="checks">' + PAGS.map(function (p, i) { return chk('pg' + i, p, (L.pagamentos || []).indexOf(p) > -1); }).join('') + '</div>') +
+      sec('Entrega', '<div class="checks">' + ENTREGAS.map(function (e) { return chk('e_' + e[0], e[1], ents.indexOf(e[0]) > -1); }).join('') + '</div>') +
+      sec('Nomes das variações', '<div class="g2">' + fld('v_rcor', 'Variação 1', (L.rotulos || {}).cor || 'Cor', ' maxlength="20"') + fld('v_rtam', 'Variação 2', (L.rotulos || {}).tamanho || 'Tamanho', ' maxlength="20"') + '</div>', 'Ex.: “Cor” e “Tamanho”, ou “Sabor” e “Peso”.'),
+      // 5. Publicar
+      sec('Link da loja', '<div class="copy"><input readonly id="lnkLoja2" value="' + esc(lojaUrl()) + '" aria-label="Link da loja"><button type="button" class="btn ghost" data-copy="lnkLoja2">Copiar</button><a class="btn ghost" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + 'Abrir</a></div>') +
+      sec('Privacidade (LGPD)', chk('k_cook', 'Mostrar o aviso de cookies', L.cookies !== false) + '<div class="g2">' + fld('k_termos', 'Link dos termos de uso', lk.termos, ' type="url"') + fld('k_priv', 'Link da política de privacidade', lk.privacidade, ' type="url"') + '</div>') +
+      sec('White label', '<div class="g3">' + fld('w_nome', 'Nome do parceiro', pc.nome, ' maxlength="40"') + fldFoto('w_logo', 'Logo do parceiro', pc.logo, 'logo') + fld('w_link', 'Site do parceiro', pc.link, ' type="url"') + '</div>' + fld('w_sup', 'WhatsApp de suporte do parceiro (aparece no painel do lojista)', pc.suporte, ' inputmode="tel"'), 'Quem aparece em “Feito por” no rodapé da loja e no painel. Sem nome, fica Nour.')
+    ];
+    return '<div class="head"><div><h1>Editar loja</h1><p class="sub">Siga as etapas. A prévia ao lado mostra como fica antes de salvar.</p></div><a class="btn ghost" href="' + esc(lojaUrl()) + '" target="_blank" rel="noopener">' + ic('ext') + 'Ver loja</a></div>' +
+      '<div class="ed2"><form id="floja" class="stack" novalidate>' + wzBar() +
+      etapas.map(function (h, i) { return '<div class="wz-step" data-wzs="' + i + '"' + (i === S.wz ? '' : ' hidden') + '>' + h + wzNav(i) + '</div>'; }).join('') +
+      '<div class="savebar"><span class="note" id="dirty"></span><button type="submit" class="btn">Salvar alterações</button></div></form>' +
+      '<aside class="stickpv" aria-label="Prévia da loja"><div class="phone2"><iframe id="pvloja" title="Prévia da loja" src="../?previa=' + encodeURIComponent(S.slug) + '"></iframe></div><p class="note">Prévia com as mudanças ainda não salvas.</p></aside></div>';
+  }
+  function wzBar() {
+    return '<nav class="wz-bar" aria-label="Etapas">' + WZN.map(function (n, i) { return '<button type="button" class="wz-b' + (i === S.wz ? ' on' : i < S.wz ? ' ok' : '') + '" data-wz="' + i + '"' + (i === S.wz ? ' aria-current="step"' : '') + '><span>' + (i + 1) + '</span><small>' + n + '</small></button>'; }).join('') + '</nav>' +
+      '<p class="wz-cap" aria-live="polite">Etapa ' + (S.wz + 1) + ' de ' + WZN.length + ': <b>' + WZN[S.wz] + '</b></p>';
+  }
+  function wzNav(i) {
+    return '<div class="wz-nav">' + (i > 0 ? '<button type="button" class="btn ghost" data-wz="' + (i - 1) + '">← Voltar</button>' : '<span></span>') +
+      (i < WZN.length - 1 ? '<button type="button" class="btn" data-wz="' + (i + 1) + '">Próximo: ' + WZN[i + 1] + ' →</button>' : '<button type="submit" class="btn">Salvar e publicar</button>') + '</div>';
+  }
+  // Troca de etapa sem redesenhar o formulário (não perde o que foi digitado).
+  function irEtapa(n) {
+    S.wz = n;
+    $$('.wz-step').forEach(function (d) { d.hidden = +d.getAttribute('data-wzs') !== n; });
+    $$('.wz-b').forEach(function (x, i) { x.classList.toggle('on', i === n); x.classList.toggle('ok', i < n); if (i === n) x.setAttribute('aria-current', 'step'); else x.removeAttribute('aria-current'); });
+    var cap = $('.wz-cap'); if (cap) cap.innerHTML = 'Etapa ' + (n + 1) + ' de ' + WZN.length + ': <b>' + WZN[n] + '</b>';
+    var bar = $('.wz-bar'); if (bar) bar.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
+  // Prévia ao vivo: guarda o rascunho e recarrega a loja de prévia ao lado.
+  var pvT;
+  function previa() {
+    clearTimeout(pvT);
+    pvT = setTimeout(function () {
+      var fr = document.getElementById('pvloja'); if (!fr || !document.getElementById('k_nome')) return;
+      var L = lerLoja();
+      var d = { slug: S.slug, nome: L.nome, loja: L,
+        categorias: S.d.categorias.map(function (c) { return { id: c.chave, nome: c.nome, chamada: c.chamada, desenho: c.desenho, cor: c.cor, foto: c.foto }; }),
+        produtos: S.d.produtos.filter(function (p) { return p.ativo; }).map(function (p) { return { id: String(p.id), sku: p.sku, nome: p.nome, marca: p.marca, cat: p.categoria, preco: +p.preco, de: p.preco_de ? +p.preco_de : null, desenho: p.desenho, fotos: p.fotos, desc: p.descricao, composicao: p.composicao, destaque: p.destaque, oferta: p.oferta, selo: p.selo, cores: p.cores && p.cores.length ? p.cores : [['', '']], tamanhos: p.tamanhos, estoque: p.estoque, avaliacoes: [] }; }),
+        avaliacoes: (S.d.avaliacoes || []).filter(function (a) { return a.visivel && !a.produto_id; }) };
+      try { localStorage.setItem('nourprevia:' + S.slug, JSON.stringify(d)); fr.contentWindow.location.reload(); } catch (e) {}
+    }, 700);
   }
   function lerLoja() {
     var L = JSON.parse(JSON.stringify(S.d.loja || {}));
@@ -598,10 +758,11 @@
     var bs = [0, 1, 2].map(function (i) { return { imagem: url(val('b_img' + i)), imagemCelular: url(val('b_cel' + i)), link: val('b_lnk' + i), alt: '' }; }).filter(function (x) { return x.imagem; });
     Object.assign(L, {
       nome: val('k_nome'), logo: url(val('k_logo')), slogan: val('k_slogan'), sobre: val('k_sobre'), tema: val('k_tema'),
+      estilo: radio('k_estilo') || 'padrao', sazonal: radio('k_saz'),
       cores: { p1: val('k_p1'), p2: val('k_p2'), p3: val('k_p3'), on3: contraste(val('k_p3')) },
-      whatsapp: zap, telefone: val('k_tel'), fixo: val('k_fixo'), email: val('k_email'), instagram: val('k_ig').replace(/^@/, ''), cidade: val('k_cidade'), endereco: val('k_end'),
+      whatsapp: zap, telefone: val('k_tel'), fixo: val('k_fixo'), email: val('k_email'), instagram: val('k_ig').replace(/^@/, ''), cidade: val('k_cidade'), endereco: val('k_end'), mapa: !!val('k_mapa') && !!val('k_end'),
       horarios: H, faixa: [0, 1, 2].map(function (i) { return val('k_fx' + i); }).filter(Boolean), banners: bs,
-      banner: { selo: val('b_selo'), titulo: val('b_tit'), texto: val('b_txt'), botao: val('b_bot'), categoria: val('b_cat'), imagem: (L.banner || {}).imagem || '' },
+      banner: { selo: val('b_selo'), titulo: val('b_tit'), texto: val('b_txt'), botao: val('b_bot'), categoria: val('b_cat'), imagem: url(val('b_fundo')), imagemCelular: url(val('b_fundocel')) },
       categoriasTitulo: [val('k_ct1'), val('k_ct2')],
       ofertas: { ativo: val('o_on'), titulo: val('o_tit'), selo: val('o_selo'), texto: val('o_txt') },
       novidades: { ativo: val('n_on'), titulo: val('n_tit'), texto: val('n_txt'), grupoWhatsapp: url(val('n_grp')), cadastro: '' },
@@ -635,17 +796,26 @@
   var ob = {};
   function onboarding(passo) {
     var L = S.d.loja || {};
-    if (passo === 1) ob = { nome: S.d.nome || '', zap: L.whatsapp ? String(L.whatsapp).replace(/^55/, '') : '', modelo: '', cores: L.cores || {} };
-    var temProd = S.d.produtos.length > 0, steps = ['Sua loja', 'Modelo', 'Cores'];
+    if (passo === 1 && !ob.iniciado) ob = { iniciado: true, nome: S.d.nome || '', zap: L.whatsapp ? String(L.whatsapp).replace(/^55/, '') : '', cidade: L.cidade || '', modelo: undefined, estilo: L.estilo || 'padrao', cores: L.cores || {} };
+    var temProd = S.d.produtos.length > 0, steps = ['Sua loja', 'Ramo', 'Estilo', 'Cores', 'Pronto'];
     var corpo = '';
-    if (passo === 1) corpo = '<h2>Vamos montar sua loja</h2><p class="sub">Leva 1 minuto. Dá para mudar tudo depois.</p>' + fld('o1nome', 'Nome da loja', ob.nome, ' maxlength="80" required') + fld('o1zap', 'WhatsApp que recebe os pedidos (com DDD)', ob.zap, ' inputmode="tel" placeholder="62999999999" required');
-    if (passo === 2) corpo = '<h2>Escolha um modelo</h2><p class="sub">O modelo traz categorias, produtos de exemplo e cores para você só trocar pelos seus.' + (temProd ? ' <b>Escolher um modelo substitui os produtos atuais.</b>' : '') + '</p>' +
+    if (passo === 1) corpo = '<h2>Vamos montar sua loja</h2><p class="sub">Leva 1 minuto. Dá para mudar tudo depois.</p>' + fld('o1nome', 'Nome da loja', ob.nome, ' maxlength="80" required') + fld('o1zap', 'WhatsApp que recebe os pedidos (com DDD)', ob.zap, ' inputmode="tel" placeholder="62999999999" required') + fld('o1cid', 'Cidade · UF', ob.cidade, ' maxlength="60" placeholder="Goiânia · GO"');
+    if (passo === 2) corpo = '<h2>Qual é o seu ramo?</h2><p class="sub">O modelo traz categorias, produtos de exemplo e cores para você só trocar pelos seus.' + (temProd ? ' <b>Escolher um modelo substitui os produtos atuais.</b>' : '') + '</p>' +
       '<div class="modelos">' + (temProd ? '<button type="button" class="mod" data-mod="" aria-pressed="' + (ob.modelo === '') + '"><span class="top" style="background:var(--soft)"></span><b>Manter meus produtos</b><small>Só ajustar cores</small></button>' : '') +
       (window.MODELOS || []).map(function (m) { return '<button type="button" class="mod" data-mod="' + esc(m.id) + '" aria-pressed="' + (ob.modelo === m.id) + '"><span class="top" style="background:linear-gradient(120deg,' + esc(cor(m.cores.p1, '#888')) + ',' + esc(cor(m.cores.p2, '#aaa')) + ')"></span><b>' + esc(m.titulo) + '</b><small>' + esc(m.cats.slice(0, 3).join(' · ')) + '</small></button>'; }).join('') + '</div>';
-    if (passo === 3) corpo = '<h2>Cores da loja</h2><p class="sub">Escolha uma paleta pronta ou ajuste cada cor.</p>' + coresHtml(ob.cores);
-    app.innerHTML = '<main class="onb"><div class="obox"><ol class="steps">' + steps.map(function (s, i) { return '<li' + (i + 1 === passo ? ' aria-current="step"' : i + 1 < passo ? ' class="done"' : '') + '>' + (i + 1) + '. ' + s + '</li>'; }).join('') + '</ol>' +
+    if (passo === 3) corpo = '<h2>Modelo do site</h2><p class="sub">O jeito da loja. Dá para trocar a qualquer momento em Editar loja.</p>' + opcoes('k_estilo', ESTILOS, ob.estilo);
+    if (passo === 4) corpo = '<h2>Cores da loja</h2><p class="sub">Escolha uma paleta pronta ou ajuste cada cor.</p>' + coresHtml(ob.cores);
+    if (passo === 5) {
+      var mo = (window.MODELOS || []).filter(function (x) { return x.id === ob.modelo; })[0];
+      corpo = '<h2>Tudo pronto para criar sua loja</h2><p class="sub">Confira e conclua. Depois você troca fotos, preços e textos no painel.</p>' +
+        '<ul class="resumo"><li><b>Loja:</b> ' + esc(ob.nome) + (ob.cidade ? ' · ' + esc(ob.cidade) : '') + '</li><li><b>WhatsApp:</b> ' + esc(ob.zap) + '</li>' +
+        '<li><b>Ramo:</b> ' + esc(mo ? mo.titulo : 'Manter meus produtos') + '</li><li><b>Modelo do site:</b> ' + esc((ESTILOS.filter(function (e) { return e[0] === ob.estilo; })[0] || ESTILOS[0])[1]) + '</li>' +
+        '<li><b>Cores:</b> <i class="sw" style="background:' + esc(cor(ob.cores.p1, '#888')) + '"></i><i class="sw" style="background:' + esc(cor(ob.cores.p2, '#aaa')) + '"></i><i class="sw" style="background:' + esc(cor(ob.cores.p3, '#ddd')) + '"></i></li></ul>';
+    }
+    app.innerHTML = '<main class="onb"><div class="obox"><nav class="wz-bar" aria-label="Etapas">' + steps.map(function (s, i) { return '<span class="wz-b' + (i + 1 === passo ? ' on' : i + 1 < passo ? ' ok' : '') + '"' + (i + 1 === passo ? ' aria-current="step"' : '') + '><span>' + (i + 1) + '</span><small>' + s + '</small></span>'; }).join('') + '</nav>' +
+      '<p class="wz-cap">Etapa ' + passo + ' de ' + steps.length + ': <b>' + steps[passo - 1] + '</b></p>' +
       '<form id="fonb" data-passo="' + passo + '" class="form" novalidate>' + corpo + '<div class="nav2">' + (passo > 1 ? '<button type="button" class="btn ghost" data-voltar>Voltar</button>' : '<span></span>') +
-      '<button type="submit" class="btn">' + (passo === 3 ? 'Concluir e abrir o painel' : 'Continuar') + '</button></div></form></div></main>';
+      '<button type="submit" class="btn">' + (passo === 5 ? 'Criar minha loja' : 'Próximo: ' + steps[passo] + ' →') + '</button></div></form></div></main>';
   }
   function carregarModelo(id) {
     return new Promise(function (ok, erro) {
@@ -664,10 +834,10 @@
     }
     return passo.then(function () {
       var zap = String(ob.zap).replace(/\D/g, ''); if (zap.length >= 10 && zap.length <= 11) zap = '55' + zap;
-      var L = Object.assign({}, base, { nome: ob.nome, whatsapp: zap, cores: ob.cores });
+      var L = Object.assign({}, base, { nome: ob.nome, whatsapp: zap, cores: ob.cores, estilo: ob.estilo, cidade: ob.cidade || base.cidade || '' });
       delete L.avaliacoes; delete L.id; delete L.api;
       return salvar('loja', { loja: L, onboarding: { feito: true, modelo: ob.modelo || '', em: new Date().toISOString() } }, 'Loja pronta!');
-    }).then(function () { aplicarCor(); S.tab = 'inicio'; render(); });
+    }).then(function () { ob = {}; aplicarCor(); S.tab = 'inicio'; render(); });
   }
 
   /* ---------- eventos ---------- */
@@ -677,12 +847,19 @@
     if ((b = t.closest('[data-tab]'))) { S.tab = b.getAttribute('data-tab'); render(); window.scrollTo(0, 0); return; }
     if (t.closest('[data-sair]')) { esquecer(); S.d = null; S.token = ''; login(); return; }
     if ((b = t.closest('[data-edit]'))) { if (S.tab !== 'produtos') { S.tab = 'produtos'; render(); } editarProduto(b.getAttribute('data-edit')); return; }
-    if (t.closest('[data-novo-prod]')) return editarProduto(null);
+    if (t.closest('[data-novo-prod]')) { if (S.plano && S.plano.limites && S.d.produtos.length >= S.plano.limites.produtos) return toast(ERROS.limite_plano); return editarProduto(null); }
     if ((b = t.closest('[data-edit-cat]'))) return editarCategoria(b.getAttribute('data-edit-cat'));
     if (t.closest('[data-nova-cat]')) return editarCategoria(null);
     if (t.closest('[data-addcor]')) { lerEditor(); ed.cores.push(['', '#1D1F23']); drawEditor(); return; }
     if ((b = t.closest('[data-rmcor]'))) { lerEditor(); ed.cores.splice(+b.getAttribute('data-rmcor'), 1); drawEditor(); return; }
     if (t.closest('[data-regrade]')) { lerEditor(); drawGrade(); return; }
+    if ((b = t.closest('[data-rmfoto]'))) { ed.fotos.splice(+b.getAttribute('data-rmfoto'), 1); drawFotos(); return; }
+    if ((b = t.closest('[data-capa]'))) { var fc = ed.fotos.splice(+b.getAttribute('data-capa'), 1)[0]; ed.fotos.unshift(fc); drawFotos(); return; }
+    if (t.closest('[data-addlink]')) {
+      var lk = url(val('e_flink')); if (!lk) return toast('Use um link que começa com https://');
+      ed.fotos.push(lk); drawFotos(); return;
+    }
+    if ((b = t.closest('[data-rmcorfoto]'))) { lerEditor(); ed.cores[+b.getAttribute('data-rmcorfoto')].length = 2; drawEditor(); return; }
     if (t.closest('[data-delprod]')) {
       if (!confirm('Excluir "' + ed.nome + '"? O estoque e as avaliações dele também saem.')) return;
       salvar('produto_excluir', { id: ed.id }, 'Produto excluído').then(function () { dlg.close(); ed = null; render(); }); return;
@@ -718,7 +895,7 @@
     if ((b = t.closest('[data-preset]'))) {
       var p = PRESETS[+b.getAttribute('data-preset')];
       ['k_p1', 'k_p2', 'k_p3'].forEach(function (id, i) { document.getElementById(id).value = p[i]; });
-      prevCores(); return;
+      prevCores(); previa(); return;
     }
     if ((b = t.closest('[data-copy]'))) {
       var inp = document.getElementById(b.getAttribute('data-copy'));
@@ -733,13 +910,15 @@
       });
       return;
     }
-    if (t.closest('[data-refazer]')) return onboarding(1);
+    if (t.closest('[data-refazer]')) { ob = {}; return onboarding(1); }
+    if ((b = t.closest('[data-wz]'))) { irEtapa(+b.getAttribute('data-wz')); return; }
     if ((b = t.closest('[data-mod]'))) { ob.modelo = b.getAttribute('data-mod'); var m = (window.MODELOS || []).filter(function (x) { return x.id === ob.modelo; })[0]; if (m) ob.cores = m.cores; $$('[data-mod]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); return; }
     if (t.closest('[data-voltar]')) { var pa = +$('#fonb').getAttribute('data-passo'); lerOnb(pa); onboarding(pa - 1); return; }
   });
   function lerOnb(passo) {
-    if (passo === 1) { ob.nome = val('o1nome'); ob.zap = val('o1zap'); }
-    if (passo === 3) ob.cores = { p1: val('k_p1'), p2: val('k_p2'), p3: val('k_p3'), on3: contraste(val('k_p3')) };
+    if (passo === 1) { ob.nome = val('o1nome'); ob.zap = val('o1zap'); ob.cidade = val('o1cid'); }
+    if (passo === 3) ob.estilo = radio('k_estilo') || 'padrao';
+    if (passo === 4) ob.cores = { p1: val('k_p1'), p2: val('k_p2'), p3: val('k_p3'), on3: contraste(val('k_p3')) };
   }
   function prevCores() {
     var pv = document.getElementById('kprev'); if (!pv) return;
@@ -748,7 +927,7 @@
   document.addEventListener('input', function (ev) {
     var id = ev.target.id;
     if (id === 'k_p1' || id === 'k_p2' || id === 'k_p3') prevCores();
-    if (ev.target.closest && ev.target.closest('#floja')) { var dt = $('#dirty'); if (dt) dt.textContent = 'Alterações não salvas'; }
+    if (ev.target.closest && ev.target.closest('#floja')) { var dt = $('#dirty'); if (dt) dt.textContent = 'Alterações não salvas'; previa(); }
     if (id === 'pq' || id === 'cq') {
       clearTimeout(S.qt); var v = ev.target.value;
       S.qt = setTimeout(function () { if (id === 'pq') S.q = v; else S.cq = v; render(); var el = document.getElementById(id); el.focus(); el.setSelectionRange(v.length, v.length); }, 250);
@@ -756,6 +935,9 @@
   });
   document.addEventListener('change', function (ev) {
     var t = ev.target;
+    if (t.type === 'file' && t.files && t.files.length) return subir(t);
+    if (t.type === 'radio' && t.closest('.fontpick')) { $$('.fontopt', t.closest('.fontpick')).forEach(function (o) { o.classList.toggle('on', o.contains(t)); }); }
+    if (t.closest && t.closest('#floja')) { var dt2 = $('#dirty'); if (dt2) dt2.textContent = 'Alterações não salvas'; previa(); }
     if (t.id === 'pcat') { S.cat = t.value; render(); }
     if (t.hasAttribute && t.hasAttribute('data-ativo')) {
       var p = S.d.produtos.filter(function (x) { return String(x.id) === t.getAttribute('data-ativo'); })[0];
@@ -772,6 +954,25 @@
       salvar('cupom_salvar', Object.assign({}, cu, { ativo: t.checked }), t.checked ? 'Cupom ligado' : 'Cupom desligado').then(render, render);
     }
   });
+  function subir(t) {
+    var files = [].slice.call(t.files); t.value = '';
+    if (t.hasAttribute('data-up-fotos')) {
+      files = files.slice(0, 5 - ed.fotos.length);
+      return enviarVarias(files, 'produto', document.getElementById('efst')).then(function (us) { if (ed) { ed.fotos = ed.fotos.concat(us).slice(0, 5); drawFotos(); } }, function () {});
+    }
+    if (t.hasAttribute('data-up-cor')) {
+      var i = +t.getAttribute('data-up-cor');
+      return enviarVarias(files.slice(0, 1), 'produto', document.getElementById('efst')).then(function (us) { if (ed && us[0]) { lerEditor(); ed.cores[i][2] = us[0]; drawEditor(); } }, function () {});
+    }
+    var id = t.getAttribute('data-up-campo'), alvo = document.getElementById(id), box = t.closest('.field');
+    if (!alvo) return;
+    return enviarVarias(files.slice(0, 1), t.getAttribute('data-up-tipo'), box && $('.upst', box)).then(function (us) {
+      if (!us[0]) return;
+      alvo.value = us[0]; alvo.dispatchEvent(new Event('input', { bubbles: true }));
+      var pv = document.getElementById('pv_' + id); if (pv) pv.innerHTML = '<img src="' + esc(mini(us[0])) + '" alt="">';
+      toast('Foto enviada. Lembre de salvar.');
+    }, function () {});
+  }
   document.addEventListener('submit', function (ev) {
     ev.preventDefault();
     var f = ev.target, btn = $('[type=submit]', f);
@@ -823,7 +1024,7 @@
     } else if (f.id === 'floja') {
       if (!val('k_nome')) return toast('Preencha o nome da loja.');
       var z = val('k_zap').replace(/\D/g, ''); if (z.length < 10 || z.length > 13) return toast('Confira o WhatsApp com DDD.');
-      ['k_logo', 'n_grp', 'k_termos', 'k_priv', 'w_logo', 'w_link', 'b_img0', 'b_img1', 'b_img2'].forEach(function (id) { if (val(id) && !url(val(id))) z = ''; });
+      ['k_logo', 'n_grp', 'k_termos', 'k_priv', 'w_logo', 'w_link', 'b_img0', 'b_img1', 'b_img2', 'b_cel0', 'b_cel1', 'b_cel2', 'b_fundo', 'b_fundocel'].forEach(function (id) { if (val(id) && !url(val(id))) z = ''; });
       if (!z) return toast('Os links precisam começar com https://');
       trava(true);
       salvar('loja', { loja: lerLoja() }, 'Loja atualizada').then(function () { aplicarCor(); render(); }, function () { trava(false); });
@@ -839,6 +1040,7 @@
         if (ob.modelo === undefined || (ob.modelo === '' && !S.d.produtos.length)) return toast('Escolha um modelo.');
         return onboarding(3);
       }
+      if (pa === 3 || pa === 4) return onboarding(pa + 1);
       trava(true);
       concluirOnboarding().catch(function () { trava(false); });
     }

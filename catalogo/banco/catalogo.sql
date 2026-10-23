@@ -194,3 +194,7 @@ alter table public.catalogo_cupons enable row level security;
 alter table public.catalogo_trocas enable row level security;
 alter table public.catalogo_ev_dia enable row level security;
 revoke all on public.catalogo_cupons, public.catalogo_trocas, public.catalogo_ev_dia from anon, authenticated;
+
+-- Plano da loja (limite de produtos e de arquivos de foto: ver catalogo_limites em funcoes.sql)
+alter table public.catalogos add column if not exists plano text not null default 'basico';
+alter table public.catalogos add constraint catalogos_plano_ck check (plano in ('basico', 'mais'));

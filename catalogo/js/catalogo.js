@@ -82,6 +82,22 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   // Links e cores vindos da configuração passam por aqui antes de entrar na página.
   function url(u) { u = String(u == null ? '' : u).trim(); return /^(https:\/\/|#|\.?\/?[a-z0-9_-]+[a-z0-9_./-]*$)/i.test(u) && !/^\s*(javascript|data|vbscript):/i.test(u) ? u : ''; }
+  // Miniatura leve para vitrine e listas: fotos enviadas pelo painel já têm a versão "-p";
+  // fotos da Unsplash e do Pexels (modelos prontos) são pedidas menores ao próprio CDN.
+  function mini(u) {
+    u = url(u); if (!u) return '';
+    if (/\/object\/public\/catalogo\/[^?#]+\.(webp|jpg|png)$/.test(u) && !/-p\.(webp|jpg|png)$/.test(u)) return u.replace(/\.(webp|jpg|png)$/, '-p.$1');
+    var m = /^https:\/\/images\.(unsplash|pexels)\.com\/.*[?&]w=(\d+)/.exec(u); if (m) m = [m[0], m[2]];
+    if (m && +m[1] > 480) { var k = 480 / +m[1]; return u.replace(/([?&])w=\d+/, '$1w=480').replace(/([?&])h=(\d+)/, function (x, a, h) { return a + 'h=' + Math.round(h * k); }); }
+    return u;
+  }
+  // Foto com versão leve e versão grande; o navegador escolhe pela largura da tela.
+  function pic(u, sizes, extra) {
+    var g = url(u), p = mini(u);
+    return '<img src="' + esc(p) + '"' + (p !== g ? ' srcset="' + esc(p) + ' 480w, ' + esc(g) + ' 1000w" sizes="' + sizes + '"' : '') + ' alt="" loading="lazy" decoding="async"' + (extra || '') + '>';
+  }
+  function prodUrl(p) { return L.api && L.id ? '/loja/' + encodeURIComponent(L.id) + '/p/' + encodeURIComponent(p.id) + '/' : '#'; }
+  function corFoto(p, nome) { var c = p.cores.filter(function (x) { return x[0] === nome; })[0]; return c && url(c[2]) || ''; }
   function cor(c, padrao) { return /^#[0-9a-f]{3,8}$/i.test(String(c || '')) ? c : padrao; }
   function brl(n) { return 'R$ ' + (Math.round(n * 100) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   function norm(s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
@@ -112,8 +128,23 @@
 
   /* ---------- cores e tema ---------- */
   var root = document.documentElement;
+  // Temas de data (escolhidos no painel): trocam as cores, o selo do banner e somam uma frase à faixa enquanto estiverem ligados.
+  var SAZ = {
+    natal: { cores: { p1: '#B3122E', p2: '#0F6B3A', p3: '#F2C14E', on3: '#3A2600' }, selo: 'Especial de Natal', faixa: 'Natal: presentes com entrega rápida' },
+    blackfriday: { cores: { p1: '#111111', p2: '#2B2B2B', p3: '#FFD400', on3: '#111111' }, selo: 'Black Friday', faixa: 'Black Friday: descontos por tempo limitado' }
+  };
+  var saz = L.sazonal === 'natal' || L.sazonal === 'blackfriday' ? SAZ[L.sazonal] : null;
+  if (saz) {
+    L.cores = saz.cores; L.banner = Object.assign({}, L.banner, { selo: saz.selo });
+    L.faixa = [saz.faixa].concat((L.faixa || []).slice(0, 2));
+    root.classList.add('saz-' + L.sazonal);
+  }
+  // Estilo visual da loja: padrão, minimalista ou moderno.
+  if (L.estilo === 'minimalista' || L.estilo === 'moderno') root.classList.add('est-' + L.estilo);
   ['p1', 'p2', 'p3', 'on3'].forEach(function (k) { if (L.cores && cor(L.cores[k])) root.style.setProperty('--' + k, L.cores[k]); });
-  document.title = L.nome + ' · Catálogo';
+  var TIT = L.nome + (L.slogan && L.nome.length < 50 ? ' · ' + String(L.slogan).split(/[.!]/)[0].slice(0, 62 - L.nome.length).trim() : ''), mdesc = $('meta[name="description"]'), DESC = mdesc ? mdesc.content : '';
+  function meta(t) { if (mdesc) mdesc.content = String(t).slice(0, 158); }
+  document.title = TIT;
   var tc = $('meta[name="theme-color"]'); if (tc && L.cores && cor(L.cores.p1)) tc.content = L.cores.p1;
   var tema = L.tema === 'claro' ? 'light' : L.tema === 'escuro' ? 'dark' : (store('tema') || '');
   function applyTheme() { if (tema) root.setAttribute('data-theme', tema); else root.removeAttribute('data-theme'); }
@@ -141,6 +172,8 @@
   }
   function pixValor() { return pixOn() ? r2((subtotal() - cupomDesc()) * Math.min(L.descontoPix, 50) / 100) : 0; }
   function totalPedido() { return subtotal() - cupomDesc() - pixValor(); }
+  // Frete grátis automático: compra (sem descontos) a partir do valor configurado no painel.
+  function freteAcima() { return +L.freteGratisAcima > 0 && subtotal() >= +L.freteGratisAcima; }
   function freteCupom() { return cup && cup.tipo === 'frete' && !(cup.minimo && subtotal() < cup.minimo); }
   var CUPOM_ERRO = { cupom_invalido: 'Cupom não encontrado', cupom_expirado: 'Esse cupom expirou', cupom_ainda_nao_vale: 'Esse cupom ainda não começou a valer',
     cupom_esgotado: 'Esse cupom já foi todo usado', cupom_vazio: 'Digite o cupom', loja_indisponivel: 'Loja indisponível' };
@@ -175,8 +208,9 @@
   /* ---------- cartão de produto ---------- */
   function picLayers(p) {
     var f = p.fotos || [], c0 = p.cores[0][1], c1 = (p.cores[1] || p.cores[0])[1];
-    var a = f[0] ? '<img src="' + esc(url(f[0])) + '" alt="" loading="lazy">' : art(p.desenho, c0);
-    var b = f[1] ? '<img src="' + esc(url(f[1])) + '" alt="" loading="lazy">' : f[0] ? '' : art(p.desenho, c1, true);
+    var CS = '(min-width:1000px) 280px, 50vw';
+    var a = f[0] ? pic(f[0], CS).replace('alt=""', 'alt="' + esc(p.nome) + '"') : art(p.desenho, c0);
+    var b = f[1] ? pic(f[1], CS) : f[0] ? '' : art(p.desenho, c1, true);
     return '<span class="lay a">' + a + '</span>' + (b ? '<span class="lay b">' + b + '</span>' : '');
   }
   function card(p) {
@@ -188,7 +222,7 @@
       '<button type="button" class="ph" data-open="' + esc(p.id) + '" aria-label="Ver ' + esc(p.nome) + '">' + picLayers(p) + tag + '<span class="quick">Ver detalhes</span></button>' +
       '<button type="button" class="fav" data-fav="' + esc(p.id) + '" aria-pressed="' + fav + '" aria-label="' + (fav ? 'Tirar dos' : 'Salvar nos') + ' favoritos">' + ic('heart') + '</button>' +
       '<div class="bd"><span class="brand">' + esc(p.marca || (CATBY[p.cat] || {}).nome || '') + '</span>' +
-      '<button type="button" class="nm" data-open="' + esc(p.id) + '">' + esc(p.nome) + '</button>' +
+      '<a class="nm" href="' + esc(prodUrl(p)) + '" data-open="' + esc(p.id) + '">' + esc(p.nome) + '</a>' +
       (r ? '<span class="rate">' + stars(r) + '<small>(' + p.avaliacoes.length + ')</small></span>' : '') +
       '<p class="desc">' + esc(p.desc || '') + '</p>' +
       '<span class="prices">' + (off ? '<s class="num">' + brl(p.de) + '</s>' : '') + '<b class="num">' + brl(p.preco) + '</b>' +
@@ -233,14 +267,16 @@
           (x.imagemCelular ? '<source media="(max-width: 700px)" srcset="' + esc(url(x.imagemCelular)) + '">' : '') +
           '<img src="' + esc(url(x.imagem)) + '" alt="' + esc(x.alt || '') + '"' + (i ? ' loading="lazy"' : '') + '></picture></a>';
       }).join('') + '</div>' + (bs.length > 1 ? '<div class="dots-b">' + bs.map(function (x, i) { return '<button type="button" data-slide="' + i + '" aria-label="Banner ' + (i + 1) + '" aria-pressed="' + !i + '"></button>'; }).join('') + '</div>' : '') + '</section>' : '';
-    return (top || '<section class="hero"><div class="blob b1"></div><div class="blob b2"></div><div class="wrap in">' +
+    // Banner montado com foto real de fundo: o texto fica por cima, com um véu na cor da loja para dar leitura.
+    var fundo = url(b.imagem) ? '<picture class="hbg">' + (url(b.imagemCelular) ? '<source media="(max-width: 700px)" srcset="' + esc(url(b.imagemCelular)) + '">' : '') + '<img src="' + esc(url(b.imagem)) + '" alt="" fetchpriority="high"></picture>' : '';
+    return (top || '<section class="hero' + (fundo ? ' foto' : '') + '">' + fundo + (fundo ? '' : '<div class="blob b1"></div><div class="blob b2"></div>') + '<div class="wrap in">' +
         '<div class="copy">' + (b.selo ? '<span class="kick">' + esc(b.selo) + '</span>' : '') + '<h1>' + esc(b.titulo || L.nome) + '</h1><p>' + esc(b.texto || L.slogan) + '</p>' +
         '<a class="cta light" href="#' + (b.categoria && CATBY[b.categoria] ? 'c-' + esc(b.categoria) : 'todos') + '">' + esc(b.botao || 'Ver catálogo') + '</a></div>' +
-        '<div class="hart' + (b.imagem ? ' photo' : '') + '">' + heroArt + '</div></div></section>') +
+        (fundo ? '' : '<div class="hart">' + heroArt + '</div>') + '</div></section>') +
       (L.beneficios && L.beneficios.length ? '<div class="perks wrap">' + L.beneficios.map(function (x) { return '<div class="perk">' + ic(BI[x[0]] ? x[0] : 'seguro') + '<span><b>' + esc(x[1]) + '</b><small>' + esc(x[2] || '') + '</small></span></div>'; }).join('') + '</div>' : '') +
       '<section class="sec wrap"><div class="sec-head center"><h2 class="h">' + esc((L.categoriasTitulo || ['Compre por categoria'])[0]) + '</h2>' +
-        ((L.categoriasTitulo || [])[1] ? '<p class="subt">' + esc(L.categoriasTitulo[1]) + '</p>' : '') + '</div><div class="circles">' + CATS.map(function (c) { return '<a class="circle" href="#c-' + esc(c.id) + '"><span class="c">' + (c.foto ? '<img src="' + esc(url(c.foto)) + '" alt="" loading="lazy">' : art(c.desenho, c.cor)) + '</span>' + esc(c.nome) + '</a>'; }).join('') + '</div>' +
-      '<div class="catcards">' + CATS.slice(0, 3).map(function (c) { return '<a class="catcard" href="#c-' + esc(c.id) + '">' + (c.foto ? '<img src="' + esc(url(c.foto)) + '" alt="" loading="lazy">' : art(c.desenho, c.cor)) + '<span class="t">' + (c.chamada ? '<em>' + esc(c.chamada) + '</em>' : '') + '<b>' + esc(c.nome) + '</b><small>Ver todos os produtos →</small></span></a>'; }).join('') + '</div></section>' +
+        ((L.categoriasTitulo || [])[1] ? '<p class="subt">' + esc(L.categoriasTitulo[1]) + '</p>' : '') + '</div><div class="circles">' + CATS.map(function (c) { return '<a class="circle" href="#c-' + esc(c.id) + '"><span class="c">' + (c.foto ? '<img src="' + esc(mini(c.foto)) + '" alt="" loading="lazy" decoding="async">' : art(c.desenho, c.cor)) + '</span>' + esc(c.nome) + '</a>'; }).join('') + '</div>' +
+      '<div class="catcards">' + CATS.slice(0, 3).map(function (c) { return '<a class="catcard" href="#c-' + esc(c.id) + '">' + (c.foto ? pic(c.foto, '(min-width:900px) 33vw, 90vw') : art(c.desenho, c.cor)) + '<span class="t">' + (c.chamada ? '<em>' + esc(c.chamada) + '</em>' : '') + '<b>' + esc(c.nome) + '</b><small>Ver todos os produtos →</small></span></a>'; }).join('') + '</div></section>' +
       '<section class="sec wrap"><div class="sec-head center"><h2 class="h">Mais vendidos</h2></div>' + rail(hl) + '<a class="more end" href="#todos">Ver todos os produtos</a></section>' +
       (of.ativo !== false && ofs.length ? '<section class="sec wrap ofertas"><div class="sec-head center">' + (of.selo ? '<span class="kick">' + esc(of.selo) + '</span>' : '') + '<h2 class="h">' + esc(of.titulo || 'Ofertas da semana') + '</h2>' +
         (of.texto ? '<p class="subt">' + esc(of.texto) + '</p>' : '') + '</div>' + rail(ofs) + '<a class="more end" href="#ofertas">Ver todas as ofertas</a></section>' : '') +
@@ -338,6 +374,13 @@
     });
     return rows.map(function (r) { return '<div><span>' + DIAS[r.from] + (r.to !== r.from ? ' a ' + DIAS[r.to].toLowerCase() : '') + '</span><b class="num">' + esc(r.txt) + '</b></div>'; }).join('');
   }
+  // Mapa da loja física (liga e desliga no painel); só carrega quando chega perto da tela.
+  function mapa() {
+    if (!L.mapa || !L.endereco) return '';
+    var q = encodeURIComponent(L.endereco + ', ' + (L.cidade || '').split('·')[0].trim());
+    return '<div class="wrap mapa"><iframe src="https://www.google.com/maps?q=' + q + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: ' + esc(L.endereco) + '"></iframe>' +
+      '<a class="cta ghost" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener">' + ic('pin') + 'Como chegar</a></div>';
+  }
   function footer() {
     var parc = L.parceiro || {}, lk = L.links || {}, hasH = L.horarios && Object.keys(L.horarios).length;
     var made = parc.nome || parc.logo ? '<a class="madeby"' + (parc.link ? ' href="' + esc(url(parc.link)) + '" target="_blank" rel="noopener"' : '') + '>Feito por ' + (parc.logo ? '<img src="' + esc(url(parc.logo)) + '" alt="' + esc(parc.nome || '') + '">' : '<b>' + esc(parc.nome) + '</b>') + '</a>' : '<span></span>';
@@ -354,7 +397,7 @@
       '<div><h4>' + ic('clock') + 'Atendimento</h4>' + (hasH ? '<div class="hrs">' + hoursRows() + '</div>' : '') +
         (L.freteGratisAcima ? '<span class="ln">' + ic('envio') + 'Frete grátis para todo o Brasil acima de ' + brl(L.freteGratisAcima) + '</span>' : '') +
         '<span class="ln">' + ic('chat') + 'Respondemos em poucos minutos pelo WhatsApp</span><small class="fin">Compra finalizada pelo WhatsApp.</small></div>' +
-      '</div><div class="bottom"><div class="wrap">' + made + '<nav>' +
+      '</div>' + mapa() + '<div class="bottom"><div class="wrap">' + made + '<nav>' +
         (L.cookies ? '<button type="button" class="lk" data-cookies-reabrir>Cookies e privacidade</button>' : '') +
         (lk.termos ? '<a href="' + esc(url(lk.termos)) + '" target="_blank" rel="noopener">Termos de uso</a>' : '') +
         (lk.privacidade || L.politica ? '<a href="' + esc(url(lk.privacidade || L.politica)) + '" target="_blank" rel="noopener">Política de privacidade</a>' : '') +
@@ -417,13 +460,15 @@
     cur = { p: p, cor: cor, tam: p.tamanhos.length === 1 ? tam[0] || null : null, qty: 1, foto: 0 };
     drawProd();
     track('produto', p.id);
+    document.title = p.nome + ' · ' + L.nome; meta(p.desc || p.nome);
     var d = $('#dProd'); if (!d.open) d.showModal();
     var s = $('.scroll', d); if (s) s.scrollTop = 0;
   }
   function drawProd() {
     var p = cur.p, d = $('#dProd'), out = !total(p), off = offOf(p), r = rating(p);
     var hex = (p.cores.filter(function (c) { return c[0] === cur.cor; })[0] || p.cores[0])[1];
-    var shots = p.fotos && p.fotos.length ? p.fotos.map(function (f) { return '<img src="' + esc(url(f)) + '" alt="">'; }) :
+    var cf = corFoto(p, cur.cor), fs = (cf ? [cf] : []).concat((p.fotos || []).filter(function (f) { return f !== cf; }));
+    var shots = fs.length ? fs.map(function (f) { return '<img src="' + esc(url(f)) + '" alt="' + esc(p.nome + (cur.cor ? ' · ' + cur.cor : '')) + '" decoding="async">'; }) :
       [art(p.desenho, hex), art(p.desenho, hex, true), '<span class="zoomed">' + art(p.desenho, hex) + '</span>'];
     cur.foto = Math.min(cur.foto, shots.length - 1);
     var q = cur.tam != null ? qtd(p, cur.cor, cur.tam) : 0;
@@ -486,8 +531,9 @@
     lines.push('', 'Subtotal: ' + brl(subtotal()));
     if (cupomDesc()) lines.push('Cupom ' + cup.codigo + ': − ' + brl(cupomDesc()));
     if (pixOn()) lines.push('Desconto Pix (' + L.descontoPix + '%): − ' + brl(pixValor()));
-    lines.push('*Total: ' + brl(totalPedido()) + '*' + (form.entrega === 'retirada' || freteCupom() ? '' : ' + frete'), '');
+    lines.push('*Total: ' + brl(totalPedido()) + '*' + (form.entrega === 'retirada' || freteCupom() || freteAcima() ? '' : ' + frete'), '');
     if (freteCupom()) lines.push('Frete grátis (cupom ' + cup.codigo + ')');
+    else if (freteAcima() && form.entrega !== 'retirada') lines.push('Frete grátis (compra acima de ' + brl(+L.freteGratisAcima) + ')');
     var ent = (L.entrega || []).filter(function (x) { return x[0] === form.entrega; })[0];
     if (ent) lines.push('Receber: ' + ent[1] + (form.entrega === 'correios' ? ' · CEP ' + form.cep : form.entrega === 'motoboy' ? ' · ' + form.end : ''));
     lines.push('Pagamento: ' + form.pag, 'Nome: ' + form.nome);
@@ -505,7 +551,7 @@
     var e = problems(), ok = !Object.keys(e).length, falta = L.freteGratisAcima ? L.freteGratisAcima - sub : 0;
     var lines = cart.map(function (l, i) {
       var p = BYID[l.id], hex = (p.cores.filter(function (c) { return c[0] === l.cor; })[0] || p.cores[0])[1];
-      return '<div class="line"><span class="th">' + (p.fotos && p.fotos[0] ? '<img src="' + esc(url(p.fotos[0])) + '" alt="">' : art(p.desenho, hex)) + '</span><div class="info"><b>' + esc(p.nome) + '</b><small>' + esc(varTxt(l.cor, l.tam)) + '</small>' +
+      return '<div class="line"><span class="th">' + (corFoto(p, l.cor) || (p.fotos && p.fotos[0]) ? '<img src="' + esc(mini(corFoto(p, l.cor) || p.fotos[0])) + '" alt="">' : art(p.desenho, hex)) + '</span><div class="info"><b>' + esc(p.nome) + '</b><small>' + esc(varTxt(l.cor, l.tam)) + '</small>' +
         '<div class="v num">' + brl(p.preco * l.qty) + '</div></div><div class="step"><button type="button" data-l="' + i + '" data-d="-1" aria-label="Tirar um">−</button><b>' + l.qty + '</b><button type="button" data-l="' + i + '" data-d="1" aria-label="Adicionar mais um"' + (l.qty >= qtd(p, l.cor, l.tam) ? ' disabled' : '') + '>+</button></div></div>';
     }).join('');
     var ents = (L.entrega || []).map(function (x) { return '<button type="button" data-ent="' + esc(x[0]) + '" aria-pressed="' + (form.entrega === x[0]) + '"><b>' + esc(x[1]) + '</b><small>' + esc(x[2] || '') + '</small></button>'; }).join('');
@@ -574,9 +620,9 @@
         if (route().fav) drawMain();
         return;
       }
-      if ((b = t.closest('[data-open]'))) return openProd(b.getAttribute('data-open'));
+      if ((b = t.closest('[data-open]'))) { ev.preventDefault(); return openProd(b.getAttribute('data-open')); }
       if (cur && $('#dProd').open) {
-        if ((b = t.closest('[data-cor]'))) { cur.cor = b.getAttribute('data-cor'); if (cur.tam != null && !qtd(cur.p, cur.cor, cur.tam)) cur.tam = null; cur.qty = 1; return drawProd(); }
+        if ((b = t.closest('[data-cor]'))) { cur.cor = b.getAttribute('data-cor'); cur.foto = 0; if (cur.tam != null && !qtd(cur.p, cur.cor, cur.tam)) cur.tam = null; cur.qty = 1; return drawProd(); }
         if ((b = t.closest('[data-tam-p]'))) { cur.tam = b.getAttribute('data-tam-p'); cur.qty = 1; return drawProd(); }
         if ((b = t.closest('[data-foto]'))) { cur.foto = +b.getAttribute('data-foto'); return drawProd(); }
         if ((b = t.closest('[data-pq]'))) { var mx = cur.tam != null ? qtd(cur.p, cur.cor, cur.tam) : 99; cur.qty = Math.min(Math.max(1, mx), Math.max(1, cur.qty + +b.getAttribute('data-pq'))); return drawProd(); }
@@ -661,4 +707,8 @@
   render();
   bind();
   visita();
+  // Endereço de produto (/loja/x/p/id/ ou #p-id) abre o produto direto.
+  var abrir = window.NOUR_ABRIR || (location.hash.indexOf('#p-') === 0 ? decodeURIComponent(location.hash.slice(3)) : '');
+  if (abrir && BYID[abrir]) openProd(abrir);
+  $('#dProd').addEventListener('close', function () { document.title = TIT; meta(DESC); });
 })();

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /catalogo/painel/
+Disallow: /api/
+
+Sitemap: https://nour-catalogo.vercel.app/sitemap.xml

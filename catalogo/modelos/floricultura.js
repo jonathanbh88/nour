@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Flor de Lis",
-  "slogan": "Buquês, arranjos e cestas com entrega no mesmo dia.",
+  "slogan": "Flores frescas montadas na hora, com entrega no mesmo dia.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Buquês, arranjos e cestas com entrega no mesmo dia. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Flor de Lis monta cada buquê e arranjo no dia da entrega, com flores selecionadas pela manhã. Pelo WhatsApp você escolhe o modelo, a mensagem do cartão e o horário, e a gente cuida do resto.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,18 +64,19 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Entrega no mesmo dia",
-    "Cartão personalizado grátis",
+    "Pedido até 14h, entrega no mesmo dia",
+    "Cartão com sua mensagem sem custo",
     "Desconto no Pix à vista"
   ],
   "banners": [],
   "banner": {
-    "selo": "Presentes",
-    "titulo": "Flores que dizem tudo",
-    "texto": "Buquês e arranjos com entrega no mesmo dia.",
-    "botao": "Comprar agora",
+    "selo": "Entrega hoje",
+    "titulo": "Flores frescas para dizer o que sente",
+    "texto": "Buquês e arranjos montados na hora, com cartão e entrega no mesmo dia.",
+    "botao": "Escolher flores",
     "categoria": "buques",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/947914/pexels-photo-947914.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/947914/pexels-photo-947914.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Escolha o presente certo",
+    "Buquês, arranjos, cestas e plantas para cada momento"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -159,30 +160,34 @@ window.CATEGORIAS = [
   {
     "id": "buques",
     "nome": "Buquês",
-    "chamada": "Rosas e flores do campo",
+    "chamada": "Para surpreender na porta de casa",
     "desenho": "flor",
-    "cor": "#E81968"
+    "cor": "#E81968",
+    "foto": "https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?auto=format&fit=crop&w=600&h=600&q=70"
   },
   {
     "id": "arranjos",
     "nome": "Arranjos",
-    "chamada": "Para mesa e eventos",
+    "chamada": "Deixam qualquer mesa mais bonita",
     "desenho": "flor",
-    "cor": "#F2C14E"
+    "cor": "#F2C14E",
+    "foto": "https://images.pexels.com/photos/13788170/pexels-photo-13788170.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "cestas",
     "nome": "Cestas",
-    "chamada": "Café da manhã e presentes",
+    "chamada": "Presente completo, pronto para entregar",
     "desenho": "bolsa",
-    "cor": "#8B5E34"
+    "cor": "#8B5E34",
+    "foto": "https://images.pexels.com/photos/36431075/pexels-photo-36431075.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "plantas",
     "nome": "Plantas",
-    "chamada": "Vasos e suculentas",
+    "chamada": "Verde que dura muito mais",
     "desenho": "flor",
-    "cor": "#2F6B4F"
+    "cor": "#2F6B4F",
+    "foto": "https://images.pexels.com/photos/4484184/pexels-photo-4484184.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -197,7 +202,7 @@ window.PRODUTOS = [
     "de": 229.9,
     "desenho": "flor",
     "destaque": true,
-    "desc": "Buquê 12 rosas da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "O clássico que nunca erra: doze rosas selecionadas no dia, com folhagens e acabamento em papel e laço. As hastes vão hidratadas para durar mais no vaso. Ideal para aniversário, pedido de namoro ou para pedir desculpas.",
     "cores": [
       [
         "Vermelho",
@@ -228,6 +233,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Vermelho"
       }
+    ],
+    "composicao": "12 rosas nacionais, folhagens, papel e laço de cetim",
+    "fotos": [
+      "https://images.pexels.com/photos/11166470/pexels-photo-11166470.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/16485482/pexels-photo-16485482.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -239,7 +249,7 @@ window.PRODUTOS = [
     "preco": 99.9,
     "desenho": "flor",
     "destaque": true,
-    "desc": "Buquê 5 rosas da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "Delicado e cheio de significado, o buquê de cinco rosas cabe em qualquer ocasião. Montado na hora com folhagens e papel de presente, chega acompanhado de cartão com a sua mensagem. Perfeito para um carinho sem data especial.",
     "cores": [
       [
         "Vermelho",
@@ -275,7 +285,12 @@ window.PRODUTOS = [
         "variacao": "Vermelho"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "5 rosas nacionais, folhagens, papel e laço",
+    "fotos": [
+      "https://images.pexels.com/photos/33791891/pexels-photo-33791891.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/4421053/pexels-photo-4421053.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -286,7 +301,7 @@ window.PRODUTOS = [
     "preco": 149.9,
     "desenho": "flor",
     "destaque": true,
-    "desc": "Arranjo de girassóis da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "Girassóis trazem luz para qualquer ambiente. O arranjo é montado em base pronta para colocar sobre a mesa, sem precisar de vaso. Ótimo para parabenizar uma conquista, alegrar um escritório ou desejar boa recuperação.",
     "cores": [
       [
         "Amarelo",
@@ -316,6 +331,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Amarelo"
       }
+    ],
+    "composicao": "Girassóis, folhagens e base com espuma floral",
+    "fotos": [
+      "https://images.pexels.com/photos/8737344/pexels-photo-8737344.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/5568/pexels-photo-5568.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -328,7 +348,7 @@ window.PRODUTOS = [
     "de": 199.9,
     "desenho": "flor",
     "destaque": true,
-    "desc": "Arranjo orquídea da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "Elegante e duradoura, a orquídea pode florir por semanas com poucos cuidados: basta regar uma vez por semana e deixar em local claro, sem sol direto. Vai em cachepô decorativo, pronta para presentear.",
     "cores": [
       [
         "Lilás",
@@ -362,6 +382,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Lilás"
       }
+    ],
+    "composicao": "Orquídea Phalaenopsis em vaso com cachepô",
+    "fotos": [
+      "https://images.pexels.com/photos/5714450/pexels-photo-5714450.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/13030170/pexels-photo-13030170.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -374,7 +399,7 @@ window.PRODUTOS = [
     "de": 259.9,
     "desenho": "bolsa",
     "destaque": true,
-    "desc": "Cesta café da manhã da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "Para começar o dia de alguém com carinho: cesta com café, pães, frios, frutas e doces, decorada com flores. Montamos na madrugada e entregamos pela manhã no horário combinado. Inclui cartão com sua mensagem.",
     "cores": [
       [
         "Bege",
@@ -396,6 +421,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Bege"
       }
+    ],
+    "composicao": "Cesta com itens de café da manhã, flores e cartão",
+    "fotos": [
+      "https://images.unsplash.com/photo-1744638628542-12578d73179b?auto=format&fit=crop&w=1000&h=1250&q=70",
+      "https://images.pexels.com/photos/1843244/pexels-photo-1843244.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -407,7 +437,7 @@ window.PRODUTOS = [
     "preco": 289.9,
     "desenho": "bolsa",
     "destaque": false,
-    "desc": "Cesta encanto dos namorados da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "A cesta pensada para o Dia dos Namorados: rosas vermelhas, chocolates, espumante sem álcool e mimos selecionados. Chega com embalagem caprichada e cartão escrito à mão. Reserve com antecedência, a produção é limitada.",
     "cores": [
       [
         "Vermelho",
@@ -437,6 +467,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Vermelho"
       }
+    ],
+    "composicao": "Cesta com rosas, chocolates, bebida e cartão",
+    "fotos": [
+      "https://images.pexels.com/photos/30592535/pexels-photo-30592535.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/20046322/pexels-photo-20046322.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -449,7 +484,7 @@ window.PRODUTOS = [
     "de": 69.9,
     "desenho": "flor",
     "destaque": false,
-    "desc": "Kit suculentas da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "Um pedacinho de natureza que quase não dá trabalho: o kit reúne suculentas variadas em vasinhos individuais. Precisam de pouca água e bastante luz. Ótimas para decorar a mesa de trabalho ou como lembrança de evento.",
     "cores": [
       [
         "Verde",
@@ -471,6 +506,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Verde"
       }
+    ],
+    "composicao": "3 suculentas variadas em vasos de 6 cm",
+    "fotos": [
+      "https://images.pexels.com/photos/1906439/pexels-photo-1906439.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=1000&h=1250&q=70"
     ]
   },
   {
@@ -482,7 +522,7 @@ window.PRODUTOS = [
     "preco": 79.9,
     "desenho": "flor",
     "destaque": false,
-    "desc": "Vaso de lírio da paz da Flor de Lis. Troque este texto pela descrição do produto.",
+    "desc": "O lírio da paz é uma planta de interior bonita e fácil de manter, com folhas verdes brilhantes e flores brancas. Gosta de meia-sombra e rega moderada. Um presente que acompanha a casa por muito tempo.",
     "cores": [
       [
         "Branco",
@@ -512,6 +552,11 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Branco"
       }
+    ],
+    "composicao": "Spathiphyllum em vaso nº 15 com cachepô",
+    "fotos": [
+      "https://images.pexels.com/photos/1471600/pexels-photo-1471600.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/2092553/pexels-photo-2092553.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   }
 ];

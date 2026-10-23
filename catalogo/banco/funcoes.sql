@@ -69,19 +69,24 @@ begin
 end $function$;
 
 CREATE OR REPLACE FUNCTION public.catalogo_gravar_produto(p_slug text, d jsonb, p_motivo text) RETURNS bigint LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
-declare v_id bigint := nullif(d->>'id', '')::bigint; v_fotos jsonb := '[]'::jsonb; v_cores jsonb := '[]'::jsonb; v_tams jsonb := '[]'::jsonb; x jsonb;
+declare v_id bigint := nullif(d->>'id', '')::bigint; v_fotos jsonb := '[]'::jsonb; v_cores jsonb := '[]'::jsonb; v_tams jsonb := '[]'::jsonb; x jsonb; v_cf text;
 begin
   for x in select * from jsonb_array_elements(coalesce(d->'fotos', '[]')) loop
-    if jsonb_typeof(x) = 'string' and catalogo_url_ok(x #>> '{}') and jsonb_array_length(v_fotos) < 8 then v_fotos := v_fotos || x; end if;
+    if jsonb_typeof(x) = 'string' and catalogo_url_ok(x #>> '{}') and jsonb_array_length(v_fotos) < 5 then v_fotos := v_fotos || x; end if;
   end loop;
+  -- cada cor: [nome, #hex] ou [nome, #hex, foto da cor]
   for x in select * from jsonb_array_elements(coalesce(d->'cores', '[]')) loop
     if jsonb_typeof(x) = 'array' and char_length(btrim(x->>0)) between 1 and 30 and position('|' in x->>0) = 0 and coalesce(x->>1, '') ~ '^(#[0-9A-Fa-f]{6})?$' and jsonb_array_length(v_cores) < 20 then
-      v_cores := v_cores || jsonb_build_array(jsonb_build_array(btrim(x->>0), coalesce(x->>1, ''))); end if;
+      v_cf := coalesce(x->>2, '');
+      if catalogo_url_ok(v_cf) then v_cores := v_cores || jsonb_build_array(jsonb_build_array(btrim(x->>0), coalesce(x->>1, ''), v_cf));
+      else v_cores := v_cores || jsonb_build_array(jsonb_build_array(btrim(x->>0), coalesce(x->>1, ''))); end if;
+    end if;
   end loop;
   for x in select * from jsonb_array_elements(coalesce(d->'tamanhos', '[]')) loop
     if jsonb_typeof(x) = 'string' and char_length(btrim(x #>> '{}')) between 1 and 20 and position('|' in x #>> '{}') = 0 and jsonb_array_length(v_tams) < 30 then v_tams := v_tams || to_jsonb(btrim(x #>> '{}')); end if;
   end loop;
   if v_id is null then
+    if (select count(*) from catalogo_produtos where slug = p_slug) >= (select (catalogo_limites(plano)->>'produtos')::int from catalogos where slug = p_slug) then raise exception 'limite_plano'; end if;
     insert into catalogo_produtos (slug, nome, preco) values (p_slug, 'Produto', 0) returning id into v_id;
   elsif not exists (select 1 from catalogo_produtos where id = v_id and slug = p_slug) then raise exception 'produto_inexistente';
   end if;
@@ -389,6 +394,8 @@ begin
     if not (v_cup->>'ok')::boolean then raise exception '%', v_cup->>'erro'; end if;
     v_cdesc := (v_cup->>'desconto')::numeric; v_fg := (v_cup->>'frete_gratis')::boolean; v_cod := v_cup->>'codigo';
   end if;
+  -- Frete grátis automático acima do valor configurado no painel.
+  if not v_fg and coalesce(c.loja->>'freteGratisAcima', '') ~ '^[0-9]+(\.[0-9]+)?$' and (c.loja->>'freteGratisAcima')::numeric > 0 and v_sub >= (c.loja->>'freteGratisAcima')::numeric then v_fg := true; end if;
   if coalesce(p_pagamento, '') ilike '%pix%' then
     v_pct := least(greatest(coalesce(nullif(c.loja->>'descontoPix', '')::numeric, 0), 0), 50);
     v_desc := round((v_sub - v_cdesc) * v_pct / 100, 2);
@@ -477,3 +484,69 @@ revoke all on function public.catalogo_cupom(text, text, numeric), public.catalo
 grant execute on function public.catalogo_cupom(text, text, numeric), public.catalogo_fazer_pedido(text, text, text, jsonb, jsonb, text, text, text, text),
   public.catalogo_evento(text, text, text, text), public.catalogo_marca(text) to anon, authenticated;
 revoke all on function public.catalogo_pedido(text, text, text, jsonb, jsonb, text, text) from anon, authenticated;
+
+
+-- =====================================================================
+-- Planos (Básico até 100 produtos; Mais até 1000), fotos e sitemap
+-- (a coluna catalogos.plano está em catalogo.sql)
+-- =====================================================================
+-- Limites por plano: Básico até 100 produtos; Mais até 1000. Fotos contam arquivos no armazenamento (cada foto gera 2: grande e miniatura).
+CREATE OR REPLACE FUNCTION public.catalogo_limites(p_plano text) RETURNS jsonb LANGUAGE sql IMMUTABLE SET search_path TO 'public' AS $function$
+  select case when p_plano = 'mais' then jsonb_build_object('produtos', 1000, 'arquivos', 12000) else jsonb_build_object('produtos', 100, 'arquivos', 1600) end;
+$function$;
+
+CREATE OR REPLACE FUNCTION public.catalogo_plano(p_slug text, p_token text) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare v_plano text;
+begin
+  if not catalogo_ok(p_slug, p_token) then raise exception 'acesso_negado'; end if;
+  select plano into v_plano from catalogos where slug = p_slug;
+  return jsonb_build_object('plano', v_plano, 'limites', catalogo_limites(v_plano),
+    'produtos', (select count(*) from catalogo_produtos where slug = p_slug),
+    'arquivos', (select count(*) from storage.objects where bucket_id = 'catalogo' and name like p_slug || '/%'));
+end $function$;
+
+-- Usado só pela função de envio de fotos (chave de serviço).
+CREATE OR REPLACE FUNCTION public.catalogo_foto_ok(p_slug text, p_token text) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare v_plano text;
+begin
+  if not catalogo_ok(p_slug, p_token) then return jsonb_build_object('ok', false); end if;
+  select plano into v_plano from catalogos where slug = p_slug;
+  return jsonb_build_object('ok', true, 'limite', (catalogo_limites(v_plano)->>'arquivos')::int,
+    'arquivos', (select count(*) from storage.objects where bucket_id = 'catalogo' and name like p_slug || '/%'));
+end $function$;
+
+-- Arquivos da loja que ainda aparecem em algum lugar (produtos, cores, categorias, avaliações, aparência).
+CREATE OR REPLACE FUNCTION public.catalogo_fotos_usadas(p_slug text) RETURNS SETOF text LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+  select distinct m[1] from (
+    select loja::text t from catalogos where slug = p_slug
+    union all select fotos::text || cores::text from catalogo_produtos where slug = p_slug
+    union all select coalesce(foto, '') from catalogo_categorias where slug = p_slug
+  ) x, regexp_matches(x.t, '/object/public/catalogo/([A-Za-z0-9._/-]+)', 'g') m;
+$function$;
+
+revoke all on function public.catalogo_limites(text), public.catalogo_foto_ok(text, text), public.catalogo_fotos_usadas(text) from public, anon, authenticated;
+grant execute on function public.catalogo_foto_ok(text, text), public.catalogo_fotos_usadas(text) to service_role;
+revoke all on function public.catalogo_plano(text, text) from public;
+grant execute on function public.catalogo_plano(text, text) to anon, authenticated;
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('catalogo', 'catalogo', true, 409600, array['image/webp', 'image/jpeg', 'image/png']) on conflict (id) do nothing;
+
+CREATE OR REPLACE FUNCTION public.catalogo_fotos_orfas(p_slug text) RETURNS SETOF text LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+  select o.name from storage.objects o
+  where o.bucket_id = 'catalogo' and o.name like p_slug || '/%' and o.created_at < now() - interval '1 hour'
+    and regexp_replace(o.name, '-p(\.[a-z]+)$', '\1') not in (select catalogo_fotos_usadas(p_slug))
+  limit 500;
+$function$;
+revoke all on function public.catalogo_fotos_orfas(text) from public, anon, authenticated;
+grant execute on function public.catalogo_fotos_orfas(text) to service_role;
+
+-- Lojas ativas (sem demonstração) e seus produtos visíveis, para o sitemap.xml do Google.
+CREATE OR REPLACE FUNCTION public.catalogo_sitemap() RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
+  select coalesce(jsonb_agg(jsonb_build_object('slug', c.slug, 'atualizado', c.atualizado,
+    'produtos', (select coalesce(jsonb_agg(jsonb_build_object('id', p.id::text, 'atualizado', p.atualizado) order by p.id), '[]'::jsonb) from catalogo_produtos p where p.slug = c.slug and p.ativo))
+    order by c.slug), '[]'::jsonb)
+  from catalogos c where c.ativo and not c.demo;
+$function$;
+revoke all on function public.catalogo_sitemap() from public;
+grant execute on function public.catalogo_sitemap() to anon, authenticated;

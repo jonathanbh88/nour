@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Brilho Acessórios",
-  "slogan": "Brincos, colares, bolsas e óculos para completar o look.",
+  "slogan": "Semijoias, bolsas e óculos que deixam qualquer look pronto em segundos.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Brincos, colares, bolsas e óculos para completar o look. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Brilho seleciona semijoias banhadas, bolsas e óculos para o seu dia a dia e para as ocasiões especiais. Escolha pelo catálogo e finalize pelo WhatsApp: tiramos dúvidas, mandamos fotos extras e ajudamos a montar presentes.",
   "horarios": {
     "0": [],
     "1": [
@@ -66,16 +66,17 @@ window.LOJA = {
   "faixa": [
     "Peças novas toda semana",
     "Frete grátis acima de R$ 149",
-    "Embalagem para presente"
+    "Embalagem de presente inclusa"
   ],
   "banners": [],
   "banner": {
     "selo": "Novidades",
-    "titulo": "Brilho para todo dia",
-    "texto": "Semijoias banhadas, bolsas e óculos com garantia.",
-    "botao": "Comprar agora",
+    "titulo": "Semijoias que brilham o dia inteiro",
+    "texto": "Brincos, colares, bolsas e óculos escolhidos a dedo. Peça pelo WhatsApp.",
+    "botao": "Ver novidades",
     "categoria": "brincos",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/7679654/pexels-photo-7679654.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/7679654/pexels-photo-7679654.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Encontre o seu brilho",
+    "Do básico de todo dia ao detalhe que chama atenção"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +165,34 @@ window.CATEGORIAS = [
   {
     "id": "brincos",
     "nome": "Brincos",
-    "chamada": "Banhados a ouro 18k",
+    "chamada": "Leves para usar do trabalho à festa",
     "desenho": "anel",
-    "cor": "#C9A227"
+    "cor": "#C9A227",
+    "foto": "https://images.pexels.com/photos/12144990/pexels-photo-12144990.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "colares",
     "nome": "Colares",
-    "chamada": "Para usar em camadas",
+    "chamada": "Combine em camadas e crie seu estilo",
     "desenho": "colar",
-    "cor": "#C9A227"
+    "cor": "#C9A227",
+    "foto": "https://images.pexels.com/photos/19869445/pexels-photo-19869445.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "bolsas",
     "nome": "Bolsas",
-    "chamada": "Do dia a dia à festa",
+    "chamada": "Cabe tudo e ainda completa o look",
     "desenho": "bolsa",
-    "cor": "#6E1F33"
+    "cor": "#6E1F33",
+    "foto": "https://images.pexels.com/photos/20591024/pexels-photo-20591024.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "oculos",
     "nome": "Óculos de sol",
-    "chamada": "Proteção UV400",
+    "chamada": "Estilo com proteção UV400",
     "desenho": "oculos",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": "https://images.pexels.com/photos/27353350/pexels-photo-27353350.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -202,7 +207,7 @@ window.PRODUTOS = [
     "de": 69.9,
     "desenho": "anel",
     "destaque": true,
-    "desc": "Brinco argola média da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "A argola média que combina com tudo, do jeans ao vestido de festa. Banhada com acabamento polido, é leve para usar o dia inteiro sem pesar na orelha. Peça curinga para quem quer um básico que valoriza o rosto.",
     "cores": [
       [
         "Dourado",
@@ -237,6 +242,11 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Dourado"
       }
+    ],
+    "composicao": "Metal banhado a ouro 18k ou ródio, fecho click",
+    "fotos": [
+      "https://images.pexels.com/photos/12144990/pexels-photo-12144990.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/18597841/pexels-photo-18597841.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -248,7 +258,7 @@ window.PRODUTOS = [
     "preco": 59.9,
     "desenho": "colar",
     "destaque": true,
-    "desc": "Colar ponto de luz da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "Delicado e elegante, o ponto de luz ilumina o colo sem exageros. A corrente fina tem regulagem de tamanho e o zircônia lapidado reflete a luz em qualquer ângulo. Uma ótima opção de presente para datas especiais.",
     "cores": [
       [
         "Dourado",
@@ -281,7 +291,12 @@ window.PRODUTOS = [
         "variacao": "Dourado"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Metal banhado, zircônia, corrente 40 cm com extensor",
+    "fotos": [
+      "https://images.pexels.com/photos/4595723/pexels-photo-4595723.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/7134458/pexels-photo-7134458.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -293,7 +308,7 @@ window.PRODUTOS = [
     "de": 169.9,
     "desenho": "bolsa",
     "destaque": true,
-    "desc": "Bolsa tiracolo matelassê da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "Bolsa tiracolo matelassê que deixa as mãos livres e o visual arrumado. Tem espaço para celular, carteira e chaves, alça em corrente ajustável e fecho seguro. Vai do almoço de domingo ao jantar sem precisar trocar.",
     "cores": [
       [
         "Vinho",
@@ -320,6 +335,10 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Vinho"
       }
+    ],
+    "composicao": "Material sintético matelassê, alça em corrente metálica",
+    "fotos": [
+      "https://images.pexels.com/photos/20591024/pexels-photo-20591024.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -332,7 +351,7 @@ window.PRODUTOS = [
     "de": 119.9,
     "desenho": "oculos",
     "destaque": true,
-    "desc": "Óculos gatinho da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "O formato gatinho alonga o olhar e deixa qualquer produção mais charmosa. Lentes com proteção UV400 e armação leve, confortável para o uso prolongado. Combina com looks de praia e de cidade.",
     "cores": [
       [
         "Preto",
@@ -359,6 +378,11 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Preto"
       }
+    ],
+    "composicao": "Armação em acetato, lentes com proteção UV400",
+    "fotos": [
+      "https://images.pexels.com/photos/1864848/pexels-photo-1864848.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/4952482/pexels-photo-4952482.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -370,7 +394,7 @@ window.PRODUTOS = [
     "preco": 39.9,
     "desenho": "anel",
     "destaque": true,
-    "desc": "Brinco ear cuff da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "O ear cuff dá um ar moderno sem precisar furar a orelha: é só encaixar e ajustar. Peça leve, com acabamento polido, que fica linda sozinha ou junto de argolas pequenas. Ótima para montar composições criativas.",
     "cores": [
       [
         "Dourado",
@@ -397,6 +421,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Dourado"
       }
+    ],
+    "composicao": "Metal banhado a ouro 18k ou ródio, ajustável",
+    "fotos": [
+      "https://images.pexels.com/photos/8093082/pexels-photo-8093082.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/3214241/pexels-photo-3214241.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -409,7 +438,7 @@ window.PRODUTOS = [
     "de": 89.9,
     "desenho": "colar",
     "destaque": false,
-    "desc": "Choker de pérolas da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "Choker de pérolas que traz um toque clássico e feminino para o look. Ajusta-se bem ao pescoço e tem fecho com extensor para o caimento ideal. Perfeita com decotes retos e camisas abertas, e uma escolha certeira para presentear.",
     "cores": [
       [
         "Off-white",
@@ -444,6 +473,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Off-white"
       }
+    ],
+    "composicao": "Pérolas sintéticas, fecho banhado com extensor",
+    "fotos": [
+      "https://images.pexels.com/photos/9421389/pexels-photo-9421389.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -455,7 +489,7 @@ window.PRODUTOS = [
     "preco": 99.9,
     "desenho": "bolsa",
     "destaque": false,
-    "desc": "Bolsa de praia palha da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "A bolsa de palha que é a cara do verão: espaçosa para toalha, protetor e garrafinha. Trama firme, alças reforçadas e forro interno para organizar os itens menores. Vai da praia à feirinha com o mesmo charme.",
     "cores": [
       [
         "Bege",
@@ -477,6 +511,11 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Bege"
       }
+    ],
+    "composicao": "Palha natural trançada, forro em tecido",
+    "fotos": [
+      "https://images.pexels.com/photos/8093198/pexels-photo-8093198.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/12043866/pexels-photo-12043866.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -489,7 +528,7 @@ window.PRODUTOS = [
     "de": 129.9,
     "desenho": "oculos",
     "destaque": false,
-    "desc": "Óculos aviador da Brilho. Troque este texto pela descrição do produto.",
+    "desc": "Clássico que nunca sai de moda, o aviador valoriza todos os formatos de rosto. Armação metálica fina, plaquetas ajustáveis e lentes com proteção UV400. Ideal para dirigir, viajar e para os dias de sol forte.",
     "cores": [
       [
         "Dourado",
@@ -524,6 +563,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Dourado"
       }
+    ],
+    "composicao": "Armação metálica, lentes com proteção UV400",
+    "fotos": [
+      "https://images.pexels.com/photos/1548027/pexels-photo-1548027.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/13982235/pexels-photo-13982235.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   }
 ];

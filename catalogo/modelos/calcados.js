@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Passo Calçados",
-  "slogan": "Tênis, sandálias e sapatos com conforto para o dia inteiro.",
+  "slogan": "Tênis, sandálias e sapatos para andar com conforto o dia inteiro.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Tênis, sandálias e sapatos com conforto para o dia inteiro. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "Na Passo você encontra calçados escolhidos pelo conforto e pela durabilidade, do tênis de corrida ao sapato social. Tire dúvidas de numeração pelo WhatsApp e receba ajuda para acertar o tamanho na primeira compra.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,18 +64,19 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Frete grátis para todo o Brasil acima de R$ 299",
+    "Frete grátis acima de R$ 299",
     "5% de desconto no Pix",
     "Primeira troca grátis"
   ],
   "banners": [],
   "banner": {
     "selo": "Coleção 2026",
-    "titulo": "Os melhores sneakers",
-    "texto": "Modelos selecionados para quem busca estilo, conforto e performance.",
-    "botao": "Comprar agora",
+    "titulo": "Conforto do primeiro ao último passo",
+    "texto": "Tênis, sandálias e sociais selecionados para o seu ritmo. Tire dúvidas de tamanho.",
+    "botao": "Escolher o meu",
     "categoria": "casual",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/30824499/pexels-photo-30824499.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/30824499/pexels-photo-30824499.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Calçado certo para cada momento",
+    "Do treino ao escritório, sem abrir mão do conforto"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -209,30 +210,34 @@ window.CATEGORIAS = [
   {
     "id": "casual",
     "nome": "Tênis casual",
-    "chamada": "Para o dia a dia",
+    "chamada": "Estilo para usar todos os dias",
     "desenho": "tenis",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": "https://images.pexels.com/photos/20298286/pexels-photo-20298286.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "corrida",
     "nome": "Corrida",
-    "chamada": "Amortecimento de verdade",
+    "chamada": "Mais conforto a cada quilômetro",
     "desenho": "tenis",
-    "cor": "#E58FAE"
+    "cor": "#E58FAE",
+    "foto": "https://images.pexels.com/photos/29300647/pexels-photo-29300647.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "sandalias",
     "nome": "Sandálias",
-    "chamada": "Leves e confortáveis",
+    "chamada": "Pés livres e leves no calor",
     "desenho": "sandalia",
-    "cor": "#D8C3A5"
+    "cor": "#D8C3A5",
+    "foto": "https://images.pexels.com/photos/26925256/pexels-photo-26925256.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "sociais",
     "nome": "Sapatos sociais",
-    "chamada": "Couro legítimo",
+    "chamada": "Elegância que dura anos",
     "desenho": "tenis",
-    "cor": "#6B4128"
+    "cor": "#6B4128",
+    "foto": "https://images.pexels.com/photos/292998/pexels-photo-292998.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -247,7 +252,7 @@ window.PRODUTOS = [
     "de": 369.9,
     "desenho": "tenis",
     "destaque": true,
-    "desc": "Tênis casual urbano da Passo. Troque este texto pela descrição do produto.",
+    "desc": "O tênis que acompanha a sua rotina do trabalho ao happy hour. Cabedal resistente, palmilha macia e solado de borracha com boa aderência. Combina com jeans, sarja e até com looks mais arrumados.",
     "cores": [
       [
         "Preto",
@@ -298,6 +303,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Preto · 37"
       }
+    ],
+    "composicao": "Cabedal sintético, palmilha em EVA, solado de borracha",
+    "fotos": [
+      "https://images.pexels.com/photos/20298286/pexels-photo-20298286.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -310,7 +320,7 @@ window.PRODUTOS = [
     "de": 519.9,
     "desenho": "tenis",
     "destaque": true,
-    "desc": "Tênis de corrida com amortecimento da Passo Run. Troque este texto pela descrição do produto.",
+    "desc": "Pensado para quem corre ou caminha com frequência, com entressola que absorve o impacto a cada passada. O cabedal em tecido respirável mantém os pés ventilados e o solado oferece tração em asfalto e esteira. Bom parceiro para treinos e provas de rua.",
     "cores": [
       [
         "Rosa",
@@ -360,7 +370,12 @@ window.PRODUTOS = [
         "variacao": "Rosa · 37"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Cabedal em mesh respirável, entressola em EVA, solado de borracha",
+    "fotos": [
+      "https://images.pexels.com/photos/29300647/pexels-photo-29300647.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/3763869/pexels-photo-3763869.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -372,7 +387,7 @@ window.PRODUTOS = [
     "de": 159.9,
     "desenho": "sandalia",
     "destaque": true,
-    "desc": "Sandália papete da Passo. Troque este texto pela descrição do produto.",
+    "desc": "Papete confortável para passar o dia todo em pé, do passeio à viagem. Tiras com velcro para ajustar ao seu pé e palmilha anatômica que acomoda bem. Ideal para dias quentes e roteiros com muita caminhada.",
     "cores": [
       [
         "Preto",
@@ -421,6 +436,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Preto · 34"
       }
+    ],
+    "composicao": "Tiras em tecido com velcro, palmilha anatômica, solado de borracha",
+    "fotos": [
+      "https://images.pexels.com/photos/26834012/pexels-photo-26834012.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/26925256/pexels-photo-26925256.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -432,7 +452,7 @@ window.PRODUTOS = [
     "preco": 299.9,
     "desenho": "tenis",
     "destaque": true,
-    "desc": "Sapato social de couro da Passo Classic. Troque este texto pela descrição do produto.",
+    "desc": "Sapato social de couro com acabamento refinado para reuniões, eventos e o dia a dia no escritório. O couro se molda ao pé com o uso e o solado garante firmeza ao caminhar. Combina com terno, calça de alfaiataria e chino.",
     "cores": [
       [
         "Marrom",
@@ -475,6 +495,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Marrom · 37"
       }
+    ],
+    "composicao": "Couro bovino, forro sintético, solado de borracha",
+    "fotos": [
+      "https://images.pexels.com/photos/5669253/pexels-photo-5669253.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/292998/pexels-photo-292998.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -487,7 +512,7 @@ window.PRODUTOS = [
     "de": 399.9,
     "desenho": "tenis",
     "destaque": true,
-    "desc": "Tênis de treino da Passo Run. Troque este texto pela descrição do produto.",
+    "desc": "Tênis de treino com base estável para musculação, funcional e caminhadas. O solado firme dá segurança nos movimentos laterais e o cabedal leve se ajusta bem ao pé. Ótimo para quem treina e quer um único tênis versátil.",
     "cores": [
       [
         "Cinza",
@@ -530,6 +555,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Cinza · 37"
       }
+    ],
+    "composicao": "Cabedal em tecido técnico, entressola em EVA, solado de borracha",
+    "fotos": [
+      "https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/1750045/pexels-photo-1750045.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -542,7 +572,7 @@ window.PRODUTOS = [
     "de": 329.9,
     "desenho": "tenis",
     "destaque": false,
-    "desc": "Tênis cano alto da Passo. Troque este texto pela descrição do produto.",
+    "desc": "O cano alto dá personalidade ao look e firmeza ao tornozelo. Cadarço reforçado, palmilha acolchoada e solado vulcanizado com ótima durabilidade. Fica ótimo com calça jeans dobrada, shorts e vestidos.",
     "cores": [
       [
         "Vermelho",
@@ -586,6 +616,11 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Vermelho · 37"
       }
+    ],
+    "composicao": "Cabedal em lona, palmilha acolchoada, solado vulcanizado",
+    "fotos": [
+      "https://images.pexels.com/photos/31688982/pexels-photo-31688982.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/9944781/pexels-photo-9944781.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -597,7 +632,7 @@ window.PRODUTOS = [
     "preco": 59.9,
     "desenho": "sandalia",
     "destaque": false,
-    "desc": "Chinelo slide da Passo. Troque este texto pela descrição do produto.",
+    "desc": "Chinelo slide macio, de calçar e sair, para a casa, a piscina e o pós-treino. A palmilha acolchoada acomoda o pé e o solado antiderrapante dá segurança em pisos molhados. Leve na mala de viagem.",
     "cores": [
       [
         "Preto",
@@ -634,6 +669,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Preto · 35/36"
       }
+    ],
+    "composicao": "EVA injetado com solado antiderrapante",
+    "fotos": [
+      "https://images.pexels.com/photos/18186215/pexels-photo-18186215.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/19837530/pexels-photo-19837530.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -645,7 +685,7 @@ window.PRODUTOS = [
     "preco": 279.9,
     "desenho": "tenis",
     "destaque": false,
-    "desc": "Tênis couro branco da Passo. Troque este texto pela descrição do produto.",
+    "desc": "O tênis branco que deixa qualquer produção mais limpa e moderna. Couro de toque macio, fácil de limpar, com palmilha confortável e solado costurado. Uma peça curinga que combina com tudo.",
     "cores": [
       [
         "Branco",
@@ -697,6 +737,10 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Branco · 37"
       }
+    ],
+    "composicao": "Cabedal em couro, palmilha acolchoada, solado de borracha",
+    "fotos": [
+      "https://images.pexels.com/photos/33629780/pexels-photo-33629780.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   }
 ];

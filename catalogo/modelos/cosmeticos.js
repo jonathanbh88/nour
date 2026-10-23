@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Beleza Exemplo",
-  "slogan": "Perfumes, maquiagem e cuidados com a pele com nota fiscal e procedência.",
+  "slogan": "Perfumes, maquiagem e skincare originais, com nota fiscal e ajuda na escolha.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Perfumes, maquiagem e cuidados com a pele com nota fiscal e procedência. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Beleza Exemplo trabalha só com produtos originais, com nota fiscal e procedência. Ficou em dúvida sobre fragrância, tom de base ou rotina de cuidados? Fale com a gente no WhatsApp e ajudamos você a escolher.",
   "horarios": {
     "0": [],
     "1": [
@@ -71,11 +71,12 @@ window.LOJA = {
   "banners": [],
   "banner": {
     "selo": "Kits presente",
-    "titulo": "Beleza que dá vontade de usar",
-    "texto": "Perfumes, maquiagem e skincare com procedência.",
-    "botao": "Comprar agora",
+    "titulo": "Presentes que fazem qualquer um sorrir",
+    "texto": "Perfumes, maquiagem e skincare originais, com embalagem pronta para presentear.",
+    "botao": "Ver kits presente",
     "categoria": "perfumes",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/30999189/pexels-photo-30999189.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/30999189/pexels-photo-30999189.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Monte sua rotina de beleza",
+    "Fragrâncias, cores e cuidados para o dia a dia"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +165,34 @@ window.CATEGORIAS = [
   {
     "id": "perfumes",
     "nome": "Perfumes",
-    "chamada": "Femininos e masculinos",
+    "chamada": "Uma fragrância para cada momento",
     "desenho": "perfume",
-    "cor": "#E8467C"
+    "cor": "#E8467C",
+    "foto": "https://images.pexels.com/photos/12563417/pexels-photo-12563417.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "maquiagem",
     "nome": "Maquiagem",
-    "chamada": "Batons, bases e mais",
+    "chamada": "Cor e acabamento que duram",
     "desenho": "batom",
-    "cor": "#B0123A"
+    "cor": "#B0123A",
+    "foto": "https://images.pexels.com/photos/7290674/pexels-photo-7290674.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "skincare",
     "nome": "Skincare",
-    "chamada": "Cuidados com a pele",
+    "chamada": "Pele cuidada todos os dias",
     "desenho": "garrafa",
-    "cor": "#92D0B7"
+    "cor": "#92D0B7",
+    "foto": "https://images.pexels.com/photos/34939704/pexels-photo-34939704.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "kits",
     "nome": "Kits presente",
-    "chamada": "Prontos para presentear",
+    "chamada": "Presente pronto, é só entregar",
     "desenho": "caixa",
-    "cor": "#C9A227"
+    "cor": "#C9A227",
+    "foto": "https://images.pexels.com/photos/5632327/pexels-photo-5632327.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -202,7 +207,7 @@ window.PRODUTOS = [
     "de": 229.9,
     "desenho": "perfume",
     "destaque": true,
-    "desc": "Perfume feminino floral da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Perfume feminino floral com notas delicadas que lembram flores frescas, para usar de dia ou em ocasiões especiais. Frasco elegante, que fica bonito na penteadeira. Uma ótima escolha para presentear em aniversários e datas comemorativas.",
     "cores": [
       [
         "Rosa",
@@ -226,6 +231,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Rosa · 50 ml"
       }
+    ],
+    "composicao": "Eau de parfum floral, frasco 100 ml",
+    "fotos": [
+      "https://images.pexels.com/photos/12563417/pexels-photo-12563417.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/36834063/pexels-photo-36834063.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -237,7 +247,7 @@ window.PRODUTOS = [
     "preco": 199.9,
     "desenho": "perfume",
     "destaque": true,
-    "desc": "Perfume masculino amadeirado da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Perfume masculino amadeirado, com saída fresca e fundo quente e marcante. Uma fragrância versátil, que vai bem no trabalho e à noite. Combina com o kit presente para quem quer surpreender alguém especial.",
     "cores": [
       [
         "Marrom",
@@ -269,7 +279,12 @@ window.PRODUTOS = [
         "variacao": "Marrom · 50 ml"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Eau de parfum amadeirado, frasco 100 ml",
+    "fotos": [
+      "https://images.pexels.com/photos/11711813/pexels-photo-11711813.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/14211239/pexels-photo-14211239.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -281,7 +296,7 @@ window.PRODUTOS = [
     "de": 49.9,
     "desenho": "batom",
     "destaque": true,
-    "desc": "Batom matte da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Batom matte de alta pigmentação, que cobre bem já na primeira camada e tem acabamento aveludado sem brilho. A textura é confortável e não pesa nos lábios. Disponível em vermelho, nude e vinho para combinar com qualquer produção.",
     "cores": [
       [
         "Vermelho",
@@ -313,6 +328,11 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Vermelho"
       }
+    ],
+    "composicao": "Batom em bastão, acabamento matte, 3,5 g",
+    "fotos": [
+      "https://images.pexels.com/photos/7810603/pexels-photo-7810603.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/14444882/pexels-photo-14444882.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -324,7 +344,7 @@ window.PRODUTOS = [
     "preco": 69.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Base líquida da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Base líquida de cobertura média, que uniformiza o tom da pele com acabamento natural. A textura leve espalha fácil com esponja, pincel ou com os dedos. Em dúvida sobre o tom? Mande uma foto com luz natural no WhatsApp que ajudamos a escolher.",
     "cores": [
       [
         "Bege",
@@ -356,6 +376,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Bege"
       }
+    ],
+    "composicao": "Base líquida, frasco 30 ml",
+    "fotos": [
+      "https://images.pexels.com/photos/10107538/pexels-photo-10107538.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/32426538/pexels-photo-32426538.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -368,7 +393,7 @@ window.PRODUTOS = [
     "de": 109.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Sérum vitamina C da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Sérum de vitamina C pensado para incluir na rotina de cuidados da manhã, auxiliando a pele a ficar com aspecto mais uniforme e luminoso. A textura leve absorve rápido e não deixa a pele pegajosa. Use antes do protetor solar.",
     "cores": [
       [
         "Laranja",
@@ -390,6 +415,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Laranja · 30 ml"
       }
+    ],
+    "composicao": "Sérum facial com vitamina C, frasco 30 ml",
+    "fotos": [
+      "https://images.pexels.com/photos/34939709/pexels-photo-34939709.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/30229017/pexels-photo-30229017.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -401,7 +431,7 @@ window.PRODUTOS = [
     "preco": 49.9,
     "desenho": "pote",
     "destaque": false,
-    "desc": "Creme hidratante corporal da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Creme hidratante corporal de textura cremosa, que espalha fácil e ajuda a manter a pele macia ao longo do dia. A fragrância é suave e não compete com o perfume. Ideal para usar logo depois do banho.",
     "cores": [
       [
         "Menta",
@@ -425,6 +455,11 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Menta · 200 ml"
       }
+    ],
+    "composicao": "Loção hidratante corporal, frasco 400 ml",
+    "fotos": [
+      "https://images.pexels.com/photos/5798000/pexels-photo-5798000.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/6690234/pexels-photo-6690234.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -437,7 +472,7 @@ window.PRODUTOS = [
     "de": 279.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Kit presente perfume e creme da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Kit presente com perfume e creme hidratante da mesma linha, para perfumar e cuidar da pele de uma vez só. Vem em embalagem bonita, pronta para entregar. Uma escolha certeira para aniversário, Dia das Mães ou amigo secreto.",
     "cores": [
       [
         "Rosa",
@@ -467,6 +502,10 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Rosa"
       }
+    ],
+    "composicao": "Perfume 100 ml e creme hidratante 200 ml",
+    "fotos": [
+      "https://images.pexels.com/photos/30999189/pexels-photo-30999189.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -479,7 +518,7 @@ window.PRODUTOS = [
     "de": 189.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Kit skincare básico da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Kit skincare básico com os passos essenciais para quem quer começar uma rotina de cuidados sem complicação. Os produtos foram pensados para limpar, tratar e hidratar a pele no dia a dia. Bom para presentear ou para você mesma.",
     "cores": [
       [
         "Menta",
@@ -501,6 +540,11 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Menta"
       }
+    ],
+    "composicao": "Sabonete facial, sérum e hidratante facial",
+    "fotos": [
+      "https://images.pexels.com/photos/34939704/pexels-photo-34939704.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/10825661/pexels-photo-10825661.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   }
 ];

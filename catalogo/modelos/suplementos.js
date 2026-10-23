@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Vigor Suplementos",
-  "slogan": "Suplementos de alta performance com nota fiscal e procedência.",
+  "slogan": "Suplementos com nota fiscal e procedência para apoiar sua rotina de treinos.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Suplementos de alta performance com nota fiscal e procedência. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Vigor Suplementos trabalha com proteínas, creatina, aminoácidos e vitaminas com nota fiscal e procedência. Tire dúvidas sobre sabores, tamanhos e combinações pelo WhatsApp e receba atendimento de quem entende de treino.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,16 +64,16 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Suplementos com nota fiscal e procedência",
-    "Frete grátis para todo o Brasil acima de R$ 199",
-    "Desconto no Pix à vista"
+    "Nota fiscal e procedência garantida",
+    "Frete grátis acima de R$ 199",
+    "Desconto especial no Pix à vista"
   ],
   "banners": [],
   "banner": {
-    "selo": "Alta performance",
-    "titulo": "Vigor performance",
-    "texto": "Suplementos para elevar seus resultados.",
-    "botao": "Comprar agora",
+    "selo": "Rotina de treino",
+    "titulo": "Whey, creatina e mais para o seu treino",
+    "texto": "Suplementos com nota fiscal para complementar sua alimentação. Peça pelo WhatsApp.",
+    "botao": "Montar meu pedido",
     "categoria": "proteinas",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Suplementos por objetivo",
+    "Escolha o que combina com sua rotina"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,37 +164,42 @@ window.CATEGORIAS = [
   {
     "id": "proteinas",
     "nome": "Proteínas",
-    "chamada": "Whey e veganas",
+    "chamada": "Proteína prática para o dia a dia",
     "desenho": "pote",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   },
   {
     "id": "hipercaloricos",
     "nome": "Hipercalóricos",
-    "chamada": "Para ganhar massa",
+    "chamada": "Mais calorias com praticidade",
     "desenho": "racao",
-    "cor": "#2F6B4F"
+    "cor": "#2F6B4F",
+    "foto": ""
   },
   {
     "id": "creatina",
     "nome": "Creatina",
-    "chamada": "100% pura",
+    "chamada": "Apoio para treinos intensos",
     "desenho": "racao",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": ""
   },
   {
     "id": "aminoacidos",
     "nome": "Aminoácidos",
-    "chamada": "BCAA e glutamina",
+    "chamada": "Complemento para sua rotina",
     "desenho": "garrafa",
-    "cor": "#E0607E"
+    "cor": "#E0607E",
+    "foto": ""
   },
   {
     "id": "vitaminas",
     "nome": "Vitaminas",
-    "chamada": "Imunidade e energia",
+    "chamada": "Nutrientes para o seu dia",
     "desenho": "garrafa",
-    "cor": "#5B3B8C"
+    "cor": "#5B3B8C",
+    "foto": ""
   }
 ];
 
@@ -209,7 +214,7 @@ window.PRODUTOS = [
     "de": 279.9,
     "desenho": "pote",
     "destaque": true,
-    "desc": "Whey protein isolado da Forza. Troque este texto pela descrição do produto.",
+    "desc": "Whey protein isolado pensado para quem busca uma fonte prática de proteína com baixo teor de gordura e carboidratos. Dissolve fácil em água ou leite e é uma boa opção para o pós-treino. Sabores chocolate, baunilha e morango.",
     "cores": [
       [
         "Chocolate",
@@ -244,7 +249,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Chocolate · 900 g"
       }
-    ]
+    ],
+    "composicao": "Pote 900 g, whey protein isolado"
   },
   {
     "id": "p2",
@@ -256,7 +262,7 @@ window.PRODUTOS = [
     "de": 229.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Creatina monohidratada da Pure Line. Troque este texto pela descrição do produto.",
+    "desc": "Creatina monohidratada pura, sem sabor, fácil de misturar em água, suco ou no shake de whey. Auxilia no desempenho em treinos de alta intensidade quando aliada a uma alimentação equilibrada. Converse com um nutricionista para definir a dose ideal.",
     "cores": [
       [
         "Natural",
@@ -289,7 +295,8 @@ window.PRODUTOS = [
         "variacao": "Natural · 300 g"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Pote 300 g, creatina monohidratada"
   },
   {
     "id": "p3",
@@ -301,7 +308,7 @@ window.PRODUTOS = [
     "de": 299.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Hipercalórico ganho de massa 3 kg da Massa Max. Troque este texto pela descrição do produto.",
+    "desc": "Hipercalórico de 3 kg pensado para quem tem dificuldade em atingir as calorias do dia e quer apoio no ganho de massa. Combina carboidratos e proteínas em uma bebida prática de preparar. Disponível nos sabores chocolate e baunilha.",
     "cores": [
       [
         "Chocolate",
@@ -335,7 +342,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Chocolate · 3 kg"
       }
-    ]
+    ],
+    "composicao": "Pacote 3 kg, carboidratos e proteínas"
   },
   {
     "id": "p4",
@@ -347,7 +355,7 @@ window.PRODUTOS = [
     "de": 139.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Glutamina da Vigor Pro. Troque este texto pela descrição do produto.",
+    "desc": "Glutamina em pó sem sabor, que dissolve fácil e pode ser misturada a sucos, água ou shakes. Pensada para complementar a alimentação de quem treina com frequência. Combina com o whey protein na rotina pós-treino.",
     "cores": [
       [
         "Natural",
@@ -377,7 +385,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Natural · 300 g"
       }
-    ]
+    ],
+    "composicao": "Pote 300 g, L-glutamina em pó"
   },
   {
     "id": "p5",
@@ -388,7 +397,7 @@ window.PRODUTOS = [
     "preco": 119.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Colágeno hidrolisado da Vital Base. Troque este texto pela descrição do produto.",
+    "desc": "Colágeno hidrolisado em pó para incluir no dia a dia de forma prática, misturado em água ou suco. Pensado para complementar a alimentação, com sabores refrescantes de limão e morango. Uma boa opção para quem busca cuidar de si com constância.",
     "cores": [
       [
         "Limão",
@@ -423,7 +432,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Limão · 300 g"
       }
-    ]
+    ],
+    "composicao": "Pote 300 g, colágeno hidrolisado"
   },
   {
     "id": "p6",
@@ -434,7 +444,7 @@ window.PRODUTOS = [
     "preco": 189.9,
     "desenho": "pote",
     "destaque": false,
-    "desc": "Whey concentrado da Forza. Troque este texto pela descrição do produto.",
+    "desc": "Whey concentrado com ótimo custo-benefício para quem quer complementar a ingestão diária de proteína. Rende shakes cremosos e pode ser usado em receitas como panquecas e vitaminas. Sabores chocolate e baunilha.",
     "cores": [
       [
         "Chocolate",
@@ -464,7 +474,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Chocolate · 900 g"
       }
-    ]
+    ],
+    "composicao": "Pote 900 g, whey protein concentrado"
   },
   {
     "id": "p7",
@@ -476,7 +487,7 @@ window.PRODUTOS = [
     "de": 109.9,
     "desenho": "garrafa",
     "destaque": false,
-    "desc": "BCAA 2:1:1 da Vigor Pro. Troque este texto pela descrição do produto.",
+    "desc": "BCAA na proporção 2:1:1 de leucina, isoleucina e valina, sabor limão, refrescante para tomar durante ou depois do treino. Pensado para complementar a alimentação de quem pratica atividade física. Combina com a glutamina na mesma garrafinha.",
     "cores": [
       [
         "Limão",
@@ -498,7 +509,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Limão · 120 caps"
       }
-    ]
+    ],
+    "composicao": "Pote 300 g, BCAA 2:1:1 sabor limão"
   },
   {
     "id": "p8",
@@ -509,7 +521,7 @@ window.PRODUTOS = [
     "preco": 59.9,
     "desenho": "garrafa",
     "destaque": false,
-    "desc": "Multivitamínico da Vital Base. Troque este texto pela descrição do produto.",
+    "desc": "Multivitamínico em cápsulas com vitaminas e minerais pensados para complementar a alimentação do dia a dia. Uma cápsula por dia, prática de levar na rotina corrida. Consulte um profissional de saúde para orientação de uso.",
     "cores": [
       [
         "Natural",
@@ -539,6 +551,7 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Natural · 60 caps"
       }
-    ]
+    ],
+    "composicao": "Frasco com 60 cápsulas"
   }
 ];

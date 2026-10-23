@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Ótica Exemplo",
-  "slogan": "Óculos de grau e de sol, lentes e conserto com atendimento de especialista.",
+  "slogan": "Óculos de grau e de sol, lentes e ajustes com atendimento de especialista.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Óculos de grau e de sol, lentes e conserto com atendimento de especialista. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Ótica Exemplo tem armações de grau, óculos de sol com proteção UV400, lentes de contato e acessórios. Mande sua receita ou tire dúvidas pelo WhatsApp e receba orientação para escolher o modelo que combina com seu rosto.",
   "horarios": {
     "0": [],
     "1": [
@@ -71,11 +71,12 @@ window.LOJA = {
   "banners": [],
   "banner": {
     "selo": "Coleção nova",
-    "titulo": "Enxergue com estilo",
-    "texto": "Armações de grau e óculos de sol com proteção UV400.",
-    "botao": "Comprar agora",
+    "titulo": "Óculos de sol com proteção UV400",
+    "texto": "Modelos aviador e quadrado para proteger os olhos com estilo. Tire dúvidas no WhatsApp.",
+    "botao": "Ver óculos de sol",
     "categoria": "sol",
-    "imagem": ""
+    "imagem": "https://images.pexels.com/photos/5766564/pexels-photo-5766564.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1920&h=800",
+    "imagemCelular": "https://images.pexels.com/photos/5766564/pexels-photo-5766564.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=900&h=1200"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Escolha seus próximos óculos",
+    "Grau, sol, lentes e acessórios"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +165,34 @@ window.CATEGORIAS = [
   {
     "id": "sol",
     "nome": "Óculos de sol",
-    "chamada": "Proteção UV400",
+    "chamada": "Olhos protegidos com estilo",
     "desenho": "oculos",
-    "cor": "#1D1F23"
+    "cor": "#1D1F23",
+    "foto": "https://images.pexels.com/photos/4952482/pexels-photo-4952482.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "grau",
     "nome": "Armações de grau",
-    "chamada": "Leves e resistentes",
+    "chamada": "Conforto para usar o dia inteiro",
     "desenho": "oculos",
-    "cor": "#7A4A22"
+    "cor": "#7A4A22",
+    "foto": "https://images.pexels.com/photos/947885/pexels-photo-947885.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "lentes",
     "nome": "Lentes de contato",
-    "chamada": "Com receita",
+    "chamada": "Liberdade sem armação",
     "desenho": "caixa",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": "https://images.pexels.com/photos/15897969/pexels-photo-15897969.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   },
   {
     "id": "acessorios",
     "nome": "Acessórios",
-    "chamada": "Estojos e cordões",
+    "chamada": "Cuide bem dos seus óculos",
     "desenho": "caixa",
-    "cor": "#9AA1A9"
+    "cor": "#9AA1A9",
+    "foto": "https://images.pexels.com/photos/5843495/pexels-photo-5843495.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=600&h=600"
   }
 ];
 
@@ -202,7 +207,7 @@ window.PRODUTOS = [
     "de": 299.9,
     "desenho": "oculos",
     "destaque": true,
-    "desc": "Óculos de sol aviador da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Óculos de sol aviador com lentes de proteção UV400, que ajudam a proteger os olhos dos raios UVA e UVB. A armação metálica é leve e as plaquetas ajustáveis deixam o uso confortável. Um clássico que combina com qualquer formato de rosto.",
     "cores": [
       [
         "Dourado",
@@ -229,6 +234,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Dourado"
       }
+    ],
+    "composicao": "Armação em metal, lentes com proteção UV400",
+    "fotos": [
+      "https://images.pexels.com/photos/1548027/pexels-photo-1548027.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/735273/pexels-photo-735273.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -240,7 +250,7 @@ window.PRODUTOS = [
     "preco": 219.9,
     "desenho": "oculos",
     "destaque": true,
-    "desc": "Óculos de sol quadrado da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Óculos de sol quadrado com proteção UV400, de visual marcante e atual. A armação em acetato é resistente e tem bom encaixe no rosto. Disponível em preto e tartaruga, vai bem do dia a dia à praia.",
     "cores": [
       [
         "Preto",
@@ -275,7 +285,12 @@ window.PRODUTOS = [
         "variacao": "Preto"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Armação em acetato, lentes com proteção UV400",
+    "fotos": [
+      "https://images.pexels.com/photos/4952482/pexels-photo-4952482.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/1260284/pexels-photo-1260284.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
+    ]
   },
   {
     "id": "p3",
@@ -287,7 +302,7 @@ window.PRODUTOS = [
     "de": 349.9,
     "desenho": "oculos",
     "destaque": true,
-    "desc": "Armação acetato redonda da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Armação redonda em acetato, com estilo retrô e ótimo encaixe para rostos quadrados e retangulares. O material é resistente e as hastes têm dobradiças reforçadas. Envie sua receita pelo WhatsApp e orientamos a escolha das lentes.",
     "cores": [
       [
         "Tartaruga",
@@ -313,6 +328,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Tartaruga"
       }
+    ],
+    "composicao": "Acetato com dobradiças metálicas",
+    "fotos": [
+      "https://images.pexels.com/photos/947885/pexels-photo-947885.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/29191795/pexels-photo-29191795.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -324,7 +344,7 @@ window.PRODUTOS = [
     "preco": 259.9,
     "desenho": "oculos",
     "destaque": true,
-    "desc": "Armação metal fina da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Armação de metal fina e leve, discreta no rosto e confortável para usar o dia inteiro. As plaquetas ajustáveis ajudam a encaixar bem no nariz. Disponível em dourado e prata, combina com o estojo rígido para guardar com segurança.",
     "cores": [
       [
         "Dourado",
@@ -359,6 +379,11 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Dourado"
       }
+    ],
+    "composicao": "Metal leve com plaquetas ajustáveis",
+    "fotos": [
+      "https://images.pexels.com/photos/13430491/pexels-photo-13430491.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/2530391/pexels-photo-2530391.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -370,7 +395,7 @@ window.PRODUTOS = [
     "preco": 149.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Lente de contato mensal (caixa) da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Caixa de lentes de contato de descarte mensal, para quem quer enxergar bem sem armação no rosto. Vendida mediante receita oftalmológica, com o grau indicado pelo seu médico. Mande a foto da receita no WhatsApp para separarmos a sua.",
     "cores": [
       [
         "Transparente",
@@ -392,6 +417,11 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Transparente"
       }
+    ],
+    "composicao": "Caixa com 6 lentes de descarte mensal",
+    "fotos": [
+      "https://images.pexels.com/photos/15897969/pexels-photo-15897969.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250",
+      "https://images.pexels.com/photos/16022189/pexels-photo-16022189.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -404,7 +434,7 @@ window.PRODUTOS = [
     "de": 49.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Estojo rígido da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Estojo rígido que protege os óculos contra quedas, pressão na bolsa e riscos. O interior forrado evita atrito nas lentes e o fecho é firme. Cabe óculos de grau e a maioria dos modelos de sol.",
     "cores": [
       [
         "Preto",
@@ -431,6 +461,10 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Preto"
       }
+    ],
+    "composicao": "Estojo rígido com forro interno macio",
+    "fotos": [
+      "https://images.pexels.com/photos/8134428/pexels-photo-8134428.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -442,7 +476,7 @@ window.PRODUTOS = [
     "preco": 29.9,
     "desenho": "colar",
     "destaque": false,
-    "desc": "Cordão para óculos da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Cordão para óculos que mantém a armação sempre à mão, sem risco de esquecer ou deixar cair. As ponteiras se ajustam à maioria das hastes. Prático para quem tira e coloca os óculos várias vezes ao dia.",
     "cores": [
       [
         "Dourado",
@@ -476,6 +510,10 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Dourado"
       }
+    ],
+    "composicao": "Cordão com ponteiras de silicone ajustáveis",
+    "fotos": [
+      "https://images.pexels.com/photos/5843495/pexels-photo-5843495.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   },
   {
@@ -488,7 +526,7 @@ window.PRODUTOS = [
     "de": 239.9,
     "desenho": "oculos",
     "destaque": false,
-    "desc": "Óculos infantil flexível da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Óculos infantil com armação flexível, que dobra sem quebrar e aguenta a rotina agitada das crianças. É leve no rosto e tem hastes que se ajustam bem atrás da orelha. Envie a receita pelo WhatsApp e ajudamos a escolher o tamanho certo.",
     "cores": [
       [
         "Azul",
@@ -515,6 +553,10 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Azul"
       }
+    ],
+    "composicao": "Armação em material flexível e leve",
+    "fotos": [
+      "https://images.pexels.com/photos/12703/pexels-photo-12703.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&h=1250"
     ]
   }
 ];

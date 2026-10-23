@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Tudo Aqui Variedades",
-  "slogan": "Utilidades para casa, presentes e muito mais em um só lugar.",
+  "slogan": "Utilidades, organização e presentes com preço bom, tudo em um só lugar.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Utilidades para casa, presentes e muito mais em um só lugar. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Tudo Aqui Variedades reúne achadinhos para casa, cozinha e presentes, com novidades chegando toda semana. Pelo WhatsApp você confere o estoque, reserva os itens e combina a entrega no bairro.",
   "horarios": {
     "0": [],
     "1": [
@@ -65,17 +65,18 @@ window.LOJA = {
   "tema": "auto",
   "faixa": [
     "Novidades toda semana",
-    "Entrega no bairro",
+    "Entrega rápida no bairro",
     "Desconto no Pix à vista"
   ],
   "banners": [],
   "banner": {
     "selo": "Achadinhos",
-    "titulo": "Tudo para sua casa",
-    "texto": "Utilidades, organização e presentes com preço bom.",
-    "botao": "Comprar agora",
+    "titulo": "Casa organizada gastando pouco",
+    "texto": "Utilidades, organização e presentes com preço justo e novidades toda semana.",
+    "botao": "Ver achadinhos",
     "categoria": "casa",
-    "imagem": ""
+    "imagem": "https://images.unsplash.com/photo-1591023960577-c0f250391afb?auto=format&fit=crop&w=1920&h=800&q=70",
+    "imagemCelular": "https://images.unsplash.com/photo-1591023960577-c0f250391afb?auto=format&fit=crop&w=900&h=1200&q=70"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Achadinhos para todo dia",
+    "Casa, cozinha, presentes e diversão em um só lugar"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -164,30 +165,34 @@ window.CATEGORIAS = [
   {
     "id": "casa",
     "nome": "Casa",
-    "chamada": "Organização e limpeza",
+    "chamada": "Mais espaço e menos bagunça",
     "desenho": "caixa",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   },
   {
     "id": "cozinha",
     "nome": "Cozinha",
-    "chamada": "Utensílios",
+    "chamada": "Praticidade do preparo à mesa",
     "desenho": "pote",
-    "cor": "#E63946"
+    "cor": "#E63946",
+    "foto": ""
   },
   {
     "id": "presentes",
     "nome": "Presentes",
-    "chamada": "Para toda ocasião",
+    "chamada": "Mimos que cabem no bolso",
     "desenho": "caixa",
-    "cor": "#7B1FA2"
+    "cor": "#7B1FA2",
+    "foto": ""
   },
   {
     "id": "brinquedos",
     "nome": "Brinquedos",
-    "chamada": "Diversão garantida",
+    "chamada": "Diversão longe das telas",
     "desenho": "bola",
-    "cor": "#F2C14E"
+    "cor": "#F2C14E",
+    "foto": ""
   }
 ];
 
@@ -202,7 +207,7 @@ window.PRODUTOS = [
     "de": 69.9,
     "desenho": "pote",
     "destaque": true,
-    "desc": "Kit potes herméticos 5 peças da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Mantimentos frescos por mais tempo e despensa organizada: cinco potes com tampa de vedação que conserva grãos, biscoitos e temperos. Material transparente para ver o que tem dentro. Empilháveis, economizam espaço.",
     "cores": [
       [
         "Transparente",
@@ -224,7 +229,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Transparente"
       }
-    ]
+    ],
+    "composicao": "Kit 5 potes, tampa com vedação em silicone"
   },
   {
     "id": "p2",
@@ -235,7 +241,7 @@ window.PRODUTOS = [
     "preco": 24.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Organizador de gaveta da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Acabe com a bagunça das gavetas: divisórias que separam talheres, maquiagem ou itens de escritório. Fácil de limpar e encaixar. Monte do jeito que precisar e encontre tudo em segundos.",
     "cores": [
       [
         "Branco",
@@ -262,7 +268,8 @@ window.PRODUTOS = [
         "variacao": "Branco"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Plástico resistente, peças encaixáveis"
   },
   {
     "id": "p3",
@@ -274,7 +281,7 @@ window.PRODUTOS = [
     "de": 49.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Garrafa térmica 1 L da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Café quentinho ou água gelada por horas: a garrafa térmica de 1 litro tem parede dupla e tampa que não vaza. Leve no carro, no trabalho ou no passeio. Cores para escolher a sua favorita.",
     "cores": [
       [
         "Preto",
@@ -313,7 +320,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Preto"
       }
-    ]
+    ],
+    "composicao": "Aço inox, parede dupla, 1 L"
   },
   {
     "id": "p4",
@@ -324,7 +332,7 @@ window.PRODUTOS = [
     "preco": 59.9,
     "desenho": "caixa",
     "destaque": true,
-    "desc": "Luminária de mesa LED da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Luz certa para estudar, ler ou trabalhar: luminária LED com haste ajustável e luz que não esquenta. Consome pouca energia e deixa a mesa com visual limpo. Ótimo presente para estudantes.",
     "cores": [
       [
         "Branco",
@@ -354,7 +362,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Branco"
       }
-    ]
+    ],
+    "composicao": "LED, haste articulada, cabo USB"
   },
   {
     "id": "p5",
@@ -366,7 +375,7 @@ window.PRODUTOS = [
     "de": 54.9,
     "desenho": "garrafa",
     "destaque": true,
-    "desc": "Kit presente aromatizador da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Um presente cheiroso e pronto para entregar: aromatizador de varetas com fragrância suave de lavanda e vela decorativa em embalagem caprichada. Perfuma o ambiente por semanas. Ideal para amigo secreto e lembrancinhas.",
     "cores": [
       [
         "Lilás",
@@ -396,7 +405,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Lilás"
       }
-    ]
+    ],
+    "composicao": "Difusor 100 ml com varetas e vela, caixa presente"
   },
   {
     "id": "p6",
@@ -407,7 +417,7 @@ window.PRODUTOS = [
     "preco": 39.9,
     "desenho": "bola",
     "destaque": false,
-    "desc": "Bola de futebol da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Para a pelada do fim de semana no quintal, na quadra ou na praia. Costura resistente e bom quique, mantém o formato por mais tempo. Um presente simples que garante horas de diversão ao ar livre.",
     "cores": [
       [
         "Branco",
@@ -429,7 +439,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Branco"
       }
-    ]
+    ],
+    "composicao": "Tamanho oficial nº 5, PVC costurado"
   },
   {
     "id": "p7",
@@ -440,7 +451,7 @@ window.PRODUTOS = [
     "preco": 34.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Quebra-cabeça 500 peças da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Diversão para fazer em família ou relaxar sozinho: quebra-cabeça de 500 peças com encaixe firme e imagem nítida. Estimula a concentração e rende horas longe das telas. Bom presente para todas as idades a partir de 8 anos.",
     "cores": [
       [
         "Azul",
@@ -470,7 +481,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Azul"
       }
-    ]
+    ],
+    "composicao": "500 peças em papelão rígido, 48 x 33 cm montado"
   },
   {
     "id": "p8",
@@ -482,7 +494,7 @@ window.PRODUTOS = [
     "de": 39.9,
     "desenho": "bolsa",
     "destaque": false,
-    "desc": "Cesto organizador da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "desc": "Bonito e funcional, o cesto organizador guarda mantas, brinquedos ou roupas e deixa a casa com cara de decoração. Leve e resistente, pode ficar na sala, quarto ou lavanderia.",
     "cores": [
       [
         "Bege",
@@ -512,6 +524,7 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Bege"
       }
-    ]
+    ],
+    "composicao": "Fibra trançada, 30 x 30 cm"
   }
 ];

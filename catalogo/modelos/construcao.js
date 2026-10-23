@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Constrói Materiais",
-  "slogan": "Cimento, tintas, ferramentas, elétrica e hidráulica com entrega na obra.",
+  "slogan": "Do cimento ao acabamento: material de construção com entrega na sua obra.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Cimento, tintas, ferramentas, elétrica e hidráulica com entrega na obra. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "Atendemos obra grande e pequeno reparo com o mesmo cuidado. Mande a lista pelo WhatsApp, a gente monta o orçamento rápido e entrega o material na obra, sem você perder o dia na loja.",
   "horarios": {
     "0": [],
     "1": [
@@ -64,16 +64,16 @@ window.LOJA = {
   },
   "tema": "auto",
   "faixa": [
-    "Entrega na obra",
+    "Entrega direto na obra",
     "Orçamento rápido pelo WhatsApp",
     "Desconto no Pix à vista"
   ],
   "banners": [],
   "banner": {
     "selo": "Sua obra",
-    "titulo": "Do alicerce ao acabamento",
-    "texto": "Material de construção com entrega na obra.",
-    "botao": "Comprar agora",
+    "titulo": "Material da obra sem sair do canteiro",
+    "texto": "Mande a lista pelo WhatsApp e receba cimento, tinta e ferramentas na obra.",
+    "botao": "Pedir orçamento",
     "categoria": "basico",
     "imagem": ""
   },
@@ -100,8 +100,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Tudo para a sua obra",
+    "Do alicerce ao acabamento, em um só pedido"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -159,30 +159,34 @@ window.CATEGORIAS = [
   {
     "id": "basico",
     "nome": "Básico",
-    "chamada": "Cimento e argamassa",
+    "chamada": "A base firme de toda obra",
     "desenho": "racao",
-    "cor": "#9AA1A9"
+    "cor": "#9AA1A9",
+    "foto": ""
   },
   {
     "id": "tintas",
     "nome": "Tintas",
-    "chamada": "Para dentro e fora",
+    "chamada": "Acabamento bonito que dura",
     "desenho": "tinta",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   },
   {
     "id": "ferramentas",
     "nome": "Ferramentas",
-    "chamada": "Manuais e elétricas",
+    "chamada": "Trabalho rápido e bem feito",
     "desenho": "ferramenta",
-    "cor": "#B32F45"
+    "cor": "#B32F45",
+    "foto": ""
   },
   {
     "id": "eletrica",
     "nome": "Elétrica e hidráulica",
-    "chamada": "Fios, tubos e conexões",
+    "chamada": "Instalação segura do início ao fim",
     "desenho": "caixa",
-    "cor": "#F2C14E"
+    "cor": "#F2C14E",
+    "foto": ""
   }
 ];
 
@@ -196,7 +200,7 @@ window.PRODUTOS = [
     "preco": 36.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Cimento CP II da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Cimento CP II para concreto, reboco, contrapiso e assentamento. Boa trabalhabilidade e resistência para o dia a dia da obra. Entregamos os sacos na obra; peça junto areia e brita para economizar no frete.",
     "cores": [
       [
         "Cinza",
@@ -226,7 +230,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Cinza · 50 kg"
       }
-    ]
+    ],
+    "composicao": "Saco 50 kg, cimento Portland composto CP II"
   },
   {
     "id": "p2",
@@ -238,7 +243,7 @@ window.PRODUTOS = [
     "de": 29.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Argamassa AC II da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Argamassa AC II para assentar piso e revestimento em áreas internas e externas. Já vem pronta para misturar com água, com boa aderência e tempo de trabalho confortável. Ideal para áreas de varanda e fachada.",
     "cores": [
       [
         "Cinza",
@@ -261,7 +266,8 @@ window.PRODUTOS = [
         "variacao": "Cinza · 20 kg"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Saco 20 kg, argamassa colante tipo AC II"
   },
   {
     "id": "p3",
@@ -273,7 +279,7 @@ window.PRODUTOS = [
     "de": 339.9,
     "desenho": "tinta",
     "destaque": true,
-    "desc": "Tinta acrílica fosca da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Tinta acrílica fosca com ótima cobertura e acabamento uniforme. Lavável, disfarça pequenas imperfeições da parede e serve para áreas internas e externas. Disponível em branco, off-white e cinza para combinar com qualquer ambiente.",
     "cores": [
       [
         "Branco",
@@ -317,7 +323,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Branco · 18 L"
       }
-    ]
+    ],
+    "composicao": "Lata 18 L, tinta acrílica fosca, rende até 380 m² por demão"
   },
   {
     "id": "p4",
@@ -328,7 +335,7 @@ window.PRODUTOS = [
     "preco": 79.9,
     "desenho": "tinta",
     "destaque": true,
-    "desc": "Massa corrida da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Massa corrida para nivelar paredes internas antes da pintura. Fácil de aplicar e lixar, deixa a superfície lisa para um acabamento de primeira. Combina com a tinta acrílica fosca da loja.",
     "cores": [
       [
         "Branco",
@@ -356,7 +363,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Branco · 25 kg"
       }
-    ]
+    ],
+    "composicao": "Lata 25 kg, massa PVA para áreas internas"
   },
   {
     "id": "p5",
@@ -368,7 +376,7 @@ window.PRODUTOS = [
     "de": 279.9,
     "desenho": "ferramenta",
     "destaque": true,
-    "desc": "Furadeira de impacto 650 W da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Furadeira de impacto 650 W para furar concreto, tijolo, madeira e metal. Tem velocidade variável, reversão e empunhadura auxiliar para mais controle. Indicada para quem faz reformas e instalações em casa ou na obra.",
     "cores": [
       [
         "Azul",
@@ -390,7 +398,8 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Azul"
       }
-    ]
+    ],
+    "composicao": "650 W, mandril 1/2 pol, garantia de 12 meses"
   },
   {
     "id": "p6",
@@ -401,7 +410,7 @@ window.PRODUTOS = [
     "preco": 39.9,
     "desenho": "ferramenta",
     "destaque": false,
-    "desc": "Kit chaves de fenda 6 peças da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Kit com 6 chaves de fenda e Phillips nos tamanhos mais usados. Hastes em aço resistente e cabos emborrachados que dão firmeza na mão. Útil na caixa de ferramentas de casa, da obra ou como presente.",
     "cores": [
       [
         "Vermelho",
@@ -429,7 +438,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Vermelho"
       }
-    ]
+    ],
+    "composicao": "Hastes em aço cromo-vanádio, cabo bimaterial"
   },
   {
     "id": "p7",
@@ -441,7 +451,7 @@ window.PRODUTOS = [
     "de": 249.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Fio flexível 2,5 mm (rolo 100 m) da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Fio flexível 2,5 mm para tomadas e circuitos de uso geral. Isolamento antichama, fácil de passar pelo conduíte. Rolo de 100 m nas cores azul, vermelho e preto para identificar neutro, fase e retorno.",
     "cores": [
       [
         "Azul",
@@ -471,7 +481,8 @@ window.PRODUTOS = [
         "quando": "há 2 semanas",
         "variacao": "Azul"
       }
-    ]
+    ],
+    "composicao": "Rolo 100 m, cobre flexível com isolação PVC 750 V"
   },
   {
     "id": "p8",
@@ -482,7 +493,7 @@ window.PRODUTOS = [
     "preco": 89.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Tubo PVC 100 mm (barra 6 m) da Exemplo. Troque este texto pela descrição do produto.",
+    "desc": "Tubo PVC de 100 mm para esgoto e águas pluviais. Leve, resistente e de encaixe por ponta e bolsa. Barra de 6 m que reduz emendas na instalação; temos as conexões para completar o pedido.",
     "cores": [
       [
         "Branco",
@@ -512,6 +523,7 @@ window.PRODUTOS = [
         "quando": "há 1 mês",
         "variacao": "Branco"
       }
-    ]
+    ],
+    "composicao": "Barra 6 m, PVC rígido série normal 100 mm"
   }
 ];

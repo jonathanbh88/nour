@@ -7,7 +7,7 @@
 
 window.LOJA = {
   "nome": "Patas Pet Shop",
-  "slogan": "Rações, petiscos e acessórios para cães e gatos. Entrega no bairro.",
+  "slogan": "Ração, petiscos e cuidados para cães e gatos, com entrega no bairro.",
   "cidade": "Sua cidade · UF",
   "endereco": "Rua do Exemplo, 123 · Centro",
   "whatsapp": "5562999999999",
@@ -16,7 +16,7 @@ window.LOJA = {
   "email": "contato@sualoja.com.br",
   "instagram": "sualoja",
   "logo": "",
-  "sobre": "Rações, petiscos e acessórios para cães e gatos. Entrega no bairro. Atendimento de pessoa real pelo WhatsApp.",
+  "sobre": "A Patas Pet Shop é a loja do bairro para quem trata o pet como família. Peça ração, petiscos e acessórios pelo WhatsApp, tire dúvidas sobre a melhor opção para seu cão ou gato e receba em casa no mesmo dia.",
   "horarios": {
     "0": [],
     "1": [
@@ -71,11 +71,12 @@ window.LOJA = {
   "banners": [],
   "banner": {
     "selo": "Cães e gatos",
-    "titulo": "Tudo para o seu pet",
-    "texto": "Rações premium, petiscos e acessórios com entrega rápida.",
-    "botao": "Comprar agora",
+    "titulo": "Tudo para o seu pet sem sair de casa",
+    "texto": "Ração, petiscos e acessórios com entrega rápida aqui no bairro.",
+    "botao": "Comprar para meu pet",
     "categoria": "racoes",
-    "imagem": ""
+    "imagem": "https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=1920&h=800&q=70",
+    "imagemCelular": "https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=900&h=1200&q=70"
   },
   "beneficios": [
     [
@@ -100,8 +101,8 @@ window.LOJA = {
     ]
   ],
   "categoriasTitulo": [
-    "Compre por categoria",
-    "Encontre o que você procura"
+    "Cuide de quem cuida de você",
+    "Alimentação, diversão e higiene para cães e gatos"
   ],
   "descontoPix": 5,
   "parcelas": 5,
@@ -159,30 +160,34 @@ window.CATEGORIAS = [
   {
     "id": "racoes",
     "nome": "Rações",
-    "chamada": "Premium e super premium",
+    "chamada": "Nutrição para cada fase do pet",
     "desenho": "racao",
-    "cor": "#EA580C"
+    "cor": "#EA580C",
+    "foto": ""
   },
   {
     "id": "petiscos",
     "nome": "Petiscos",
-    "chamada": "Para agradar",
+    "chamada": "Recompensa na hora do adestramento",
     "desenho": "racao",
-    "cor": "#8C2F1B"
+    "cor": "#8C2F1B",
+    "foto": ""
   },
   {
     "id": "brinquedos",
     "nome": "Brinquedos",
-    "chamada": "Para gastar energia",
+    "chamada": "Menos tédio, mais brincadeira",
     "desenho": "bola",
-    "cor": "#2457C5"
+    "cor": "#2457C5",
+    "foto": ""
   },
   {
     "id": "higiene",
     "nome": "Higiene",
-    "chamada": "Banho e cuidados",
+    "chamada": "Pet limpo e casa cheirosa",
     "desenho": "garrafa",
-    "cor": "#92D0B7"
+    "cor": "#92D0B7",
+    "foto": ""
   }
 ];
 
@@ -197,7 +202,7 @@ window.PRODUTOS = [
     "de": 189.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Ração premium cães adultos da Patas. Troque este texto pela descrição do produto.",
+    "desc": "Alimentação completa para cães adultos, pensada para auxiliar na saúde da pele, do pelo e da digestão. Grãos crocantes de tamanho médio e ingredientes selecionados. Entregamos em casa, sem precisar carregar peso.",
     "cores": [
       [
         "Frango",
@@ -237,7 +242,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Frango · 1 kg"
       }
-    ]
+    ],
+    "composicao": "Saco 15 kg, sabores frango ou carne"
   },
   {
     "id": "p2",
@@ -248,7 +254,7 @@ window.PRODUTOS = [
     "preco": 129.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Ração gatos castrados da Patas. Troque este texto pela descrição do produto.",
+    "desc": "Fórmula para gatos castrados, com teor de gordura controlado para auxiliar na manutenção do peso. Contribui para a saúde urinária e tem alta palatabilidade. Consulte o veterinário para a quantidade ideal.",
     "cores": [
       [
         "Frango",
@@ -286,7 +292,8 @@ window.PRODUTOS = [
         "variacao": "Frango · 1 kg"
       }
     ],
-    "selo": "NOVO"
+    "selo": "NOVO",
+    "composicao": "Saco 10,1 kg, sabores frango ou carne"
   },
   {
     "id": "p3",
@@ -297,7 +304,7 @@ window.PRODUTOS = [
     "preco": 14.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Petisco bifinho da Patas. Troque este texto pela descrição do produto.",
+    "desc": "O petisco que faz o rabo abanar: bifinhos macios, fáceis de partir em pedaços pequenos para treino e recompensa. Embalagem com fecho que mantém o sabor. Ofereça com moderação, como complemento da ração.",
     "cores": [
       [
         "Carne",
@@ -324,7 +331,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Carne · 65 g"
       }
-    ]
+    ],
+    "composicao": "Pacote 500 g, sabores carne ou frango"
   },
   {
     "id": "p4",
@@ -336,7 +344,7 @@ window.PRODUTOS = [
     "de": 24.9,
     "desenho": "racao",
     "destaque": true,
-    "desc": "Osso de couro da Patas. Troque este texto pela descrição do produto.",
+    "desc": "Ajuda a gastar energia e a distrair cães que gostam de roer, poupando chinelos e móveis. Feito de couro natural prensado e firme. Ofereça sempre com supervisão e escolha o tamanho adequado ao porte do seu cão.",
     "cores": [
       [
         "Natural",
@@ -366,7 +374,8 @@ window.PRODUTOS = [
         "quando": "há 1 semana",
         "variacao": "Natural"
       }
-    ]
+    ],
+    "composicao": "Couro bovino natural, tamanho 4 a 5 polegadas"
   },
   {
     "id": "p5",
@@ -377,7 +386,7 @@ window.PRODUTOS = [
     "preco": 24.9,
     "desenho": "bola",
     "destaque": true,
-    "desc": "Bolinha resistente da Patas. Troque este texto pela descrição do produto.",
+    "desc": "Bolinha maciça e resistente a mordidas para brincar de buscar no quintal ou no parque. Quica bem, é fácil de lavar e tem cores vivas que o cão encontra rápido. Ideal para cães de porte pequeno e médio.",
     "cores": [
       [
         "Vermelho",
@@ -411,7 +420,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Vermelho"
       }
-    ]
+    ],
+    "composicao": "Borracha atóxica maciça, 6 cm de diâmetro"
   },
   {
     "id": "p6",
@@ -423,7 +433,7 @@ window.PRODUTOS = [
     "de": 119.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Arranhador para gatos da Patas. Troque este texto pela descrição do produto.",
+    "desc": "O gato afia as unhas no lugar certo e deixa o sofá em paz. Tem poste revestido com corda de sisal, base estável e plataforma para descansar. Uma dica: borrife um pouco de catnip para atrair o bichano.",
     "cores": [
       [
         "Bege",
@@ -445,7 +455,8 @@ window.PRODUTOS = [
         "quando": "há 3 semanas",
         "variacao": "Bege"
       }
-    ]
+    ],
+    "composicao": "Sisal natural, base em MDF revestida, 50 cm"
   },
   {
     "id": "p7",
@@ -456,7 +467,7 @@ window.PRODUTOS = [
     "preco": 29.9,
     "desenho": "garrafa",
     "destaque": false,
-    "desc": "Shampoo neutro da Patas. Troque este texto pela descrição do produto.",
+    "desc": "Banho em casa com cuidado: shampoo de fórmula neutra e suave, pensado para todos os tipos de pelo. Limpa sem ressecar e deixa um cheiro leve de menta. Indicado para cães e gatos a partir de 3 meses.",
     "cores": [
       [
         "Menta",
@@ -486,7 +497,8 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Menta · 500 ml"
       }
-    ]
+    ],
+    "composicao": "Frasco 500 ml, pH neutro"
   },
   {
     "id": "p8",
@@ -498,7 +510,7 @@ window.PRODUTOS = [
     "de": 69.9,
     "desenho": "caixa",
     "destaque": false,
-    "desc": "Tapete higiênico 30 un. da Patas. Troque este texto pela descrição do produto.",
+    "desc": "Praticidade no dia a dia: tapetes com alta absorção que retêm o líquido e ajudam a controlar o odor. Base impermeável protege o chão. Ótimos para filhotes em adaptação e para apartamentos.",
     "cores": [
       [
         "Branco",
@@ -528,6 +540,7 @@ window.PRODUTOS = [
         "quando": "há 2 meses",
         "variacao": "Branco"
       }
-    ]
+    ],
+    "composicao": "Pacote com 30 unidades, 60 x 60 cm"
   }
 ];
