@@ -55,8 +55,10 @@ const ZAP = '(62) 98888-0' + String(Date.now()).slice(-3), NOME = 'Cliente Robô
     const pg = await p.$$eval('[data-pag]', a => a.map(x => x.getAttribute('data-pag'))); await p.click('[data-pag="' + (pg.find(x => /pix/i.test(x)) || pg[0]) + '"]');
     const resumo = (await p.textContent('.sum')).replace(/\s+/g, ' ');
     const [pop] = await Promise.all([loja.waitForEvent('page', { timeout: 15000 }), p.click('#send')]);
-    const u = decodeURIComponent(pop.url()); await pop.close().catch(() => {});
-    const num = (u.match(/#\s?(\d{4,})/) || u.match(/[Pp]edido[^0-9]{0,12}(\d{3,})/) || [])[1];
+    // A aba do WhatsApp abre em branco e só recebe o link depois que o pedido é gravado; o número vem no aviso da loja.
+    await p.waitForFunction(() => /Pedido #\d+/.test((document.getElementById('toast') || {}).textContent || ''), null, { timeout: 15000 });
+    const num = (await p.textContent('#toast')).match(/#(\d+)/)[1];
+    await pop.waitForURL(/wa\.me|whatsapp/, { timeout: 5000 }).catch(() => {}); const u = decodeURIComponent(pop.url()); await pop.close().catch(() => {});
     return { num, resumo, msg: u.replace(/\s+/g, ' ').slice(0, 300) };
   }
   const v1 = await passo('compra 1 enviada', async () => { const r = await preencherEEnviar(); n1 = r.num; return '#' + r.num + ' | ' + r.resumo; });
