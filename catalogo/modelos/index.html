@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modelos de catálogo</title>
+<meta name="description" content="Modelos prontos do Nour Catálogo por tipo de loja.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--ink:#1E1630;--muted:#6B617D;--line:rgba(30,22,48,.12);--bg:#FAF7FB;--card:#fff}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--ink:#F1ECF6;--muted:#A99FB8;--line:rgba(241,236,246,.13);--bg:#141019;--card:#1D1724}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 'Outfit',system-ui,sans-serif;padding:32px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+main{max-width:1180px;margin:0 auto}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 6px}
+p.sub{color:var(--muted);margin:0 0 26px;max-width:62ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+a.m{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;color:inherit;text-decoration:none;transition:transform .2s,box-shadow .2s}
+a.m:hover{transform:translateY(-3px);box-shadow:0 14px 28px -14px rgba(0,0,0,.35)}
+.top{height:92px;display:flex;align-items:flex-end;padding:12px 14px;color:#fff;font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;font-weight:700}
+.bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.bd b{font-size:1.05rem}
+.bd small{color:var(--muted)}
+.sw{display:flex;gap:5px}
+.sw i{width:16px;height:16px;border-radius:50%;border:1px solid var(--line)}
+.go{font-weight:700;font-size:.9rem;margin-top:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>Modelos de catálogo</h1>
+<p class="sub">Um modelo pronto para cada tipo de loja do Nour Bio Site. Clique para ver funcionando. Para usar, copie o arquivo do modelo para <code>js/dados.js</code> e troque os dados da loja.</p>
+<div class="grid" id="g"></div>
+</main>
+<script src="lista.js"></script>
+<script>
+document.getElementById('g').innerHTML = window.MODELOS.map(function (m) {
+  var c = m.cores;
+  return '<a class="m" href="../index.html?modelo=' + m.id + '"><div class="top" style="background:linear-gradient(120deg,' + c.p1 + ',' + c.p2 + ')">' + m.loja + '</div>' +
+    '<div class="bd"><b>' + m.titulo + '</b><small>' + m.cats.join(' · ') + '</small><span class="sw"><i style="background:' + c.p1 + '"></i><i style="background:' + c.p2 + '"></i><i style="background:' + c.p3 + '"></i></span>' +
+    '<span class="go" style="color:' + c.p1 + '">Ver modelo →</span></div></a>';
+}).join('');
+</script>
+</body>
+</html>

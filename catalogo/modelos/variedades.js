@@ -1,0 +1,517 @@
+/* =====================================================================
+   Nour Catálogo · modelo pronto: Variedades e utilidades
+   Baseado no modelo "variedades" do Nour Bio Site. Para começar uma loja:
+   copie este arquivo para js/dados.js e troque nome, contatos, cores e produtos.
+   A explicação de cada campo está no js/dados.js de exemplo.
+   ===================================================================== */
+
+window.LOJA = {
+  "nome": "Tudo Aqui Variedades",
+  "slogan": "Utilidades para casa, presentes e muito mais em um só lugar.",
+  "cidade": "Sua cidade · UF",
+  "endereco": "Rua do Exemplo, 123 · Centro",
+  "whatsapp": "5562999999999",
+  "telefone": "(62) 99999-9999",
+  "fixo": "",
+  "email": "contato@sualoja.com.br",
+  "instagram": "sualoja",
+  "logo": "",
+  "sobre": "Utilidades para casa, presentes e muito mais em um só lugar. Atendimento de pessoa real pelo WhatsApp.",
+  "horarios": {
+    "0": [],
+    "1": [
+      [
+        "09:00",
+        "18:00"
+      ]
+    ],
+    "2": [
+      [
+        "09:00",
+        "18:00"
+      ]
+    ],
+    "3": [
+      [
+        "09:00",
+        "18:00"
+      ]
+    ],
+    "4": [
+      [
+        "09:00",
+        "18:00"
+      ]
+    ],
+    "5": [
+      [
+        "09:00",
+        "18:00"
+      ]
+    ],
+    "6": [
+      [
+        "09:00",
+        "13:00"
+      ]
+    ]
+  },
+  "cores": {
+    "p1": "#E63946",
+    "p2": "#F4A261",
+    "p3": "#FFE066",
+    "on3": "#3A2E00"
+  },
+  "tema": "auto",
+  "faixa": [
+    "Novidades toda semana",
+    "Entrega no bairro",
+    "Desconto no Pix à vista"
+  ],
+  "banners": [],
+  "banner": {
+    "selo": "Achadinhos",
+    "titulo": "Tudo para sua casa",
+    "texto": "Utilidades, organização e presentes com preço bom.",
+    "botao": "Comprar agora",
+    "categoria": "casa",
+    "imagem": ""
+  },
+  "beneficios": [
+    [
+      "envio",
+      "Enviamos para todo o Brasil",
+      "Correios e transportadoras"
+    ],
+    [
+      "pix",
+      "Desconto no Pix",
+      "À vista, direto no WhatsApp"
+    ],
+    [
+      "seguro",
+      "Compra segura",
+      "Atendimento de pessoa real"
+    ],
+    [
+      "troca",
+      "Primeira troca grátis",
+      "Em até 7 dias"
+    ]
+  ],
+  "categoriasTitulo": [
+    "Compre por categoria",
+    "Encontre o que você procura"
+  ],
+  "descontoPix": 5,
+  "parcelas": 5,
+  "freteGratisAcima": 299,
+  "rotulos": {
+    "cor": "Cor",
+    "tamanho": "Tamanho"
+  },
+  "tabelaMedidas": [],
+  "entrega": [
+    [
+      "correios",
+      "Envio pelos Correios",
+      "Frete combinado pelo CEP"
+    ],
+    [
+      "retirada",
+      "Retirar na loja",
+      "Sem custo"
+    ],
+    [
+      "motoboy",
+      "Motoboy na cidade",
+      "Combinado no WhatsApp"
+    ]
+  ],
+  "pagamentos": [
+    "Pix",
+    "Cartão de crédito",
+    "Link de pagamento"
+  ],
+  "ofertas": {
+    "ativo": true,
+    "titulo": "Ofertas da semana",
+    "selo": "Só esta semana",
+    "texto": "Produtos selecionados com preço especial."
+  },
+  "novidades": {
+    "ativo": true,
+    "titulo": "Receba as últimas novidades",
+    "texto": "Seja o primeiro a saber de lançamentos e promoções.",
+    "grupoWhatsapp": "",
+    "cadastro": ""
+  },
+  "lojaVerificada": true,
+  "avaliacoes": [],
+  "cookies": true,
+  "links": {
+    "termos": "",
+    "privacidade": ""
+  },
+  "parceiro": {
+    "nome": "Nour",
+    "logo": "",
+    "link": ""
+  }
+};
+
+window.CATEGORIAS = [
+  {
+    "id": "casa",
+    "nome": "Casa",
+    "chamada": "Organização e limpeza",
+    "desenho": "caixa",
+    "cor": "#2457C5"
+  },
+  {
+    "id": "cozinha",
+    "nome": "Cozinha",
+    "chamada": "Utensílios",
+    "desenho": "pote",
+    "cor": "#E63946"
+  },
+  {
+    "id": "presentes",
+    "nome": "Presentes",
+    "chamada": "Para toda ocasião",
+    "desenho": "caixa",
+    "cor": "#7B1FA2"
+  },
+  {
+    "id": "brinquedos",
+    "nome": "Brinquedos",
+    "chamada": "Diversão garantida",
+    "desenho": "bola",
+    "cor": "#F2C14E"
+  }
+];
+
+window.PRODUTOS = [
+  {
+    "id": "p1",
+    "sku": "KIT-POTE-HERM",
+    "nome": "Kit potes herméticos 5 peças",
+    "marca": "Tudo Aqui",
+    "cat": "cozinha",
+    "preco": 49.9,
+    "de": 69.9,
+    "desenho": "pote",
+    "destaque": true,
+    "desc": "Kit potes herméticos 5 peças da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Transparente",
+        "#D7E3EA"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Transparente|Único": 1
+    },
+    "avaliacoes": [
+      {
+        "nome": "Lucas M.",
+        "cidade": "Belo Horizonte, MG",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Transparente"
+      }
+    ]
+  },
+  {
+    "id": "p2",
+    "sku": "ORGA-DE-GAVE",
+    "nome": "Organizador de gaveta",
+    "marca": "Tudo Aqui",
+    "cat": "casa",
+    "preco": 24.9,
+    "desenho": "caixa",
+    "destaque": true,
+    "desc": "Organizador de gaveta da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Branco",
+        "#F2F2EE"
+      ],
+      [
+        "Cinza",
+        "#9AA1A9"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Branco|Único": 7
+    },
+    "avaliacoes": [
+      {
+        "nome": "Rafael T.",
+        "cidade": "Curitiba, PR",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Branco"
+      }
+    ],
+    "selo": "NOVO"
+  },
+  {
+    "id": "p3",
+    "sku": "GARR-TERM-1",
+    "nome": "Garrafa térmica 1 L",
+    "marca": "Tudo Aqui",
+    "cat": "cozinha",
+    "preco": 39.9,
+    "de": 49.9,
+    "desenho": "garrafa",
+    "destaque": true,
+    "desc": "Garrafa térmica 1 L da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Preto",
+        "#1D1F23"
+      ],
+      [
+        "Rosa",
+        "#E58FAE"
+      ],
+      [
+        "Verde",
+        "#2F6B4F"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Rosa|Único": 7,
+      "Verde|Único": 7
+    },
+    "avaliacoes": [
+      {
+        "nome": "Thiago N.",
+        "cidade": "Belo Horizonte, MG",
+        "nota": 5,
+        "texto": "Entrega dentro do prazo e tudo certinho.",
+        "quando": "há 2 meses",
+        "variacao": "Preto"
+      },
+      {
+        "nome": "Lucas M.",
+        "cidade": "Belo Horizonte, MG",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Preto"
+      }
+    ]
+  },
+  {
+    "id": "p4",
+    "sku": "LUMI-DE-MESA",
+    "nome": "Luminária de mesa LED",
+    "marca": "Tudo Aqui",
+    "cat": "casa",
+    "preco": 59.9,
+    "desenho": "caixa",
+    "destaque": true,
+    "desc": "Luminária de mesa LED da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Branco",
+        "#F2F2EE"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Branco|Único": 8
+    },
+    "avaliacoes": [
+      {
+        "nome": "Diego F.",
+        "cidade": "Curitiba, PR",
+        "nota": 5,
+        "texto": "Qualidade muito boa pelo preço. Já quero comprar de novo.",
+        "quando": "há 1 mês",
+        "variacao": "Branco"
+      },
+      {
+        "nome": "Mariana C.",
+        "cidade": "Recife, PE",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Branco"
+      }
+    ]
+  },
+  {
+    "id": "p5",
+    "sku": "KIT-PRES-AROM",
+    "nome": "Kit presente aromatizador",
+    "marca": "Tudo Aqui",
+    "cat": "presentes",
+    "preco": 44.9,
+    "de": 54.9,
+    "desenho": "garrafa",
+    "destaque": true,
+    "desc": "Kit presente aromatizador da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Lilás",
+        "#B39DDB"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Lilás|Único": 2
+    },
+    "avaliacoes": [
+      {
+        "nome": "Diego F.",
+        "cidade": "Florianópolis, SC",
+        "nota": 5,
+        "texto": "Produto igual às fotos. Recomendo a loja.",
+        "quando": "há 2 semanas",
+        "variacao": "Lilás"
+      },
+      {
+        "nome": "Bruno A.",
+        "cidade": "Salvador, BA",
+        "nota": 5,
+        "texto": "Produto igual às fotos. Recomendo a loja.",
+        "quando": "há 2 semanas",
+        "variacao": "Lilás"
+      }
+    ]
+  },
+  {
+    "id": "p6",
+    "sku": "BOLA-DE-FUTE",
+    "nome": "Bola de futebol",
+    "marca": "Tudo Aqui",
+    "cat": "brinquedos",
+    "preco": 39.9,
+    "desenho": "bola",
+    "destaque": false,
+    "desc": "Bola de futebol da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Branco",
+        "#F2F2EE"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Branco|Único": 9
+    },
+    "avaliacoes": [
+      {
+        "nome": "Gustavo B.",
+        "cidade": "Florianópolis, SC",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Branco"
+      }
+    ]
+  },
+  {
+    "id": "p7",
+    "sku": "QUEB-500-PECA",
+    "nome": "Quebra-cabeça 500 peças",
+    "marca": "Tudo Aqui",
+    "cat": "brinquedos",
+    "preco": 34.9,
+    "desenho": "caixa",
+    "destaque": false,
+    "desc": "Quebra-cabeça 500 peças da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Azul",
+        "#2457C5"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Azul|Único": 9
+    },
+    "avaliacoes": [
+      {
+        "nome": "Lucas M.",
+        "cidade": "Salvador, BA",
+        "nota": 4,
+        "texto": "Chegou rápido e muito bem embalado.",
+        "quando": "há 1 semana",
+        "variacao": "Azul"
+      },
+      {
+        "nome": "Thiago N.",
+        "cidade": "Belo Horizonte, MG",
+        "nota": 4,
+        "texto": "Chegou rápido e muito bem embalado.",
+        "quando": "há 1 semana",
+        "variacao": "Azul"
+      }
+    ]
+  },
+  {
+    "id": "p8",
+    "sku": "CEST-ORGA",
+    "nome": "Cesto organizador",
+    "marca": "Tudo Aqui",
+    "cat": "casa",
+    "preco": 29.9,
+    "de": 39.9,
+    "desenho": "bolsa",
+    "destaque": false,
+    "desc": "Cesto organizador da Tudo Aqui. Troque este texto pela descrição do produto.",
+    "cores": [
+      [
+        "Bege",
+        "#D8C3A5"
+      ]
+    ],
+    "tamanhos": [
+      "Único"
+    ],
+    "estoque": {
+      "Bege|Único": 1
+    },
+    "avaliacoes": [
+      {
+        "nome": "Juliana P.",
+        "cidade": "Recife, PE",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Bege"
+      },
+      {
+        "nome": "Gustavo B.",
+        "cidade": "Curitiba, PR",
+        "nota": 5,
+        "texto": "Atendimento excelente pelo WhatsApp, tiraram todas as dúvidas.",
+        "quando": "há 3 semanas",
+        "variacao": "Bege"
+      }
+    ]
+  }
+];
