@@ -211,6 +211,15 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Rodapé com "Formas de pagamento" (as marcadas no painel), parcelas sem juros e desconto no Pix.
 - [ ] White label: com "Mostrar o Instagram/WhatsApp do parceiro" ligados, os ícones aparecem ao lado de "Feito por"; desligados, somem.
 
+## 18. Planilha de produtos
+
+- [ ] Produtos → "Importar produtos pela planilha" → Baixar modelo: o Excel abre com as colunas na linha 1 (Nome e Preço em destaque) e a explicação na linha 2; dados a partir da linha 3.
+- [ ] Preencher 2 linhas (mesmo nome, cores ou tamanhos diferentes) e 1 produto sem grade → Subir planilha → a prévia mostra 2 produtos novos; Gravar → aparecem na lista com o estoque certo.
+- [ ] "Baixe seus produtos" → mudar um preço e um estoque → subir → a prévia mostra "Atualiza" e, ao gravar, o produto muda e o movimento de estoque fica registrado como "planilha".
+- [ ] Planilha com erro (preço "abc", sem nome, estoque "x") → a prévia lista as linhas com problema e não deixa gravar.
+- [ ] Categoria que não existe é criada; passar do limite do plano é avisado antes de gravar.
+- [ ] Salvar produto com foto (link https) funciona — corrigido o validador de links no banco.
+
 ## Fora deste teste (próximas fases)
 
 - Pagamento online (Mercado Pago) e frete calculado (Melhor Envio).

@@ -7,7 +7,7 @@
 
 -- ---------- auxiliares (internas) ----------
 CREATE OR REPLACE FUNCTION public.catalogo_url_ok(u text) RETURNS boolean LANGUAGE sql IMMUTABLE SET search_path TO 'public' AS $function$
-  select u ~ '^https://' and char_length(u) between 12 and 500 and u !~ ('[[:space:]"' || chr(39) || chr(60) || chr(62) || chr(92) || ']');
+  select u ~ '^https://' and char_length(u) between 12 and 500 and u !~ ('[[:space:]"' || chr(39) || chr(60) || chr(62) || chr(92) || chr(92) || ']');  -- barra invertida escapada dentro de []
 $function$;
 
 CREATE OR REPLACE FUNCTION public.catalogo_ok(p_slug text, p_token text) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
@@ -178,6 +178,26 @@ begin
   end loop;
 end $function$;
 
+-- Planilha de produtos: cria as categorias que faltam e grava (cria ou atualiza) até 1000 produtos de uma vez, tudo ou nada.
+CREATE OR REPLACE FUNCTION public.catalogo_planilha(p_slug text, d jsonb) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $function$
+declare x jsonb; v_novos int := 0; v_atual int := 0; v_cats int := 0;
+begin
+  if jsonb_typeof(d->'produtos') != 'array' or jsonb_array_length(d->'produtos') not between 1 and 1000
+     or jsonb_typeof(coalesce(d->'categorias', '[]')) != 'array' or jsonb_array_length(coalesce(d->'categorias', '[]')) > 100 then raise exception 'dados_invalidos'; end if;
+  for x in select * from jsonb_array_elements(coalesce(d->'categorias', '[]')) loop
+    if coalesce(x->>'chave', '') ~ '^[a-z0-9-]{1,40}$' and not exists (select 1 from catalogo_categorias where slug = p_slug and chave = x->>'chave') then
+      perform catalogo_salvar_categoria(p_slug, jsonb_build_object('chave', x->>'chave', 'nome', left(btrim(coalesce(x->>'nome', '')), 40)));
+      v_cats := v_cats + 1;
+    end if;
+  end loop;
+  for x in select * from jsonb_array_elements(d->'produtos') loop
+    if jsonb_typeof(x) != 'object' then raise exception 'dados_invalidos'; end if;
+    if nullif(x->>'id', '') is null then v_novos := v_novos + 1; else v_atual := v_atual + 1; end if;
+    perform catalogo_gravar_produto(p_slug, x, 'planilha');
+  end loop;
+  return jsonb_build_object('novos', v_novos, 'atualizados', v_atual, 'categorias', v_cats);
+end $function$;
+
 -- ---------- públicas: vitrine ----------
 CREATE OR REPLACE FUNCTION public.catalogo_publico(p_slug text) RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO 'public' AS $function$
   select jsonb_build_object(
@@ -312,6 +332,7 @@ begin
   elsif p_acao = 'avaliacao_excluir' then perform catalogo_apagar(p_slug, 'avaliacao', (d->>'id')::bigint);
   elsif p_acao = 'contato_excluir' then perform catalogo_apagar(p_slug, 'contato', (d->>'id')::bigint);
   elsif p_acao = 'importar' then perform catalogo_importar(p_slug, d);
+  elsif p_acao = 'planilha' then perform catalogo_planilha(p_slug, d);
   elsif p_acao = 'trocar_codigo' then
     v_tok := encode(extensions.gen_random_bytes(24), 'hex');
     update catalogos set painel_token = encode(sha256(convert_to(v_tok, 'UTF8')), 'hex') where slug = p_slug;
@@ -325,7 +346,7 @@ end $function$;
 revoke all on function public.catalogo_url_ok(text), public.catalogo_ok(text, text), public.catalogo_mover(text, bigint, text, text, int, text, bigint),
   public.catalogo_apagar(text, text, bigint), public.catalogo_apagar_variacoes(bigint, text[]), public.catalogo_limpar_estoque(text, bigint, text[]),
   public.catalogo_gravar_estoque(text, bigint, jsonb, text), public.catalogo_gravar_produto(text, jsonb, text), public.catalogo_salvar_categoria(text, jsonb),
-  public.catalogo_salvar_avaliacao(text, jsonb), public.catalogo_pedido_status(text, bigint, text), public.catalogo_importar(text, jsonb) from public, anon, authenticated;
+  public.catalogo_salvar_avaliacao(text, jsonb), public.catalogo_pedido_status(text, bigint, text), public.catalogo_importar(text, jsonb), public.catalogo_planilha(text, jsonb) from public, anon, authenticated;
 revoke all on function public.catalogo_publico(text), public.catalogo_pedido(text, text, text, jsonb, jsonb, text, text), public.catalogo_contato(text, text, text, text, boolean),
   public.catalogo_visita(text), public.catalogo_painel(text, text), public.catalogo_painel_salvar(text, text, text, jsonb) from public;
 grant execute on function public.catalogo_publico(text), public.catalogo_pedido(text, text, text, jsonb, jsonb, text, text), public.catalogo_contato(text, text, text, text, boolean),

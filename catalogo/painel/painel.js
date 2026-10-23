@@ -304,7 +304,7 @@
     });
     var catNome = {}; d.categorias.forEach(function (c) { catNome[c.chave] = c.nome; });
     return '<div class="head"><div><h1>Produtos e estoque</h1><p class="sub">' + d.produtos.length + ' produtos · ' + num(d.produtos.reduce(function (s, p) { return s + totalEst(p); }, 0)) + ' unidades em estoque</p>' + planoTxt() + '</div>' +
-      '<button type="button" class="btn" data-novo-prod>' + ic('plus') + 'Novo produto</button></div>' +
+      '<button type="button" class="btn" data-novo-prod>' + ic('plus') + 'Novo produto</button></div>' + planilhaBloco() +
       '<div class="card"><h2>Categorias</h2><div class="chips">' + d.categorias.map(function (c) { return '<button type="button" class="chip" data-edit-cat="' + c.id + '"><i style="background:' + esc(cor(c.cor, '#ccc')) + '"></i>' + esc(c.nome) + '</button>'; }).join('') +
       '<button type="button" class="chip add" data-nova-cat>' + ic('plus') + 'Nova categoria</button></div></div>' +
       '<div class="card"><div class="tools"><input id="pq" type="search" placeholder="Buscar por nome ou código" value="' + esc(S.q) + '" aria-label="Buscar produtos">' +
@@ -815,23 +815,27 @@
     function col(i) { var s = ''; i++; while (i) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; }
     function cel(v, r, c, est) {
       var ref = col(c) + r, t = d.tipos ? d.tipos.charAt(c) : 't';
-      if (r > 3 && (t === 'n' || t === 'm') && v !== '' && v != null && isFinite(+v)) return '<c r="' + ref + '" s="' + (t === 'm' ? 3 : 0) + '"><v>' + (t === 'm' ? Math.round(v * 100) / 100 : +v) + '</v></c>';
+      if (r >= I && (t === 'n' || t === 'm') && v !== '' && v != null && isFinite(+v)) return '<c r="' + ref + '" s="' + (t === 'm' ? 3 : 0) + '"><v>' + (t === 'm' ? Math.round(v * 100) / 100 : +v) + '</v></c>';
       return '<c r="' + ref + '" t="inlineStr"' + (est ? ' s="' + est + '"' : '') + '><is><t xml:space="preserve">' + x(v) + '</t></is></c>';
     }
-    var larg = d.cols.map(function (h, i) { return Math.min(50, Math.max(String(h).length, d.linhas.reduce(function (m, l) { return Math.max(m, String(l[i] == null ? '' : l[i]).length); }, 0)) + 3); });
-    var rows = '<row r="1">' + cel(S.d.nome + ' · ' + d.titulo, 1, 0, 2) + '</row><row r="2">' + cel(d.periodo + ' · gerado em ' + dataX(Date.now(), 1), 2, 0) + '</row>' +
-      '<row r="3">' + d.cols.map(function (h, i) { return cel(h, 3, i, 1); }).join('') + '</row>' +
-      d.linhas.map(function (l, ri) { return '<row r="' + (ri + 4) + '">' + l.map(function (v, i) { return cel(v, ri + 4, i); }).join('') + '</row>'; }).join('');
-    var sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="3" topLeftCell="A4" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>' +
-      larg.map(function (w, i) { return '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>'; }).join('') + '</cols><sheetData>' + rows + '</sheetData><autoFilter ref="A3:' + col(d.cols.length - 1) + (d.linhas.length + 3) + '"/></worksheet>';
+    // Com d.ajuda: linha 1 = colunas (obrigatórias na cor da loja), linha 2 = explicação, dados a partir da linha 3.
+    var H = d.ajuda ? 1 : 3, I = d.ajuda ? 3 : 4, U = Math.max(I - 1, d.linhas.length + I - 1);
+    var larg = d.cols.map(function (h, i) { return Math.min(50, Math.max(String(h).length, d.ajuda ? Math.min(28, String(d.ajuda[i] || '').length) : 0, d.linhas.reduce(function (m, l) { return Math.max(m, String(l[i] == null ? '' : l[i]).length); }, 0)) + 3); });
+    var rows = (d.ajuda ? '<row r="1" ht="22" customHeight="1">' + d.cols.map(function (h, i) { return cel(h, 1, i, d.obrig && d.obrig[i] ? 1 : 5); }).join('') + '</row>' +
+        '<row r="2" ht="62" customHeight="1">' + d.ajuda.map(function (a, i) { return cel(a, 2, i, d.obrig && d.obrig[i] ? 6 : 4); }).join('') + '</row>' :
+      '<row r="1">' + cel(S.d.nome + ' · ' + d.titulo, 1, 0, 2) + '</row><row r="2">' + cel(d.periodo + ' · gerado em ' + dataX(Date.now(), 1), 2, 0) + '</row>' +
+      '<row r="3">' + d.cols.map(function (h, i) { return cel(h, 3, i, 1); }).join('') + '</row>') +
+      d.linhas.map(function (l, ri) { return '<row r="' + (ri + I) + '">' + l.map(function (v, i) { return cel(v, ri + I, i); }).join('') + '</row>'; }).join('');
+    var sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="' + (I - 1) + '" topLeftCell="A' + I + '" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>' +
+      larg.map(function (w, i) { return '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>'; }).join('') + '</cols><sheetData>' + rows + '</sheetData><autoFilter ref="A' + H + ':' + col(d.cols.length - 1) + U + '"/></worksheet>';
     var styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="&quot;R$&quot; #,##0.00"/></numFmts>' +
-      '<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="14"/><name val="Calibri"/></font></fonts>' +
-      '<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF' + cor((S.d.loja.cores || {}).p1, '#1E1630').slice(1).toUpperCase() + '"/></patternFill></fill></fills>' +
-      '<borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="4"><xf/><xf fontId="1" fillId="2" applyFont="1" applyFill="1"/><xf fontId="2" applyFont="1"/><xf numFmtId="164" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+      '<fonts count="5"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="14"/><name val="Calibri"/></font><font><i/><sz val="10"/><color rgb="FF5B5368"/><name val="Calibri"/></font><font><b/><sz val="10"/><color rgb="FF9F1239"/><name val="Calibri"/></font></fonts>' +
+      '<fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF' + cor((S.d.loja.cores || {}).p1, '#1E1630').slice(1).toUpperCase() + '"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF7F3EC"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF6B6478"/></patternFill></fill></fills>' +
+      '<borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="7"><xf/><xf fontId="1" fillId="2" applyFont="1" applyFill="1"/><xf fontId="2" applyFont="1"/><xf numFmtId="164" applyNumberFormat="1"/><xf fontId="3" fillId="3" applyFont="1" applyFill="1" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf><xf fontId="1" fillId="4" applyFont="1" applyFill="1"/><xf fontId="4" fillId="3" applyFont="1" applyFill="1" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
     var arqs = [
       ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
       ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
-      ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="' + x(d.titulo.slice(0, 31).replace(/[\\\/?*\[\]:]/g, ' ')) + '" sheetId="1" r:id="rId1"/></sheets><definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">\'' + x(d.titulo.slice(0, 31).replace(/[\\\/?*\[\]:]/g, ' ')) + '\'!$A$3:$' + col(d.cols.length - 1) + '$' + (d.linhas.length + 3) + '</definedName></definedNames></workbook>'],
+      ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="' + x(d.titulo.slice(0, 31).replace(/[\\\/?*\[\]:]/g, ' ')) + '" sheetId="1" r:id="rId1"/></sheets><definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">\'' + x(d.titulo.slice(0, 31).replace(/[\\\/?*\[\]:]/g, ' ')) + '\'!$A$' + H + ':$' + col(d.cols.length - 1) + '$' + U + '</definedName></definedNames></workbook>'],
       ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
       ['xl/worksheets/sheet1.xml', sheet], ['xl/styles.xml', styles]];
     return zip(arqs);
@@ -872,6 +876,206 @@
     var fim = function () { document.documentElement.classList.remove('imprimindo'); el.remove(); window.removeEventListener('afterprint', fim); };
     window.addEventListener('afterprint', fim);
     setTimeout(function () { window.print(); }, 50);
+  }
+
+  /* ---------- planilha de produtos: baixar, modelo vazio e subir (tudo no navegador) ---------- */
+  // Uma linha por variação (cor + tamanho). O ID liga a linha ao produto já cadastrado.
+  var PCOLS = [['ID', 'id', 'n', 0, 'NÃO MEXA. Vazio = produto novo. Preenchido = atualiza o produto.'], ['Código', 'sku', 't', 0, 'Opcional. Ex.: BL-001. Linhas com o mesmo código viram um produto só.'],
+    ['Nome', 'nome', 't', 1, 'OBRIGATÓRIO. Ex.: Blusa de linho. Repita o nome em cada linha de cor/tamanho.'], ['Categoria', 'categoria', 't', 0, 'Opcional. Ex.: Blusas. Se não existir, é criada.'],
+    ['Marca', 'marca', 't', 0, 'Opcional.'], ['Preço', 'preco', 'm', 1, 'OBRIGATÓRIO. Ex.: 89,90'], ['Preço antes (de)', 'preco_de', 'm', 0, 'Opcional. Preço riscado, maior que o Preço. Ex.: 119,90'],
+    ['Cor', 'cor', 't', 0, 'Opcional. Uma linha para cada cor. Sem cores, deixe vazio.'], ['Código da cor', 'hex', 't', 0, 'Opcional. Cor da bolinha. Ex.: #1D1F23'],
+    ['Tamanho', 'tam', 't', 0, 'Opcional. Uma linha para cada tamanho. Ex.: P, M, G, 38'], ['Estoque', 'est', 'n', 0, 'Quantidade dessa cor e tamanho. Vazio = 0.'],
+    ['Na loja', 'ativo', 't', 0, 'sim ou não. Vazio = sim.'], ['Destaque', 'destaque', 't', 0, 'sim ou não. Aparece na vitrine de destaques.'],
+    ['Descrição', 'descricao', 't', 0, 'Opcional. Texto da página do produto.'], ['Composição', 'composicao', 't', 0, 'Opcional. Ex.: 100% algodão'],
+    ['Foto 1', 'f0', 't', 0, 'Opcional. Link que começa com https://. Vazio mantém as fotos atuais.'], ['Foto 2', 'f1', 't', 0, 'Opcional.'], ['Foto 3', 'f2', 't', 0, 'Opcional.'], ['Foto 4', 'f3', 't', 0, 'Opcional.'], ['Foto 5', 'f4', 't', 0, 'Opcional.']];
+  var PALIAS = { id: 'id', codigo: 'sku', sku: 'sku', referencia: 'sku', nome: 'nome', produto: 'nome', 'nome do produto': 'nome', categoria: 'categoria', marca: 'marca', preco: 'preco', 'preco de venda': 'preco', valor: 'preco',
+    'preco antes (de)': 'preco_de', 'preco antes': 'preco_de', 'preco de': 'preco_de', de: 'preco_de', cor: 'cor', 'codigo da cor': 'hex', hex: 'hex', tamanho: 'tam', tam: 'tam', estoque: 'est', quantidade: 'est', qtd: 'est',
+    'na loja': 'ativo', ativo: 'ativo', visivel: 'ativo', destaque: 'destaque', descricao: 'descricao', composicao: 'composicao', 'foto 1': 'f0', 'foto 2': 'f1', 'foto 3': 'f2', 'foto 4': 'f3', 'foto 5': 'f4', foto: 'f0' };
+  // Primeiro bloco da tela de produtos: importar em 3 passos.
+  function planilhaBloco() {
+    var aberto = !S.d.produtos.length || S.planAberto;
+    return '<details class="card importar"' + (aberto ? ' open' : '') + ' data-plan-det><summary><h2>' + ic('down') + 'Importar produtos pela planilha</h2><small class="note">Cadastre ou atualize muitos produtos de uma vez</small></summary>' +
+      '<ol class="passos">' +
+        '<li><b>Baixe o modelo</b><span class="note">Planilha do Excel com as colunas na linha 1 e a explicação de cada uma na linha 2.</span><button type="button" class="btn ghost sm" data-plan="modelo">' + ic('down') + 'Baixar modelo</button></li>' +
+        '<li><b>Preencha a partir da linha 3</b><span class="note">Uma linha para cada cor e tamanho. Só <b>Nome</b> e <b>Preço</b> são obrigatórios.</span><button type="button" class="btn ghost sm" data-plan-ajuda>Como preencher</button></li>' +
+        '<li><b>Suba a planilha</b><span class="note">Você confere a prévia antes de gravar. Excel (.xlsx) ou CSV.</span><label class="btn sm">' + ic('plus') + 'Subir planilha<input type="file" id="plan_arq" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden></label></li>' +
+      '</ol>' + (S.d.produtos.length ? '<p class="note">Para editar o que já existe: <button type="button" class="link" data-plan="meus">baixe seus ' + S.d.produtos.length + ' produtos</button>, altere e suba de novo. A coluna ID liga cada linha ao produto.</p>' : '') + '</details>';
+  }
+  function planilhaAjuda() {
+    dlg.innerHTML = '<div class="sheet"><header><h2>Como preencher a planilha</h2><button type="button" class="x" data-fechar aria-label="Fechar">' + ic('x') + '</button></header><div class="body">' +
+      '<p class="note">Linha 1: nomes das colunas (não mude). Linha 2: explicação (pode deixar). Seus produtos começam na <b>linha 3</b>. Colunas em destaque são obrigatórias.</p>' +
+      '<div class="tbl"><table><thead><tr><th>Coluna</th><th></th><th>Como preencher</th></tr></thead><tbody>' + PCOLS.filter(function (c) { return !/^f[1-4]$/.test(c[1]); }).map(function (c) {
+        return '<tr><td><b>' + esc(c[1] === 'f0' ? 'Foto 1 a Foto 5' : c[0]) + '</b></td><td>' + (c[3] ? '<span class="pill bad">Obrigatório</span>' : c[1] === 'id' ? '<span class="pill warn">Não mexa</span>' : '<span class="pill">Opcional</span>') + '</td><td class="note">' + esc(c[4].replace(/^(OBRIGATÓRIO|Opcional|NÃO MEXA)\.\s*/, '')) + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+      '<h3>Exemplo: uma blusa em 2 cores e 2 tamanhos</h3><div class="tbl"><table class="ex"><thead><tr><th>Código</th><th>Nome</th><th>Preço</th><th>Cor</th><th>Tamanho</th><th>Estoque</th></tr></thead><tbody>' +
+        [['BL-001', 'Blusa de linho', '89,90', 'Off white', 'P', 3], ['BL-001', 'Blusa de linho', '89,90', 'Off white', 'M', 5], ['BL-001', 'Blusa de linho', '89,90', 'Preto', 'P', 2], ['BL-001', 'Blusa de linho', '89,90', 'Preto', 'M', 4], ['BO-010', 'Bolsa tiracolo', '149,90', '', '', 4]]
+          .map(function (l) { return '<tr>' + l.map(function (v) { return '<td>' + esc(v) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>' +
+      '<p class="note">A bolsa não tem grade: Cor e Tamanho ficam vazios. Até 1000 produtos por planilha. Nada é gravado antes de você conferir a prévia.</p></div>' +
+      '<footer><span class="sp"></span><button type="button" class="btn ghost" data-plan="modelo">' + ic('down') + 'Baixar modelo</button><button type="button" class="btn" data-fechar>Entendi</button></footer></div>';
+    dlg.showModal();
+  }
+  function planilhaBaixar(vazio) {
+    var cat = {}; S.d.categorias.forEach(function (c) { cat[c.chave] = c.nome; });
+    var linhas = [];
+    if (!vazio) {
+      S.d.produtos.forEach(function (p) {
+        var cores = p.cores.length ? p.cores : [['', '']], tams = p.tamanhos.length ? p.tamanhos : [''], f = (p.fotos || []).concat(['', '', '', '', '']);
+        cores.forEach(function (c) { tams.forEach(function (t) {
+          linhas.push([p.id, p.sku || '', p.nome, cat[p.categoria] || p.categoria || '', p.marca || '', +p.preco, p.preco_de ? +p.preco_de : '', c[0] || '', c[1] || '', t || '',
+            +(p.estoque[(c[0] || '') + '|' + (t || '')] || 0), p.ativo ? 'sim' : 'não', p.destaque ? 'sim' : 'não', p.descricao || '', p.composicao || '', f[0], f[1], f[2], f[3], f[4]]);
+        }); });
+      });
+    }
+    var d = { titulo: 'Produtos', cols: PCOLS.map(function (c) { return c[0]; }), tipos: PCOLS.map(function (c) { return c[2]; }).join(''), linhas: linhas,
+      ajuda: PCOLS.map(function (c) { return c[4]; }), obrig: PCOLS.map(function (c) { return !!c[3]; }) };
+    baixar((vazio ? 'modelo-produtos' : 'produtos-' + S.slug + '-' + dia(Date.now())) + '.xlsx', xlsx(d), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  }
+  // Lê o .xlsx sem biblioteca: abre o zip (DecompressionStream) e o XML da primeira aba.
+  function lerZip(buf) {
+    var v = new DataView(buf), u8 = new Uint8Array(buf), fim = -1;
+    for (var i = u8.length - 22; i >= Math.max(0, u8.length - 70000); i--) if (v.getUint32(i, true) === 0x06054b50) { fim = i; break; }
+    if (fim < 0) return Promise.reject(new Error('arquivo'));
+    var n = v.getUint16(fim + 10, true), off = v.getUint32(fim + 16, true), arqs = {}, dec = new TextDecoder();
+    for (var k = 0; k < n; k++) {
+      var met = v.getUint16(off + 10, true), tam = v.getUint32(off + 20, true), ln = v.getUint16(off + 28, true), lx = v.getUint16(off + 30, true), lc = v.getUint16(off + 32, true), loc = v.getUint32(off + 42, true);
+      var nome = dec.decode(u8.subarray(off + 46, off + 46 + ln)), ini = loc + 30 + v.getUint16(loc + 26, true) + v.getUint16(loc + 28, true);
+      arqs[nome] = { met: met, dados: u8.subarray(ini, ini + tam) };
+      off += 46 + ln + lx + lc;
+    }
+    function texto(nome) {
+      var a = arqs[nome]; if (!a) return Promise.resolve('');
+      if (a.met === 0) return Promise.resolve(dec.decode(a.dados));
+      if (a.met !== 8 || typeof DecompressionStream === 'undefined') return Promise.reject(new Error('arquivo'));
+      return new Response(new Blob([a.dados]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+    }
+    var aba = Object.keys(arqs).filter(function (x) { return /^xl\/worksheets\/sheet\d+\.xml$/.test(x); }).sort(function (a, b) { return parseInt(a.replace(/\D/g, ''), 10) - parseInt(b.replace(/\D/g, ''), 10); })[0];
+    if (!aba) return Promise.reject(new Error('arquivo'));
+    return Promise.all([texto('xl/sharedStrings.xml'), texto(aba)]);
+  }
+  function lerXlsx(buf) {
+    return lerZip(buf).then(function (r) {
+      var px = new DOMParser(), ss = [], linhas = [];
+      if (r[0]) [].forEach.call(px.parseFromString(r[0], 'application/xml').getElementsByTagName('si'), function (si) { ss.push([].map.call(si.getElementsByTagName('t'), function (t) { return t.textContent; }).join('')); });
+      [].forEach.call(px.parseFromString(r[1], 'application/xml').getElementsByTagName('row'), function (row) {
+        var l = [];
+        [].forEach.call(row.getElementsByTagName('c'), function (c) {
+          var ref = c.getAttribute('r') || '', col = 0, m = ref.match(/^[A-Z]+/);
+          if (m) for (var i = 0; i < m[0].length; i++) col = col * 26 + m[0].charCodeAt(i) - 64; else col = l.length + 1;
+          var t = c.getAttribute('t'), vEl = c.getElementsByTagName('v')[0], val = vEl ? vEl.textContent : '';
+          if (t === 's') val = ss[+val] || ''; else if (t === 'inlineStr') val = [].map.call(c.getElementsByTagName('t'), function (x) { return x.textContent; }).join(''); else if (t === 'b') val = val === '1' ? 'sim' : 'não';
+          l[col - 1] = val;
+        });
+        linhas[(+row.getAttribute('r') || linhas.length + 1) - 1] = l;
+      });
+      return linhas.map(function (l) { return l || []; });
+    });
+  }
+  function lerCsv(txt) {
+    txt = txt.replace(/^﻿/, '');
+    var sep = (txt.split('\n')[0].match(/;/g) || []).length >= (txt.split('\n')[0].match(/,/g) || []).length ? ';' : ',', out = [], l = [], c = '', q = false;
+    for (var i = 0; i < txt.length; i++) {
+      var ch = txt[i];
+      if (q) { if (ch === '"') { if (txt[i + 1] === '"') { c += '"'; i++; } else q = false; } else c += ch; }
+      else if (ch === '"') q = true; else if (ch === sep) { l.push(c); c = ''; } else if (ch === '\n') { l.push(c.replace(/\r$/, '')); out.push(l); l = []; c = ''; } else c += ch;
+    }
+    if (c || l.length) { l.push(c); out.push(l); }
+    return out;
+  }
+  function normTxt(s) { return String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+  function numBr(v) {
+    if (typeof v === 'number') return v; v = String(v == null ? '' : v).replace(/R\$|\s/g, '');
+    if (!v) return null;
+    if (/^-?\d{1,3}(\.\d{3})*(,\d+)?$/.test(v) || /^-?\d+,\d+$/.test(v)) v = v.replace(/\./g, '').replace(',', '.');
+    return /^-?\d+(\.\d+)?$/.test(v) ? +v : NaN;
+  }
+  function simNao(v, padrao) { v = normTxt(v); if (!v) return padrao; return /^(sim|s|x|1|true|verdadeiro|yes)$/.test(v); }
+  // Junta as linhas em produtos e confere tudo antes de gravar.
+  function planilhaMontar(linhas) {
+    var hi = -1, mapa = {};
+    for (var i = 0; i < Math.min(linhas.length, 15); i++) { if ((linhas[i] || []).some(function (c) { return normTxt(c) === 'nome' || normTxt(c) === 'produto'; })) { hi = i; break; } }
+    if (hi < 0) return { erro: 'Não achei a linha de cabeçalho (precisa ter a coluna "Nome"). Use o modelo da Nour.' };
+    linhas[hi].forEach(function (h, j) { var k = PALIAS[normTxt(h)]; if (k && !(k in mapa)) mapa[k] = j; });
+    var porId = {}, porSku = {}, catPorNome = {}, novasCat = {}, grupos = {}, ordem = [], erros = [];
+    S.d.produtos.forEach(function (p) { porId[p.id] = p; if (p.sku) porSku[String(p.sku).toUpperCase()] = p; });
+    S.d.categorias.forEach(function (c) { catPorNome[normTxt(c.nome)] = c.chave; catPorNome[normTxt(c.chave)] = c.chave; });
+    linhas.slice(hi + 1).forEach(function (l, j) {
+      var nl = hi + j + 2, g = function (k) { return k in mapa ? String(l[mapa[k]] == null ? '' : l[mapa[k]]).trim() : ''; };
+      if (!PCOLS.some(function (c) { return g(c[1]); })) return;
+      if (/^(obrigatorio|opcional|nao mexa)/.test(normTxt(g('id') || g('nome') || g('preco')))) return;  // linha 2 do modelo (explicação)
+      var id = g('id'), sku = g('sku').toUpperCase().replace(/[^A-Z0-9-]/g, ''), nome = g('nome');
+      if (id && !porId[id]) { erros.push('Linha ' + nl + ': ID ' + id + ' não existe nesta loja (apague o ID para criar como novo).'); return; }
+      var base = id ? porId[id] : sku && porSku[sku] ? porSku[sku] : null, chave = base ? 'p' + base.id : sku ? 's' + sku : 'n' + normTxt(nome);
+      if (!base && !nome) { erros.push('Linha ' + nl + ': falta o nome do produto.'); return; }
+      var gr = grupos[chave];
+      if (!gr) { gr = grupos[chave] = { base: base, linhas: [], primeira: nl }; ordem.push(chave); }
+      gr.linhas.push({ nl: nl, g: g, sku: sku });
+    });
+    var produtos = ordem.map(function (k) {
+      var gr = grupos[k], b = gr.base, p = b ? JSON.parse(JSON.stringify(b)) : { nome: '', sku: '', marca: '', categoria: '', preco: 0, preco_de: null, desenho: 'caixa', fotos: [], descricao: '', composicao: '', destaque: false, oferta: false, selo: '', ativo: true, cores: [], tamanhos: [], estoque: {} };
+      var prim = function (key) { for (var i = 0; i < gr.linhas.length; i++) { var v = gr.linhas[i].g(key); if (v !== '') return v; } return ''; }, onde = 'Linha ' + gr.primeira + ' (' + (prim('nome') || p.nome) + ')';
+      if (prim('nome')) p.nome = prim('nome').slice(0, 120);
+      if (prim('sku')) p.sku = gr.linhas[0].sku || prim('sku');
+      if (prim('marca')) p.marca = prim('marca');
+      if (prim('descricao')) p.descricao = prim('descricao');
+      if (prim('composicao')) p.composicao = prim('composicao');
+      var pr = numBr(prim('preco')); if (pr === null) { if (!b) erros.push(onde + ': falta o preço.'); } else if (!(pr >= 0)) erros.push(onde + ': preço "' + prim('preco') + '" não é um número.'); else p.preco = pr;
+      var de = numBr(prim('preco_de')); if (de !== null) { if (!(de >= 0)) erros.push(onde + ': preço antes "' + prim('preco_de') + '" não é um número.'); else p.preco_de = de > p.preco ? de : null; } else if ('preco_de' in mapa) p.preco_de = null;
+      if ('ativo' in mapa) p.ativo = simNao(prim('ativo'), true);
+      if ('destaque' in mapa) p.destaque = simNao(prim('destaque'), false);
+      var cn = prim('categoria'); if (cn) { var ck = catPorNome[normTxt(cn)]; if (!ck) { ck = slugify(cn); if (!ck) erros.push(onde + ': categoria inválida.'); else { novasCat[ck] = cn.slice(0, 40); catPorNome[normTxt(cn)] = ck; } } p.categoria = ck; }
+      var fotos = ['f0', 'f1', 'f2', 'f3', 'f4'].map(prim).filter(Boolean);
+      if (fotos.length) { if (fotos.some(function (f) { return !/^https:\/\//i.test(f); })) erros.push(onde + ': foto precisa ser um link que começa com https://'); else p.fotos = fotos.slice(0, 5); }
+      if ('est' in mapa || 'cor' in mapa || 'tam' in mapa) {
+        var hex = {}; (b ? b.cores : []).forEach(function (c) { hex[c[0]] = c; });
+        var cores = [], tams = [], est = {};
+        gr.linhas.forEach(function (x) {
+          var c = x.g('cor').slice(0, 30), t = x.g('tam').slice(0, 20), h = x.g('hex'), q = x.g('est');
+          if (/\|/.test(c + t)) { erros.push('Linha ' + x.nl + ': não use o caractere | em cor ou tamanho.'); return; }
+          if (h && !/^#?[0-9A-Fa-f]{6}$/.test(h)) erros.push('Linha ' + x.nl + ': código da cor "' + h + '" deve ser como #1D1F23.');
+          if (c && cores.indexOf(c) < 0) { cores.push(c); var ant = hex[c]; hex[c] = [c, h && /^#?[0-9A-Fa-f]{6}$/.test(h) ? '#' + h.replace('#', '').toUpperCase() : ant ? ant[1] : ''].concat(ant && ant[2] ? [ant[2]] : []); }
+          if (t && tams.indexOf(t) < 0) tams.push(t);
+          var n = q === '' ? 0 : numBr(q);
+          if (!(n >= 0) || Math.floor(n) !== n) { erros.push('Linha ' + x.nl + ': estoque "' + q + '" precisa ser um número inteiro.'); n = 0; }
+          est[c + '|' + t] = (est[c + '|' + t] || 0) + n;
+        });
+        if (cores.length && gr.linhas.some(function (x) { return !x.g('cor'); })) erros.push(onde + ': se uma linha tem cor, todas as linhas do produto precisam ter.');
+        if (tams.length && gr.linhas.some(function (x) { return !x.g('tam'); })) erros.push(onde + ': se uma linha tem tamanho, todas as linhas do produto precisam ter.');
+        p.cores = cores.map(function (c) { return hex[c]; }); p.tamanhos = tams; p.estoque = est;
+      }
+      return p;
+    });
+    var novos = produtos.filter(function (p) { return !p.id; }).length, lim = S.plano && S.plano.limites ? S.plano.limites.produtos : 0;
+    if (lim && S.d.produtos.length + novos > lim) erros.unshift('Seu plano permite ' + lim + ' produtos. Com esta planilha seriam ' + (S.d.produtos.length + novos) + '. Passe ao plano Mais ou tire alguns produtos novos.');
+    if (produtos.length > 1000) erros.unshift('Máximo de 1000 produtos por planilha.');
+    return { produtos: produtos, novos: novos, atualizados: produtos.length - novos, categorias: Object.keys(novasCat).map(function (k) { return { chave: k, nome: novasCat[k] }; }), erros: erros,
+      variacoes: produtos.reduce(function (s, p) { return s + Object.keys(p.estoque).length; }, 0) };
+  }
+  var planPrevia = null;
+  function planilhaSubir(inp) {
+    var f = inp.files[0]; inp.value = '';
+    if (!f) return;
+    if (f.size > 8e6) return toast('Planilha grande demais (máximo 8 MB).');
+    var ehCsv = /\.csv$/i.test(f.name) || /csv/.test(f.type);
+    (ehCsv ? f.text().then(lerCsv) : f.arrayBuffer().then(lerXlsx)).then(function (linhas) {
+      var r = planilhaMontar(linhas); planPrevia = r;
+      if (r.erro) { toast(r.erro); return; }
+      dlg.innerHTML = '<div class="sheet sm"><header><h2>Conferir planilha</h2><button type="button" class="x" data-fechar aria-label="Fechar">' + ic('x') + '</button></header><div class="body">' +
+        '<p class="note">' + esc(f.name) + '</p><div class="kpis k3">' + kpi('Produtos novos', num(r.novos)) + kpi('Atualizados', num(r.atualizados)) + kpi('Variações', num(r.variacoes)) + '</div>' +
+        (r.categorias.length ? '<p class="note">Categorias novas: <b>' + esc(r.categorias.map(function (c) { return c.nome; }).join(', ')) + '</b></p>' : '') +
+        (r.erros.length ? '<div class="card destaque"><h2>' + ic('alert') + r.erros.length + (r.erros.length === 1 ? ' problema' : ' problemas') + ' para corrigir</h2><ul class="note">' + r.erros.slice(0, 25).map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul>' +
+          (r.erros.length > 25 ? '<p class="note">… e mais ' + (r.erros.length - 25) + '.</p>' : '') + '<p class="note">Corrija na planilha e suba de novo. Nada foi gravado.</p></div>' :
+          '<div class="tbl"><table><thead><tr><th>Produto</th><th class="r">Preço</th><th class="r">Estoque</th><th></th></tr></thead><tbody>' + r.produtos.slice(0, 40).map(function (p) {
+            var t = 0; for (var k in p.estoque) t += p.estoque[k];
+            return '<tr><td>' + esc(p.nome) + '<small class="note"> ' + esc([p.sku, p.cores.length ? p.cores.length + ' cores' : '', p.tamanhos.length ? p.tamanhos.join('/') : ''].filter(Boolean).join(' · ')) + '</small></td><td class="r num">' + brl(p.preco) + '</td><td class="r num">' + t + '</td><td>' + (p.id ? '<span class="pill">Atualiza</span>' : '<span class="pill ok">Novo</span>') + '</td></tr>';
+          }).join('') + '</tbody></table></div>' + (r.produtos.length > 40 ? '<p class="note">… e mais ' + (r.produtos.length - 40) + ' produtos.</p>' : '')) +
+        '</div><footer><span class="sp"></span><button type="button" class="btn ghost" data-fechar>Cancelar</button>' + (r.erros.length ? '' : '<button type="button" class="btn" data-plan-gravar>Gravar ' + r.produtos.length + (r.produtos.length === 1 ? ' produto' : ' produtos') + '</button>') + '</footer></div>';
+      if (!dlg.open) dlg.showModal();
+    }).catch(function () { toast('Não consegui ler esse arquivo. Salve como Excel (.xlsx) ou CSV e tente de novo.'); });
+  }
+  function planilhaGravar(btn) {
+    if (!planPrevia || planPrevia.erros.length) return;
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+    salvar('planilha', { categorias: planPrevia.categorias, produtos: planPrevia.produtos }, 'Planilha gravada: ' + planPrevia.novos + ' novos e ' + planPrevia.atualizados + ' atualizados')
+      .then(function () { planPrevia = null; dlg.close(); S.tab = 'produtos'; render(); lerPlano(); }, function () { btn.disabled = false; btn.removeAttribute('aria-busy'); });
   }
 
   /* ---------- avaliações ---------- */
@@ -1140,6 +1344,10 @@
     }
     if ((b = t.closest('[data-pst]'))) { S.pst = b.getAttribute('data-pst'); render(); return; }
     if ((b = t.closest('[data-per]'))) { S.periodo = +b.getAttribute('data-per'); render(); return; }
+    if (t.closest('[data-plan-ajuda]')) return planilhaAjuda();
+    if (t.closest('[data-plan-det] > summary')) S.planAberto = !t.closest('details').open;
+    if ((b = t.closest('[data-plan]'))) { planilhaBaixar(b.getAttribute('data-plan') === 'modelo'); return; }
+    if ((b = t.closest('[data-plan-gravar]'))) { planilhaGravar(b); return; }
     if ((b = t.closest('[data-exp]'))) { exportar(b.getAttribute('data-exp'), b.getAttribute('data-fmt')); return; }
     if ((b = t.closest('[data-cf]'))) { S.cf = b.getAttribute('data-cf'); render(); return; }
     if ((b = t.closest('[data-ver-cli]'))) { verCliente(b.getAttribute('data-ver-cli')); return; }
@@ -1210,6 +1418,7 @@
   });
   document.addEventListener('change', function (ev) {
     var t = ev.target;
+    if (t.id === 'plan_arq') return planilhaSubir(t);
     if (t.type === 'file' && t.files && t.files.length) return subir(t);
     if (t.type === 'radio' && t.closest('.fontpick')) { $$('.fontopt', t.closest('.fontpick')).forEach(function (o) { o.classList.toggle('on', o.contains(t)); }); }
     if (t.closest && t.closest('#floja')) { var dt2 = $('#dirty'); if (dt2) dt2.textContent = 'Alterações não salvas'; previa(); }
