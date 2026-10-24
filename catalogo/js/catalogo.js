@@ -5,6 +5,12 @@
 (function () {
   'use strict';
   var L = window.LOJA, CATS = window.CATEGORIAS || [], P = window.PRODUTOS || [];
+  // Mercado Pago conectado: Pix e cartão passam a ser pagos por ele. Saem da lista (fica "Pagar online" em primeiro)
+  // e o desconto do Pix manual deixa de aparecer, porque o pagamento online cobra o valor cheio do pedido.
+  if (L.api && L.pagamentoOnline) {
+    L.pagamentos = ['Pagar online'].concat((L.pagamentos || []).filter(function (x) { return x !== 'Pagar online' && !/^(pix|cart[aã]o)/i.test(x); }));
+    L.descontoPix = 0;
+  }
   var app = document.getElementById('app');
   var R = Object.assign({ cor: 'Cor', tamanho: 'Tamanho' }, L.rotulos || {});
 
@@ -158,6 +164,7 @@
   var cart = (store('cart') || []).filter(function (l) { var p = BYID[l.id]; return p && qtd(p, l.cor, l.tam) > 0; });
   cart.forEach(function (l) { l.qty = Math.min(l.qty, qtd(BYID[l.id], l.cor, l.tam)); });
   var form = Object.assign({ nome: '', zap: '', entrega: (L.entrega && L.entrega[0] || [''])[0], cep: '', end: '', pag: (L.pagamentos || [])[0] || '' }, store('form') || {});
+  if ((L.pagamentos || []).indexOf(form.pag) < 0) form.pag = (L.pagamentos || [])[0] || '';
   var pref = Object.assign({ layout: 'grade', ordem: 'relevancia', tam: '' }, store('pref') || {});
   function save() { store('cart', cart); store('form', form); store('favs', favs); store('pref', pref); }
   function count() { return cart.reduce(function (s, l) { return s + l.qty; }, 0); }
@@ -165,6 +172,9 @@
   // Pagamento online (Mercado Pago do lojista): só aparece com a conta conectada e a loja ligada ao banco.
   var ONLINE = 'Pagar online';
   function online() { return !!(L.api && L.pagamentoOnline && form.pag === ONLINE); }
+  // Logo oficial do Mercado Pago (imagem em catalogo/img), no mesmo endereço base do config.js.
+  var MPLOGO = (document.querySelector('script[src$="js/config.js"]') || { src: '' }).src.replace(/js\/config\.js.*$/, '') + 'img/mercadopago.png';
+  function mpLogo() { return '<img class="mplogo" src="' + MPLOGO + '" alt="" width="48" height="48">'; }
   function pixOn() { return L.descontoPix && /pix/i.test(form.pag); }
   // Cupom: as contas seguem as do servidor (cupom sobre os produtos, Pix sobre o que sobra).
   var cup = store('cupom');
@@ -396,7 +406,7 @@
   // Formas de pagamento e parcelamento no rodapé.
   function pagamentos() {
     var ps = L.pagamentos || []; if (!ps.length && !(L.parcelas > 1) && !L.descontoPix) return '';
-    return '<div class="wrap pays"><div><h4>Formas de pagamento</h4><div class="pchips">' + ps.map(function (x) { return '<span class="pchip">' + ic(PAGIC[String(x).toLowerCase()] || 'card') + esc(x) + '</span>'; }).join('') + '</div></div>' +
+    return '<div class="wrap pays"><div><h4>Formas de pagamento</h4><div class="pchips">' + ps.map(function (x) { return x === 'Pagar online' ? '<span class="pchip mp">' + mpLogo() + 'Mercado Pago · Pix e cartão</span>' : '<span class="pchip">' + ic(PAGIC[String(x).toLowerCase()] || 'card') + esc(x) + '</span>'; }).join('') + '</div></div>' +
       '<div class="pinfo">' + (L.parcelas > 1 ? '<span>' + ic('card') + '<b>Até ' + L.parcelas + 'x sem juros</b> no cartão</span>' : '') +
         (L.descontoPix ? '<span>' + ic('pix') + '<b>' + L.descontoPix + '% de desconto</b> no Pix</span>' : '') +
         '<span>' + ic('seguro') + 'Compra combinada e confirmada pelo WhatsApp</span></div></div>';
@@ -580,7 +590,7 @@
         '<div class="v num">' + brl(p.preco * l.qty) + '</div></div><div class="step"><button type="button" data-l="' + i + '" data-d="-1" aria-label="Tirar um">−</button><b>' + l.qty + '</b><button type="button" data-l="' + i + '" data-d="1" aria-label="Adicionar mais um"' + (l.qty >= qtd(p, l.cor, l.tam) ? ' disabled' : '') + '>+</button></div></div>';
     }).join('');
     var ents = (L.entrega || []).map(function (x) { return '<button type="button" data-ent="' + esc(x[0]) + '" aria-pressed="' + (form.entrega === x[0]) + '"><b>' + esc(x[1]) + '</b><small>' + esc(x[2] || '') + '</small></button>'; }).join('');
-    var pays = (L.api && L.pagamentoOnline ? [ONLINE] : []).concat(L.pagamentos || []).map(function (x) { return '<button type="button" data-pag="' + esc(x) + '" aria-pressed="' + (form.pag === x) + '">' + (x === ONLINE ? ic('card') + '<b>Pagar online</b><small>Pix ou cartão · Mercado Pago</small>' : esc(x)) + '</button>'; }).join('');
+    var pays = (L.pagamentos || []).map(function (x) { return '<button type="button" data-pag="' + esc(x) + '" aria-pressed="' + (form.pag === x) + '">' + (x === ONLINE ? mpLogo() + '<b>Pagar com Mercado Pago</b><small>Pix, cartão de crédito em até ' + Math.max(1, Math.min(12, +L.parcelas || 12)) + 'x ou débito</small>' : esc(x)) + '</button>'; }).join('');
     d.innerHTML = '<div class="sheet"><button type="button" class="x" data-close aria-label="Fechar">' + ic('x') + '</button><div class="scroll">' +
       '<div class="cart-h"><h2>Sua sacola</h2><p>' + n + (n === 1 ? ' peça' : ' peças') + ' · <button type="button" class="clear" data-clear>Esvaziar</button></p></div>' +
       '<div class="lines">' + lines + '</div>' +
@@ -600,7 +610,7 @@
       (pixOn() ? '<div class="pixd"><span>Desconto Pix (' + L.descontoPix + '%)</span><span class="num">− ' + brl(pixValor()) + '</span></div>' : '') +
       '<div><span>Frete</span><span>' + (form.entrega === 'retirada' ? 'Grátis' : freteCupom() ? 'Grátis (cupom)' : falta <= 0 && L.freteGratisAcima ? 'Grátis' : 'Combinado no WhatsApp') + '</span></div>' +
       '<div class="tot"><span>Total</span><span class="num">' + brl(totalPedido()) + '</span></div></div>' +
-      '</div><div class="foot">' + (online() ? '<a class="cta mp" id="send" data-mp-marketplace-checkout="checkout-pro" href="#"' + (ok ? '' : ' aria-disabled="true"') + '>' + ic('card') + 'Pagar com Mercado Pago</a><small class="seg">Pagamento seguro no Mercado Pago. Você volta para a loja depois.</small>' :
+      '</div><div class="foot">' + (online() ? '<a class="cta mp" id="send" data-mp-marketplace-checkout="checkout-pro" href="#"' + (ok ? '' : ' aria-disabled="true"') + '>' + mpLogo() + 'Pagar com Mercado Pago</a><small class="seg">Pagamento seguro no Mercado Pago. Você volta para a loja depois.</small>' :
         '<a class="cta zap" id="send" href="' + (ok ? wa(message()) : '#') + '" target="_blank" rel="noopener"' + (ok ? '' : ' aria-disabled="true"') + '>' + ic('chat') + 'Enviar pedido no WhatsApp</a>') + '</div></div>';
     scr = $('.scroll', d); if (scr) scr.scrollTop = top;
     if (focusId && $('#' + focusId)) { var f = $('#' + focusId); f.focus(); try { f.setSelectionRange(f.value.length, f.value.length); } catch (x) {} }

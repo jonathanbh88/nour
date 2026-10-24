@@ -36,16 +36,8 @@
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>', moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
     grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>', link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
   };
-  // Logo do Mercado Pago no padrão da marca: oval branca com aperto de mãos, sobre azul.
-  function mpLogo(cls) {
-    return '<svg class="mplogo ' + (cls || '') + '" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#00B1EA"/>' +
-      '<ellipse cx="24" cy="24" rx="20" ry="14" fill="#fff" stroke="#0A0080" stroke-width="2.4"/>' +
-      // braços
-      '<path d="M5.5 21.5c4.5-1 7.5-3.6 12-3.6 2.6 0 4 1.3 6.5 1.3 2.3 0 3.8-1.4 6.6-1.4 4.4 0 7.6 2.6 11.9 3.7" fill="none" stroke="#0A0080" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
-      // mãos entrelaçadas (dedos)
-      '<path d="M13.5 24.5c1.6 1.5 3.4 3.3 5 4.6 1 .8 2.4.6 3-.4M16.6 22.9l5.4 5.1c.9.8 2.3.7 3-.2M19.8 21.4l5.6 5.3c.9.8 2.3.7 2.9-.3M23.3 20.4l5 4.6c.8.8 2.1.6 2.6-.3l1.8-3.4" fill="none" stroke="#0A0080" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>' +
-      '<path d="M24 19.3c-1.6 1.2-3.3 2.6-4.9 2.2" fill="none" stroke="#0A0080" stroke-width="2.1" stroke-linecap="round"/></svg>';
-  }
+  // Logo oficial do Mercado Pago (imagem em catalogo/img).
+  function mpLogo(cls) { return '<img class="mplogo ' + (cls || '') + '" src="../img/mercadopago.png" alt="" width="48" height="48">'; }
   function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + I[n] + '</svg>'; }
 
   /* ---------- acesso ---------- */
