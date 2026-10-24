@@ -409,7 +409,7 @@
     return '<div class="wrap pays"><div><h4>Formas de pagamento</h4><div class="pchips">' + ps.map(function (x) { return x === 'Pagar online' ? '<span class="pchip mp">' + mpLogo() + 'Mercado Pago · Pix e cartão</span>' : '<span class="pchip">' + ic(PAGIC[String(x).toLowerCase()] || 'card') + esc(x) + '</span>'; }).join('') + '</div></div>' +
       '<div class="pinfo">' + (L.parcelas > 1 ? '<span>' + ic('card') + '<b>Até ' + L.parcelas + 'x sem juros</b> no cartão</span>' : '') +
         (L.descontoPix ? '<span>' + ic('pix') + '<b>' + L.descontoPix + '% de desconto</b> no Pix</span>' : '') +
-        '<span>' + ic('seguro') + 'Compra combinada e confirmada pelo WhatsApp</span></div></div>';
+        '<span>' + ic('seguro') + (L.api && L.pagamentoOnline ? 'Pagamento seguro pelo Mercado Pago' : 'Compra combinada e confirmada pelo WhatsApp') + '</span></div></div>';
   }
   function footer() {
     var parc = L.parceiro || {}, lk = L.links || {}, hasH = L.horarios && Object.keys(L.horarios).length;
