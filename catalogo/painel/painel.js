@@ -32,10 +32,20 @@
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', chat: '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.3A8.4 8.4 0 1 1 21 11.5z"/>', ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>', plus: '<path d="M12 5v14M5 12h14"/>', down: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
     alert: '<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>', repeat: '<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/>',
-    copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>', money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
+    copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>', money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>', card: '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', out: '<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>', moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
     grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>', link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
   };
+  // Logo do Mercado Pago no padrão da marca: oval branca com aperto de mãos, sobre azul.
+  function mpLogo(cls) {
+    return '<svg class="mplogo ' + (cls || '') + '" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#00B1EA"/>' +
+      '<ellipse cx="24" cy="24" rx="20" ry="14" fill="#fff" stroke="#0A0080" stroke-width="2.4"/>' +
+      // braços
+      '<path d="M5.5 21.5c4.5-1 7.5-3.6 12-3.6 2.6 0 4 1.3 6.5 1.3 2.3 0 3.8-1.4 6.6-1.4 4.4 0 7.6 2.6 11.9 3.7" fill="none" stroke="#0A0080" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
+      // mãos entrelaçadas (dedos)
+      '<path d="M13.5 24.5c1.6 1.5 3.4 3.3 5 4.6 1 .8 2.4.6 3-.4M16.6 22.9l5.4 5.1c.9.8 2.3.7 3-.2M19.8 21.4l5.6 5.3c.9.8 2.3.7 2.9-.3M23.3 20.4l5 4.6c.8.8 2.1.6 2.6-.3l1.8-3.4" fill="none" stroke="#0A0080" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M24 19.3c-1.6 1.2-3.3 2.6-4.9 2.2" fill="none" stroke="#0A0080" stroke-width="2.1" stroke-linecap="round"/></svg>';
+  }
   function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + I[n] + '</svg>'; }
 
   /* ---------- acesso ---------- */
@@ -194,8 +204,8 @@
     ['Vendas', [['pedidos', 'Pedidos', 'bag'], ['clientes', 'Clientes', 'users'], ['cupons', 'Cupons', 'tag']]],
     ['Catálogo', [['produtos', 'Produtos e estoque', 'box'], ['avaliacoes', 'Avaliações', 'star']]],
     ['Resultados', [['analytics', 'Analytics', 'eye'], ['relatorios', 'Relatórios', 'chart']]],
-    ['Configurações', [['loja', 'Editar loja', 'brush'], ['acesso', 'Acesso e links', 'key']]]];
-  var TELAS = { inicio: inicio, produtos: produtos, pedidos: pedidos, cupons: cupons, analytics: analytics, relatorios: relatorios, clientes: clientes, avaliacoes: avaliacoes, loja: loja, acesso: acesso };
+    ['Configurações', [['loja', 'Editar loja', 'brush'], ['mercadopago', 'Mercado Pago', 'mp'], ['acesso', 'Acesso e links', 'key']]]];
+  var TELAS = { inicio: inicio, produtos: produtos, pedidos: pedidos, cupons: cupons, analytics: analytics, relatorios: relatorios, clientes: clientes, avaliacoes: avaliacoes, loja: loja, mercadopago: telaMp, acesso: acesso };
   var BAIXO = ['inicio', 'pedidos', 'produtos', 'clientes'];
   function aba(id) { var r = null; GRUPOS.forEach(function (g) { g[1].forEach(function (t) { if (t[0] === id) r = { g: g[0], t: t }; }); }); return r || { g: '', t: [id, id, 'home'] }; }
   // Números que pedem atenção, mostrados no menu.
@@ -207,7 +217,7 @@
   }
   function itemMenu(t, av, cls) {
     var n = av[t[0]];
-    return '<button type="button" class="' + cls + '" data-tab="' + t[0] + '"' + (S.tab === t[0] ? ' aria-current="page"' : '') + '><i>' + ic(t[2]) + '</i><span>' + t[1] + '</span>' + (n && n[0] ? '<em class="num ' + n[1] + '">' + n[0] + '</em>' : '') + '</button>';
+    return '<button type="button" class="' + cls + (t[2] === 'mp' ? ' marca' : '') + '" data-tab="' + t[0] + '"' + (S.tab === t[0] ? ' aria-current="page"' : '') + '><i>' + (t[2] === 'mp' ? mpLogo() : ic(t[2])) + '</i><span>' + t[1] + '</span>' + (n && n[0] ? '<em class="num ' + n[1] + '">' + n[0] + '</em>' : '') + '</button>';
   }
   function temaAtual() { return document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
   function render() {
@@ -224,7 +234,7 @@
       '<main class="main" id="main" data-tela="' + esc(S.tab) + '">' + TELAS[S.tab]() + '</main></div>' +
       '<nav class="bnav" aria-label="Atalhos">' + BAIXO.map(function (id) { var t = aba(id).t; return itemMenu([t[0], t[1].split(' e ')[0], t[2]], av, 'bn'); }).join('') +
         '<button type="button" class="bn" data-mais' + (BAIXO.indexOf(S.tab) < 0 ? ' aria-current="page"' : '') + '><i>' + ic('grid') + '</i><span>Mais</span></button></nav></div>';    if (S.tab === 'acesso') carregarSeg();
-    if (S.tab === 'loja') carregarMp();
+    if (S.tab === 'loja' || S.tab === 'mercadopago') carregarMp();
   }
   // Menu completo no celular, em blocos por grupo.
   function menuMais() {
@@ -1171,7 +1181,7 @@
       sec('Avaliações', chk('k_verif', 'Mostrar selo “Loja verificada” nas avaliações', L.lojaVerificada), 'As avaliações em si ficam na aba Avaliações.'),
       // 4. Vendas e entrega
       sec('Frete grátis', fld('v_frete', 'Frete grátis a partir de (R$)', L.freteGratisAcima || 0, ' type="number" min="0" step="1"'), 'Calculado sozinho: a sacola mostra quanto falta, o pedido sai com “Frete grátis” e a loja avisa no rodapé. Coloque 0 para não oferecer.') +
-      sec('Pagamento online · Mercado Pago', '<div id="mpBox" data-mp-marketplace-page="checkout-pro"><p class="note">Carregando…</p></div>', 'O cliente paga com Pix ou cartão parcelado e o dinheiro cai direto na sua conta do Mercado Pago. O pedido é confirmado sozinho quando o pagamento é aprovado.') +
+      sec('Pagamento online · Mercado Pago', '<div class="mpBox" data-mp-marketplace-page="checkout-pro"><p class="note">Carregando…</p></div>', 'O cliente paga com Pix ou cartão parcelado e o dinheiro cai direto na sua conta do Mercado Pago. O pedido é confirmado sozinho quando o pagamento é aprovado.') +
       sec('Pagamento', '<div class="g2">' + fld('v_pix', 'Desconto no Pix (%)', L.descontoPix || 0, ' type="number" min="0" max="50"') + fld('v_parc', 'Parcelas sem juros mostradas', L.parcelas || 0, ' type="number" min="0" max="24"') + '</div>' +
         '<div class="checks">' + PAGS.map(function (p, i) { return chk('pg' + i, p, (L.pagamentos || []).indexOf(p) > -1); }).join('') + '</div>') +
       sec('Entrega', '<div class="checks">' + ENTREGAS.map(function (e) { return chk('e_' + e[0], e[1], ents.indexOf(e[0]) > -1); }).join('') + '</div>') +
@@ -1268,16 +1278,30 @@
     return fetch(window.NOUR_API.url + '/functions/v1/catalogo-mp/' + rota, { method: 'POST', headers: { apikey: window.NOUR_API.chave, 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'erro'); return j; }); });
   }
+  function mpConteudo(st) {
+    return st && st.conectado ?
+      '<div class="mpok"><span class="pill ok">Conectado</span><span>Conta Mercado Pago nº <b class="mono">' + esc(st.conta) + '</b> desde ' + dataBr(st.desde) + '. Na loja aparece a opção <b>Pagar online (Pix ou cartão)</b>.</span></div>' +
+        '<button type="button" class="btn ghost sm danger" data-mp-sair>Desconectar</button>' :
+      (st && st.reconectar ? '<p class="note"><span class="pill warn">Reconectar</span> A autorização venceu. Conecte de novo para voltar a receber online.</p>' : '<p class="note">Ainda não conectado. Você vai entrar na sua conta do Mercado Pago e autorizar a loja a criar cobranças. A Nour não vê sua senha.</p>') +
+        '<button type="button" class="btn mpbtn" data-mp-conectar data-mp-marketplace-connect="oauth">' + mpLogo('sm') + 'Conectar Mercado Pago</button>';
+  }
   function carregarMp() {
-    var el = document.getElementById('mpBox'); if (!el) return;
+    if (!$$('.mpBox').length) return;
     window.nourRpc('catalogo_mp_status', { p_slug: S.slug, p_token: S.token }).then(function (st) {
-      el = document.getElementById('mpBox'); if (!el) return;
-      el.innerHTML = st && st.conectado ?
-        '<div class="mpok"><span class="pill ok">Conectado</span><span>Conta Mercado Pago nº <b class="mono">' + esc(st.conta) + '</b> desde ' + dataBr(st.desde) + '. Na loja aparece a opção <b>Pagar online (Pix ou cartão)</b>.</span></div>' +
-          '<button type="button" class="btn ghost sm danger" data-mp-sair>Desconectar</button>' :
-        (st && st.reconectar ? '<p class="note"><span class="pill warn">Reconectar</span> A autorização venceu. Conecte de novo para voltar a receber online.</p>' : '<p class="note">Ainda não conectado. Você vai entrar na sua conta do Mercado Pago e autorizar a loja a criar cobranças. A Nour não vê sua senha.</p>') +
-          '<button type="button" class="btn" data-mp-conectar data-mp-marketplace-connect="oauth">Conectar Mercado Pago</button>';
-    }, function () { el.innerHTML = '<p class="note">Não deu para ver a conexão agora.</p>'; });
+      S.mp = st; $$('.mpBox').forEach(function (el) { el.innerHTML = mpConteudo(st); });
+    }, function () { $$('.mpBox').forEach(function (el) { el.innerHTML = '<p class="note">Não deu para ver a conexão agora.</p>'; }); });
+  }
+  // Tela própria em Configurações → Mercado Pago.
+  function telaMp() {
+    var pagos = S.d.pedidos.filter(function (p) { return p.mp_status === 'approved'; }), aguard = S.d.pedidos.filter(function (p) { return p.pagamento === 'Pagar online' && p.mp_status !== 'approved' && p.status !== 'cancelado'; });
+    return '<div class="head"><div class="mphead">' + mpLogo('lg') + '<div><h1>Mercado Pago</h1><p class="sub">Receba online com Pix e cartão parcelado. O dinheiro cai direto na sua conta.</p></div></div></div>' +
+      '<div class="card"><h2>Sua conta</h2><div class="mpBox" data-mp-marketplace-page="checkout-pro"><p class="note">Carregando…</p></div></div>' +
+      '<div class="kpis k3">' + kpi('Pagos online', num(pagos.length), 'pedidos aprovados', 'card') + kpi('Recebido online', brl(soma(pagos, 'total')), 'na sua conta Mercado Pago', 'money') + kpi('Aguardando pagamento', num(aguard.length), 'pedidos com Pagar online', 'clock') + '</div>' +
+      '<div class="card"><h2>Como funciona</h2><ol class="passos">' +
+        '<li><b>Conecte sua conta</b><span class="note">Clique em Conectar, entre no Mercado Pago e toque em Autorizar. Use o Safari ou o Chrome (não o navegador de dentro de outros apps), porque o Mercado Pago pode pedir a câmera para confirmar que é você.</span></li>' +
+        '<li><b>O cliente paga online</b><span class="note">Na sacola aparece “Pagar online”. O valor cobrado é sempre o do pedido, com cupom e descontos.</span></li>' +
+        '<li><b>O pedido se confirma sozinho</b><span class="note">Pagamento aprovado confirma o pedido e baixa o estoque. Você acompanha em Pedidos.</span></li>' +
+      '</ol></div>';
   }
   var SEGTIPO = { devtools: 'Ferramenta do desenvolvedor aberta', atalho: 'Atalho bloqueado', copia: 'Cópia de texto grande', imagem: 'Tentativa de copiar imagem' };
   function carregarSeg() {
@@ -1381,7 +1405,7 @@
       var dt0 = $('#dirty'); if (dt0 && dt0.textContent && !confirm('Há alterações não salvas na loja. Sair para conectar o Mercado Pago mesmo assim?')) return;
       b.disabled = true; b.textContent = 'Abrindo o Mercado Pago…';
       mpFuncao('conectar', { loja: S.slug, codigo: S.token }).then(function (j) { if (dt0) dt0.textContent = ''; location.href = j.url; }, function (e) {
-        b.disabled = false; b.textContent = 'Conectar Mercado Pago'; toast(e.message === 'mp_nao_configurado' ? 'Pagamento online ainda não liberado pela plataforma.' : 'Não deu para abrir o Mercado Pago agora.'); });
+        carregarMp(); toast(e.message === 'mp_nao_configurado' ? 'Pagamento online ainda não liberado pela plataforma.' : 'Não deu para abrir o Mercado Pago agora.'); });
       return;
     }
     if (t.closest('[data-mp-sair]')) {
@@ -1581,7 +1605,7 @@
   var mpVolta = (location.search.match(/[?&]mp=(ok|erro)/) || [])[1], mpMsg = (location.search.match(/[?&]mpmsg=([a-z]+)/) || [])[1];
   if (mpVolta) {
     history.replaceState(null, '', location.pathname + (qs ? '?loja=' + qs : '') + location.hash);
-    S.tab = 'loja'; S.wz = 3;
+    S.tab = 'mercadopago';
     setTimeout(function () { toast(mpVolta === 'ok' ? 'Mercado Pago conectado! A loja já aceita pagamento online.' : (MPMSG[mpMsg] || MPMSG.falha)); }, 1200);
   }
   if (cod) history.replaceState(null, '', location.pathname + location.search);  // o código não fica no histórico
