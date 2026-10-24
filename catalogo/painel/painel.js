@@ -1274,6 +1274,15 @@
 
   /* ---------- Mercado Pago: conectar a conta do lojista (OAuth no servidor, função catalogo-mp) ---------- */
   var MPMSG = { cancelado: 'Conexão cancelada no Mercado Pago.', expirou: 'O link expirou. Clique em Conectar de novo.', falha: 'O Mercado Pago não confirmou a conexão. Tente de novo.' };
+  // Motivo devolvido pelo Mercado Pago na troca do código, em português.
+  function mpErro(m) {
+    m = String(m || '');
+    if (MPMSG[m]) return MPMSG[m];
+    if (/invalid_client|unauthorized|client/.test(m)) return 'O Mercado Pago recusou a chave da aplicação (Client ID ou Client Secret). Confira os segredos no Supabase.';
+    if (/invalid_grant|redirect|code/.test(m)) return 'O Mercado Pago recusou o código (expirou ou o endereço de retorno é diferente do cadastrado). Clique em Conectar de novo.';
+    if (/gravar/.test(m)) return 'A conta foi autorizada, mas não deu para salvar a conexão. Tente de novo.';
+    return MPMSG.falha + (m ? ' (' + m.replace(/^falha_/, '') + ')' : '');
+  }
   function mpFuncao(rota, corpo) {
     return fetch(window.NOUR_API.url + '/functions/v1/catalogo-mp/' + rota, { method: 'POST', headers: { apikey: window.NOUR_API.chave, 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'erro'); return j; }); });
@@ -1602,11 +1611,11 @@
 
   /* ---------- início: link com código (?loja=slug#código) ou sessão salva ---------- */
   var qs = (location.search.match(/[?&]loja=([a-z0-9-]+)/) || [])[1], cod = location.hash.slice(1);
-  var mpVolta = (location.search.match(/[?&]mp=(ok|erro)/) || [])[1], mpMsg = (location.search.match(/[?&]mpmsg=([a-z]+)/) || [])[1];
+  var mpVolta = (location.search.match(/[?&]mp=(ok|erro)/) || [])[1], mpMsg = (location.search.match(/[?&]mpmsg=([a-z0-9_]+)/) || [])[1];
   if (mpVolta) {
     history.replaceState(null, '', location.pathname + (qs ? '?loja=' + qs : '') + location.hash);
     S.tab = 'mercadopago';
-    setTimeout(function () { toast(mpVolta === 'ok' ? 'Mercado Pago conectado! A loja já aceita pagamento online.' : (MPMSG[mpMsg] || MPMSG.falha)); }, 1200);
+    setTimeout(function () { toast(mpVolta === 'ok' ? 'Mercado Pago conectado! A loja já aceita pagamento online.' : mpErro(mpMsg)); }, 1200);
   }
   if (cod) history.replaceState(null, '', location.pathname + location.search);  // o código não fica no histórico
   window.addEventListener('hashchange', function () {

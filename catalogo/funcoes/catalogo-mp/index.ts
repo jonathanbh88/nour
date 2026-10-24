@@ -56,7 +56,12 @@ async function decryptToken(s: string) {
 async function tokenOauth(corpo: Record<string, string>) {
   const r = await fetch(MP_OAUTH_TOKEN, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" }, body: new URLSearchParams(corpo) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok || !j.access_token) throw new Error("oauth_" + r.status);
+  if (!r.ok || !j.access_token) {
+    // Só o motivo devolvido pelo Mercado Pago; nunca tokens ou segredos.
+    const motivo = String(j.error || j.message || "http_" + r.status).replace(/[^a-z0-9_]/gi, "_").slice(0, 40);
+    console.error("oauth_token_falhou", r.status, motivo, String(j.message ?? "").slice(0, 160));
+    throw new Error(motivo);
+  }
   return j as { access_token: string; refresh_token: string; expires_in: number; user_id: number; scope?: string };
 }
 type OauthTokens = { access_token: string; refresh_token: string; expires_in: number; user_id: number; scope?: string };
@@ -67,7 +72,7 @@ const sellerRepository = {
       slug, mp_user_id: String(t.user_id), access_enc: await encryptToken(t.access_token), refresh_enc: await encryptToken(t.refresh_token),
       expira: new Date(Date.now() + Math.max(60, Number(t.expires_in) || 0) * 1000).toISOString(), escopo: t.scope ?? "", reconectar: false, atualizado: new Date().toISOString(),
     });
-    if (error) throw new Error("gravar_tokens");
+    if (error) { console.error("gravar_tokens", error.message); throw new Error("gravar_tokens"); }
     // Marca na loja (público) que dá para pagar online; o servidor confere de novo na hora de pagar.
     const { data: c } = await sb.from("catalogos").select("loja").eq("slug", slug).single();
     await sb.from("catalogos").update({ loja: { ...(c?.loja ?? {}), pagamentoOnline: true } }).eq("slug", slug);
@@ -167,7 +172,7 @@ Deno.serve(async (req) => {
     try {
       await sellerRepository.save(st.slug, await tokenOauth({ grant_type: "authorization_code", client_id: CLIENT_ID, client_secret: CLIENT_SECRET, code, redirect_uri: REDIRECT }));
       return paginaRetorno(st.slug, true, "");
-    } catch { return paginaRetorno(st.slug, false, "falha"); }
+    } catch (e) { return paginaRetorno(st.slug, false, "falha_" + String((e as Error).message).toLowerCase()); }
   }
 
   // Loja: criar o pagamento do pedido já gravado (valor e itens vêm do banco, nunca do navegador).
@@ -200,7 +205,7 @@ Deno.serve(async (req) => {
     };
     const r = await fetch(MP_PREFERENCES, { method: "POST", headers: { Authorization: `Bearer ${sellerToken}`, "Content-Type": "application/json", "X-Idempotency-Key": `${slug}-${ped.codigo}-${Math.floor(Date.now() / 600000)}` }, body: JSON.stringify(pref) });
     const j = await r.json().catch(() => ({}));
-    if (!r.ok || !j.init_point) return J(req, { error: "mp_falha" }, 502);
+    if (!r.ok || !j.init_point) { console.error("preferencia_falhou", r.status, String(j.message ?? j.error ?? "").slice(0, 160)); return J(req, { error: "mp_falha" }, 502); }
     await sb.from("catalogo_pedidos").update({ mp_preferencia: String(j.id) }).eq("id", ped.id);
     return J(req, { preferenceId: j.id, initPoint: j.init_point });
   }
