@@ -162,6 +162,9 @@
   function save() { store('cart', cart); store('form', form); store('favs', favs); store('pref', pref); }
   function count() { return cart.reduce(function (s, l) { return s + l.qty; }, 0); }
   function subtotal() { return cart.reduce(function (s, l) { return s + l.qty * BYID[l.id].preco; }, 0); }
+  // Pagamento online (Mercado Pago do lojista): só aparece com a conta conectada e a loja ligada ao banco.
+  var ONLINE = 'Pagar online';
+  function online() { return !!(L.api && L.pagamentoOnline && form.pag === ONLINE); }
   function pixOn() { return L.descontoPix && /pix/i.test(form.pag); }
   // Cupom: as contas seguem as do servidor (cupom sobre os produtos, Pix sobre o que sobra).
   var cup = store('cupom');
@@ -577,7 +580,7 @@
         '<div class="v num">' + brl(p.preco * l.qty) + '</div></div><div class="step"><button type="button" data-l="' + i + '" data-d="-1" aria-label="Tirar um">−</button><b>' + l.qty + '</b><button type="button" data-l="' + i + '" data-d="1" aria-label="Adicionar mais um"' + (l.qty >= qtd(p, l.cor, l.tam) ? ' disabled' : '') + '>+</button></div></div>';
     }).join('');
     var ents = (L.entrega || []).map(function (x) { return '<button type="button" data-ent="' + esc(x[0]) + '" aria-pressed="' + (form.entrega === x[0]) + '"><b>' + esc(x[1]) + '</b><small>' + esc(x[2] || '') + '</small></button>'; }).join('');
-    var pays = (L.pagamentos || []).map(function (x) { return '<button type="button" data-pag="' + esc(x) + '" aria-pressed="' + (form.pag === x) + '">' + esc(x) + '</button>'; }).join('');
+    var pays = (L.api && L.pagamentoOnline ? [ONLINE] : []).concat(L.pagamentos || []).map(function (x) { return '<button type="button" data-pag="' + esc(x) + '" aria-pressed="' + (form.pag === x) + '">' + (x === ONLINE ? ic('card') + '<b>Pagar online</b><small>Pix ou cartão · Mercado Pago</small>' : esc(x)) + '</button>'; }).join('');
     d.innerHTML = '<div class="sheet"><button type="button" class="x" data-close aria-label="Fechar">' + ic('x') + '</button><div class="scroll">' +
       '<div class="cart-h"><h2>Sua sacola</h2><p>' + n + (n === 1 ? ' peça' : ' peças') + ' · <button type="button" class="clear" data-clear>Esvaziar</button></p></div>' +
       '<div class="lines">' + lines + '</div>' +
@@ -597,16 +600,46 @@
       (pixOn() ? '<div class="pixd"><span>Desconto Pix (' + L.descontoPix + '%)</span><span class="num">− ' + brl(pixValor()) + '</span></div>' : '') +
       '<div><span>Frete</span><span>' + (form.entrega === 'retirada' ? 'Grátis' : freteCupom() ? 'Grátis (cupom)' : falta <= 0 && L.freteGratisAcima ? 'Grátis' : 'Combinado no WhatsApp') + '</span></div>' +
       '<div class="tot"><span>Total</span><span class="num">' + brl(totalPedido()) + '</span></div></div>' +
-      '</div><div class="foot"><a class="cta zap" id="send" href="' + (ok ? wa(message()) : '#') + '" target="_blank" rel="noopener"' + (ok ? '' : ' aria-disabled="true"') + '>' + ic('chat') + 'Enviar pedido no WhatsApp</a></div></div>';
+      '</div><div class="foot">' + (online() ? '<a class="cta mp" id="send" data-mp-marketplace-checkout="checkout-pro" href="#"' + (ok ? '' : ' aria-disabled="true"') + '>' + ic('card') + 'Pagar com Mercado Pago</a><small class="seg">Pagamento seguro no Mercado Pago. Você volta para a loja depois.</small>' :
+        '<a class="cta zap" id="send" href="' + (ok ? wa(message()) : '#') + '" target="_blank" rel="noopener"' + (ok ? '' : ' aria-disabled="true"') + '>' + ic('chat') + 'Enviar pedido no WhatsApp</a>') + '</div></div>';
     scr = $('.scroll', d); if (scr) scr.scrollTop = top;
     if (focusId && $('#' + focusId)) { var f = $('#' + focusId); f.focus(); try { f.setSelectionRange(f.value.length, f.value.length); } catch (x) {} }
   }
+  // Pedido já gravado: o servidor cria o pagamento com o valor do banco e a conta do lojista; vamos ao Mercado Pago.
+  function pagarOnline(reg) {
+    return fetch(window.NOUR_API.url + '/functions/v1/catalogo-mp/pagar', { method: 'POST', headers: { apikey: window.NOUR_API.chave, 'Content-Type': 'application/json' }, body: JSON.stringify({ loja: L.id, pedido: reg.codigo }) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.initPoint) throw new Error(j.error || 'erro'); return j; }); })
+      .then(function (j) {
+        cup = null; store('cupom', null); cart = []; save(); drawCounts();
+        track('pedido', 'online');
+        location.href = j.initPoint;
+      }, function () {
+        // Sem pagamento online agora: o pedido continua valendo e segue pelo WhatsApp.
+        cup = null; store('cupom', null);
+        toast('Não deu para abrir o pagamento online. Vamos finalizar pelo WhatsApp.');
+        var link = wa(message(reg)); cart = []; save(); drawCounts(); $('#dCart').close();
+        setTimeout(function () { location.href = link; }, 1500);
+      });
+  }
+  // Volta do Mercado Pago (?pago=código&collection_status=...).
+  (function () {
+    var q = location.search, cod = (q.match(/[?&]pago=([A-Z0-9]{4,12})/) || [])[1];
+    if (!cod) return;
+    var st = (q.match(/[?&](?:collection_status|status)=([a-z_]+)/) || [])[1] || '';
+    // Tira só os parâmetros do pagamento; ?loja= e o resto continuam.
+    var resto = q.replace(/^\?/, '').split('&').filter(function (x) { return x && !/^(pago|collection_id|collection_status|payment_id|status|external_reference|payment_type|merchant_order_id|preference_id|site_id|processing_mode|merchant_account_id)=/.test(x); }).join('&');
+    history.replaceState(null, '', location.pathname + (resto ? '?' + resto : '') + location.hash);
+    setTimeout(function () {
+      toast(st === 'approved' ? 'Pagamento aprovado! A loja já recebeu seu pedido.' : st === 'pending' || st === 'in_process' ? 'Pagamento em análise. Assim que for aprovado, a loja confirma seu pedido.' :
+        'O pagamento não foi concluído. Seu pedido ficou registrado: tente de novo ou fale com a loja no WhatsApp.');
+    }, 600);
+  })();
   // Com a loja ligada ao banco, o pedido é registrado (preço e estoque conferidos no servidor) antes de abrir o WhatsApp.
   var sending = false;
   function sendOrder(btn) {
     if (sending) return;
     sending = true; btn.setAttribute('aria-busy', 'true');
-    var w = window.open('', '_blank'); if (w) w.opener = null;
+    var pagar = online(), w = pagar ? null : window.open('', '_blank'); if (w) w.opener = null;
     var codigo = Array.apply(null, Array(6)).map(function () { return 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'.charAt(Math.floor(Math.random() * 32)); }).join('');
     var ent = (L.entrega || []).filter(function (x) { return x[0] === form.entrega; })[0];
     window.nourRpc('catalogo_fazer_pedido', {
@@ -614,6 +647,7 @@
       p_itens: cart.map(function (l) { return { id: +l.id, cor: l.cor, tam: l.tam, qtd: l.qty }; }),
       p_entrega: ent ? ent[1] : form.entrega, p_pagamento: form.pag, p_cupom: cup ? cup.codigo : '', p_origem: origem
     }).then(function (reg) {
+      if (pagar) return pagarOnline(reg);
       var link = wa(message(reg));
       cup = null; store('cupom', null);
       if (w) w.location.href = link; else location.href = link;
@@ -657,7 +691,7 @@
       if ((b = t.closest('[data-ent]'))) { form.entrega = b.getAttribute('data-ent'); save(); return drawCart(); }
       if ((b = t.closest('[data-pag]'))) { form.pag = b.getAttribute('data-pag'); save(); return drawCart(); }
       if ((b = t.closest('#send'))) {
-        if (b.getAttribute('aria-disabled')) { ev.preventDefault(); form._try = 1; drawCart(); var e = problems(); toast(e.nome || e.cep || e.end); }
+        if (b.getAttribute('aria-disabled')) { ev.preventDefault(); form._try = 1; drawCart(); var e = problems(); toast(e.nome || e.zap || e.cep || e.end); }
         else if (L.api) { ev.preventDefault(); sendOrder(b); }
         else toast('Abrindo o WhatsApp com seu pedido');
         return;

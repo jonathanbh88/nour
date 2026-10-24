@@ -227,8 +227,16 @@ A loja de teste é `atelie-exemplo` (banco de teste). Os endereços e o código 
 - [ ] Print de tela e impressão continuam funcionando (PDF dos relatórios sai normal, sem a marca d'água).
 - [ ] Acesso e links → Segurança: as tentativas aparecem com data, onde (loja/painel), o quê e IP.
 
+## 20. Pagamento online (Mercado Pago, cada lojista recebe na própria conta)
+
+- [ ] Painel → Editar loja → Vendas e entrega → "Conectar Mercado Pago": abre o login do Mercado Pago; ao autorizar, volta ao painel com "Mercado Pago conectado" e o bloco mostra "Conectado".
+- [ ] Loja: na sacola aparece "Pagar online · Pix ou cartão" primeiro; o botão vira "Pagar com Mercado Pago" e leva à tela do Mercado Pago com o valor do pedido.
+- [ ] Pagar com usuário e cartão de teste: volta para a loja com "Pagamento aprovado!"; no painel o pedido fica "Confirmado" + "Pago online" e o estoque baixa sozinho.
+- [ ] Cartão recusado: volta com "O pagamento não foi concluído"; o pedido fica "Novo" com "Pagamento recusado".
+- [ ] "Desconectar" tira a opção de pagamento online da loja na hora.
+
 ## Fora deste teste (próximas fases)
 
-- Pagamento online (Mercado Pago) e frete calculado (Melhor Envio).
+- Frete calculado (Melhor Envio).
 - E-mail marketing disparado pelo painel (a lista de clientes já está pronta para isso).
 - Ligação com o login do Bio Site/Agenda (hoje o painel usa código de acesso próprio).

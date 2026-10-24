@@ -224,6 +224,7 @@
       '<main class="main" id="main" data-tela="' + esc(S.tab) + '">' + TELAS[S.tab]() + '</main></div>' +
       '<nav class="bnav" aria-label="Atalhos">' + BAIXO.map(function (id) { var t = aba(id).t; return itemMenu([t[0], t[1].split(' e ')[0], t[2]], av, 'bn'); }).join('') +
         '<button type="button" class="bn" data-mais' + (BAIXO.indexOf(S.tab) < 0 ? ' aria-current="page"' : '') + '><i>' + ic('grid') + '</i><span>Mais</span></button></nav></div>';    if (S.tab === 'acesso') carregarSeg();
+    if (S.tab === 'loja') carregarMp();
   }
   // Menu completo no celular, em blocos por grupo.
   function menuMais() {
@@ -413,7 +414,7 @@
   /* ---------- pedidos ---------- */
   function pedidoCard(p) {
     var prox = { novo: [['confirmado', 'Confirmar pedido'], ['cancelado', 'Cancelar']], confirmado: [['enviado', 'Marcar como enviado'], ['cancelado', 'Cancelar']], enviado: [['entregue', 'Marcar como entregue']], entregue: [], cancelado: [['novo', 'Reabrir']] }[p.status] || [];
-    return '<article class="ped"><header><b>#' + p.numero + '</b>' + stPill(p.status) + '<span class="when">' + dataBr(p.criado, 1) + '</span><b class="num tot">' + brl(p.total) + '</b></header>' +
+    return '<article class="ped"><header><b>#' + p.numero + '</b>' + stPill(p.status) + (p.mp_status === 'approved' ? '<span class="pill ok">Pago online</span>' : p.mp_status === 'pending' || p.mp_status === 'in_process' ? '<span class="pill warn">Pagamento em análise</span>' : p.mp_status === 'rejected' ? '<span class="pill bad">Pagamento recusado</span>' : p.pagamento === 'Pagar online' ? '<span class="pill">Aguardando pagamento</span>' : '') + '<span class="when">' + dataBr(p.criado, 1) + '</span><b class="num tot">' + brl(p.total) + '</b></header>' +
       '<p><b>' + esc(p.nome) + '</b> · ' + esc(p.entrega || '—') + ' · ' + esc(p.pagamento || '—') + (p.contato && p.contato.cep ? ' · CEP ' + esc(p.contato.cep) : '') + (p.contato && p.contato.endereco ? ' · ' + esc(p.contato.endereco) : '') + '</p>' +
       '<ul>' + p.itens.map(function (it) { return '<li>' + it.qtd + 'x ' + esc(it.nome) + (it.cor || it.tam ? ' <small>' + esc([it.cor, it.tam].filter(Boolean).join(' · ')) + '</small>' : '') + '<span class="num">' + brl(it.preco * it.qtd) + '</span></li>'; }).join('') + '</ul>' +
       (p.cupom ? '<p class="note">Cupom ' + esc(p.cupom) + ': − ' + brl(p.cupom_desconto) + (p.frete_gratis ? ' · frete grátis' : '') + '</p>' : '') +
@@ -1170,6 +1171,7 @@
       sec('Avaliações', chk('k_verif', 'Mostrar selo “Loja verificada” nas avaliações', L.lojaVerificada), 'As avaliações em si ficam na aba Avaliações.'),
       // 4. Vendas e entrega
       sec('Frete grátis', fld('v_frete', 'Frete grátis a partir de (R$)', L.freteGratisAcima || 0, ' type="number" min="0" step="1"'), 'Calculado sozinho: a sacola mostra quanto falta, o pedido sai com “Frete grátis” e a loja avisa no rodapé. Coloque 0 para não oferecer.') +
+      sec('Pagamento online · Mercado Pago', '<div id="mpBox" data-mp-marketplace-page="checkout-pro"><p class="note">Carregando…</p></div>', 'O cliente paga com Pix ou cartão parcelado e o dinheiro cai direto na sua conta do Mercado Pago. O pedido é confirmado sozinho quando o pagamento é aprovado.') +
       sec('Pagamento', '<div class="g2">' + fld('v_pix', 'Desconto no Pix (%)', L.descontoPix || 0, ' type="number" min="0" max="50"') + fld('v_parc', 'Parcelas sem juros mostradas', L.parcelas || 0, ' type="number" min="0" max="24"') + '</div>' +
         '<div class="checks">' + PAGS.map(function (p, i) { return chk('pg' + i, p, (L.pagamentos || []).indexOf(p) > -1); }).join('') + '</div>') +
       sec('Entrega', '<div class="checks">' + ENTREGAS.map(function (e) { return chk('e_' + e[0], e[1], ents.indexOf(e[0]) > -1); }).join('') + '</div>') +
@@ -1260,6 +1262,23 @@
       '<div class="card"><h2>Configuração inicial</h2><p>Refaça o passo a passo para trocar o modelo ou as cores.</p><button type="button" class="btn ghost" data-refazer>Refazer configuração</button></div>';
   }
 
+  /* ---------- Mercado Pago: conectar a conta do lojista (OAuth no servidor, função catalogo-mp) ---------- */
+  var MPMSG = { cancelado: 'Conexão cancelada no Mercado Pago.', expirou: 'O link expirou. Clique em Conectar de novo.', falha: 'O Mercado Pago não confirmou a conexão. Tente de novo.' };
+  function mpFuncao(rota, corpo) {
+    return fetch(window.NOUR_API.url + '/functions/v1/catalogo-mp/' + rota, { method: 'POST', headers: { apikey: window.NOUR_API.chave, 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'erro'); return j; }); });
+  }
+  function carregarMp() {
+    var el = document.getElementById('mpBox'); if (!el) return;
+    window.nourRpc('catalogo_mp_status', { p_slug: S.slug, p_token: S.token }).then(function (st) {
+      el = document.getElementById('mpBox'); if (!el) return;
+      el.innerHTML = st && st.conectado ?
+        '<div class="mpok"><span class="pill ok">Conectado</span><span>Conta Mercado Pago nº <b class="mono">' + esc(st.conta) + '</b> desde ' + dataBr(st.desde) + '. Na loja aparece a opção <b>Pagar online (Pix ou cartão)</b>.</span></div>' +
+          '<button type="button" class="btn ghost sm danger" data-mp-sair>Desconectar</button>' :
+        (st && st.reconectar ? '<p class="note"><span class="pill warn">Reconectar</span> A autorização venceu. Conecte de novo para voltar a receber online.</p>' : '<p class="note">Ainda não conectado. Você vai entrar na sua conta do Mercado Pago e autorizar a loja a criar cobranças. A Nour não vê sua senha.</p>') +
+          '<button type="button" class="btn" data-mp-conectar data-mp-marketplace-connect="oauth">Conectar Mercado Pago</button>';
+    }, function () { el.innerHTML = '<p class="note">Não deu para ver a conexão agora.</p>'; });
+  }
   var SEGTIPO = { devtools: 'Ferramenta do desenvolvedor aberta', atalho: 'Atalho bloqueado', copia: 'Cópia de texto grande', imagem: 'Tentativa de copiar imagem' };
   function carregarSeg() {
     var el = document.getElementById('segLista'); if (!el) return;
@@ -1358,6 +1377,18 @@
     if ((b = t.closest('[data-pst]'))) { S.pst = b.getAttribute('data-pst'); render(); return; }
     if ((b = t.closest('[data-per]'))) { S.periodo = +b.getAttribute('data-per'); render(); return; }
     if (t.closest('[data-plan-ajuda]')) return planilhaAjuda();
+    if ((b = t.closest('[data-mp-conectar]'))) {
+      var dt0 = $('#dirty'); if (dt0 && dt0.textContent && !confirm('Há alterações não salvas na loja. Sair para conectar o Mercado Pago mesmo assim?')) return;
+      b.disabled = true; b.textContent = 'Abrindo o Mercado Pago…';
+      mpFuncao('conectar', { loja: S.slug, codigo: S.token }).then(function (j) { if (dt0) dt0.textContent = ''; location.href = j.url; }, function (e) {
+        b.disabled = false; b.textContent = 'Conectar Mercado Pago'; toast(e.message === 'mp_nao_configurado' ? 'Pagamento online ainda não liberado pela plataforma.' : 'Não deu para abrir o Mercado Pago agora.'); });
+      return;
+    }
+    if (t.closest('[data-mp-sair]')) {
+      if (!confirm('Desconectar o Mercado Pago? A loja deixa de oferecer pagamento online na hora.')) return;
+      window.nourRpc('catalogo_mp_desconectar', { p_slug: S.slug, p_token: S.token }).then(function () { if (S.d.loja) delete S.d.loja.pagamentoOnline; toast('Mercado Pago desconectado'); carregarMp(); }, function (e) { toast(msgErro(e)); });
+      return;
+    }
     if (t.closest('[data-plan-det] > summary')) S.planAberto = !t.closest('details').open;
     if ((b = t.closest('[data-plan]'))) { planilhaBaixar(b.getAttribute('data-plan') === 'modelo'); return; }
     if ((b = t.closest('[data-plan-gravar]'))) { planilhaGravar(b); return; }
@@ -1547,6 +1578,12 @@
 
   /* ---------- início: link com código (?loja=slug#código) ou sessão salva ---------- */
   var qs = (location.search.match(/[?&]loja=([a-z0-9-]+)/) || [])[1], cod = location.hash.slice(1);
+  var mpVolta = (location.search.match(/[?&]mp=(ok|erro)/) || [])[1], mpMsg = (location.search.match(/[?&]mpmsg=([a-z]+)/) || [])[1];
+  if (mpVolta) {
+    history.replaceState(null, '', location.pathname + (qs ? '?loja=' + qs : '') + location.hash);
+    S.tab = 'loja'; S.wz = 3;
+    setTimeout(function () { toast(mpVolta === 'ok' ? 'Mercado Pago conectado! A loja já aceita pagamento online.' : (MPMSG[mpMsg] || MPMSG.falha)); }, 1200);
+  }
   if (cod) history.replaceState(null, '', location.pathname + location.search);  // o código não fica no histórico
   window.addEventListener('hashchange', function () {
     var c = location.hash.slice(1), sl = (location.search.match(/[?&]loja=([a-z0-9-]+)/) || [])[1];
